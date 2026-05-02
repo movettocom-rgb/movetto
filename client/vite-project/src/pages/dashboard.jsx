@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import useStore from '../store/useStore';
+import api from '../services/api';
 import { useState, useEffect, useRef } from "react";
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip,
@@ -180,7 +183,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 /* ════════════════════════════════════════
    SIDEBAR
 ════════════════════════════════════════ */
-const Sidebar = ({ active, setActive }) => {
+const Sidebar = ({ active, setActive, onLogout }) => {
   const mainNav = [
     { id: "dashboard", label: "Dashboard",      badge: null,
       icon: <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" fill="#E8F400"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1" fill="#EEF2F6" opacity="0.4"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1" fill="#EEF2F6" opacity="0.4"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" fill="#EEF2F6" opacity="0.2"/></svg> },
@@ -231,13 +234,26 @@ const Sidebar = ({ active, setActive }) => {
         ))}
       </div>
       {/* User */}
-      <div style={{ marginTop: "auto", padding: "14px 18px", borderTop: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", gap: 10 }}>
-        <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#1a2e1a", border: "1px solid #00D68A44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: COLORS.green, flexShrink: 0 }}>KM</div>
-        <div>
-          <div style={{ fontSize: 12, fontWeight: 600 }}>Kousik Maity</div>
-          <div style={{ fontSize: 10, color: COLORS.dim }}>Growth plan</div>
-        </div>
-      </div>
+<div style={{ marginTop: "auto", borderTop: `1px solid ${COLORS.border}` }}>
+  <div style={{ padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
+    <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#1a2e1a", border: "1px solid #00D68A44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: COLORS.green, flexShrink: 0 }}>KM</div>
+    <div>
+      <div style={{ fontSize: 12, fontWeight: 600 }}>Kousik Maity</div>
+      <div style={{ fontSize: 10, color: COLORS.dim }}>Growth plan</div>
+    </div>
+  </div>
+  <div
+    onClick={onLogout}
+    style={{ margin: "0 12px 12px", padding: "8px 12px", borderRadius: 6, border: "1px solid #FF5C3833", background: "#200808", display: "flex", alignItems: "center", gap: 8, cursor: "pointer", transition: "border-color 0.2s" }}
+    onMouseEnter={e => e.currentTarget.style.borderColor = "#FF5C3866"}
+    onMouseLeave={e => e.currentTarget.style.borderColor = "#FF5C3833"}
+  >
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h3M9 9l3-3-3-3M12 6.5H5" stroke="#FF5C38" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+    <span style={{ fontSize: 12, color: "#FF5C38", fontWeight: 600 }}>Log out</span>
+  </div>
+</div>
     </div>
   );
 };
@@ -296,6 +312,7 @@ const NotifDropdown = ({ onClose }) => (
     </div>
   </div>
 );
+
 
 /* ════════════════════════════════════════
    KPI GRID
@@ -620,6 +637,21 @@ export default function Dashboard() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [showNotifs, setShowNotifs] = useState(false);
 
+
+  const navigate = useNavigate();
+const { logout } = useStore();
+
+const handleLogout = async () => {
+  try {
+    await api.post('/auth/logout');
+  } catch (err) {
+    // ignore error
+  } finally {
+    logout();
+    navigate('/auth');
+  }
+};
+
   const renderContent = () => {
     switch (activeNav) {
       case "dashboard": return <DashboardContent />;
@@ -639,7 +671,7 @@ export default function Dashboard() {
       <GlobalStyles />
       <LiveTicker />
       <div style={{ display: "flex", flex: 1, minHeight: 0 }} onClick={() => showNotifs && setShowNotifs(false)}>
-        <Sidebar active={activeNav} setActive={setActiveNav} />
+        <Sidebar active={activeNav} setActive={setActiveNav} onLogout={handleLogout} />
         <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0 }}>
           <Topbar showNotifs={showNotifs} setShowNotifs={setShowNotifs} />
           <div style={{ display: "flex", flex: 1, minHeight: 0, overflowY: "auto" }}>

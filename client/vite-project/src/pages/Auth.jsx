@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from '../services/api';
+import useStore from '../store/useStore';
 
 /* ─── Global keyframes ─── */
 const GlobalStyles = () => (
@@ -470,17 +472,52 @@ const StepSuccess = () => {
 
 /* ─── Register View ─── */
 const RegisterView = () => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
+  const [formData, setFormData] = useState({});
+  const { setAuth } = useStore();
+
+  const collectStep1 = () => {
+    setFormData(prev => ({
+      ...prev,
+      name:     document.getElementById('reg-name').value,
+      email:    document.getElementById('reg-email').value,
+      phone:    document.getElementById('reg-phone').value,
+      password: document.getElementById('reg-pass').value,
+    }));
+    setStep(2);
+  };
+
+  const collectStep2 = () => {
+    setFormData(prev => ({
+      ...prev,
+      businessName: document.getElementById('biz-name').value,
+      city:         document.getElementById('biz-city').value,
+      pincode:      document.getElementById('biz-pin').value,
+    }));
+    setStep(3);
+  };
+
+  const handleFinalSubmit = async () => {
+    try {
+      const res = await api.post('/auth/register', formData);
+      setAuth(res.data.user, res.data.accessToken);
+      setSuccess(true);
+    } catch (err) {
+      console.error('Register failed:', err);
+    }
+  };
+
   const goStep = n => { setStep(n); setSuccess(false); };
+
   return (
     <div>
       {!success && <StepDots current={step} />}
-      {success ? <StepSuccess />
-        : step === 1 ? <Step1 onNext={() => goStep(2)} />
-        : step === 2 ? <Step2 onNext={() => goStep(3)} onBack={() => goStep(1)} />
-        : step === 3 ? <Step3 onNext={() => goStep(4)} onBack={() => goStep(2)} />
-        : <Step4 onNext={() => setSuccess(true)} onBack={() => goStep(3)} onSkip={() => setSuccess(true)} />
+      {success         ? <StepSuccess />
+        : step === 1   ? <Step1 onNext={collectStep1} />
+        : step === 2   ? <Step2 onNext={collectStep2} onBack={() => goStep(1)} />
+        : step === 3   ? <Step3 onNext={() => goStep(4)} onBack={() => goStep(2)} />
+        : <Step4 onNext={handleFinalSubmit} onBack={() => goStep(3)} onSkip={handleFinalSubmit} />
       }
     </div>
   );
@@ -491,7 +528,18 @@ const LoginView = ({ onShowReg }) => {
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
   const [showError, setShowError] = useState(false);
-  const tryLogin = () => { navigate('/dashboard'); };
+  const { setAuth } = useStore();
+  const tryLogin = async () => {
+  try {
+    const email = document.getElementById('log-email').value;
+    const password = document.getElementById('log-pass').value;
+    const res = await api.post('/auth/login', { email, password });
+    setAuth(res.data.user, res.data.accessToken);
+    navigate('/dashboard');
+  } catch (err) {
+    setShowError(true);
+  }
+};
   return (
     <div className="form-anim">
       <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Welcome back</div>
