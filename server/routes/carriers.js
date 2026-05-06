@@ -57,8 +57,9 @@ router.post('/connect', authMiddleware, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Carrier not found' });
     }
 
+    const businessId = req.user.business?._id || req.user.business;
     const existing = carrier.credentials.find(
-      c => c.business.toString() === req.user.business.toString()
+      c => c.business.toString() === businessId.toString()
     );
 
     if (existing) {
@@ -68,7 +69,7 @@ router.post('/connect', authMiddleware, async (req, res) => {
       existing.isConnected = true;
     } else {
       carrier.credentials.push({
-        business:    req.user.business,
+        business:    businessId,
         apiKey,
         apiSecret,
         accountId,

@@ -5,7 +5,7 @@ export const globalStyles = `
 
   body {
     background-color: #0A0B0D;
-    color: #EEF2F6;
+    color: var(--mv-text);
     font-family: 'Barlow', sans-serif;
     font-weight: 400;
     font-size: 15px;
@@ -20,6 +20,6 @@ export const globalStyles = `
   }
 
   ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #111318; }
-  ::-webkit-scrollbar-thumb { background: #22272F; border-radius: 3px; }
+  ::-webkit-scrollbar-track { background: var(--mv-card); }
+  ::-webkit-scrollbar-thumb { background: var(--mv-border-2); border-radius: 3px; }
 `;

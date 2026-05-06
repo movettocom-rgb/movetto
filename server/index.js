@@ -4,15 +4,18 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
 require('dotenv').config();
 
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174'];
+app.use(cors({ origin: (origin, cb) => cb(null, allowedOrigins.includes(origin) || !origin), credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
 
 try {
   const authRoute = require('./routes/auth');
@@ -46,9 +49,6 @@ try {
 
 app.get('/', (req, res) => {
   res.json({ status: 'Movetto API running' });
-});
-app.get('/test', (req, res) => {
-  res.json({ success: true, message: 'Server is responding' });
 });
 
 mongoose.connect(process.env.MONGO_URI)

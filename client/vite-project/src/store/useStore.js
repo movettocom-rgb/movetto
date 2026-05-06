@@ -4,6 +4,7 @@ const useStore = create((set) => ({
   user:     null,
   token:    localStorage.getItem('accessToken') || null,
   isLoaded: false,
+  themeMode: localStorage.getItem('themeMode') || 'dark',
 
   setAuth: (user, token) => {
     localStorage.setItem('accessToken', token);
@@ -17,6 +18,15 @@ const useStore = create((set) => ({
 
   setUser:   (user) => set({ user }),
   setLoaded: ()     => set({ isLoaded: true }),
+  setThemeMode: (themeMode) => {
+    localStorage.setItem('themeMode', themeMode);
+    set({ themeMode });
+  },
+  toggleThemeMode: () => set((state) => {
+    const themeMode = state.themeMode === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('themeMode', themeMode);
+    return { themeMode };
+  }),
 }));
 
 export default useStore;

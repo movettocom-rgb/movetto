@@ -4,7 +4,7 @@ import Topbar from './Topbar';
 
 export default function Shell() {
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0A0B0D' }}>
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--mv-bg)' }}>
       <Sidebar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Topbar />

@@ -11,18 +11,18 @@ export const colors = {
 
   // Surfaces
   void:   '#0A0B0D',
-  carbon: '#111318',
-  slate:  '#181C22',
-  rule:   '#22272F',
-  rule2:  '#2D3440',
-  smoke:  '#3D4655',
+  carbon: 'var(--mv-card)',
+  slate:  'var(--mv-border)',
+  rule:   'var(--mv-border-2)',
+  rule2:  'var(--mv-border-2)',
+  smoke:  'var(--mv-dimmer)',
 
   // Text
-  white:  '#EEF2F6',
-  paper:  '#D8E0E8',
-  fog:    '#B0BCCC',
-  steel:  '#8494A8',
-  ash:    '#5A6478',
+  white:  'var(--mv-text)',
+  paper:  'var(--mv-paper)',
+  fog:    'var(--mv-muted)',
+  steel:  'var(--mv-muted)',
+  ash:    'var(--mv-dim)',
 };
 
 export const fonts = {

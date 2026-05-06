@@ -23,6 +23,11 @@ router.post('/', authMiddleware, async (req, res) => {
       internalNotes,
     } = req.body;
 
+    const businessId = req.user.business?._id || req.user.business;
+    if (!businessId) {
+      return res.status(400).json({ success: false, message: 'No business linked to this account' });
+    }
+
     console.log('Step 2 - Body destructured');
 
     if (!originPincode || !destPincode || !receiverName || !receiverPhone || !destAddress || !weight) {
@@ -32,7 +37,7 @@ router.post('/', authMiddleware, async (req, res) => {
     console.log('Step 3 - Validation passed');
 
     const shipment = new Shipment({
-      business:    req.user.business,
+      business:    businessId,
       bookedBy:    req.user._id,
       carrierName: carrierName || 'Delhivery',
       origin: {
@@ -80,7 +85,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
     console.log('Step 5 - Saved to DB:', shipment.trackingId);
 
-    await Business.findByIdAndUpdate(req.user.business, {
+    await Business.findByIdAndUpdate(businessId, {
       $inc: { shipmentCount: 1 }
     });
 
@@ -103,7 +108,7 @@ router.get('/', authMiddleware, async (req, res) => {
   try {
     const { status, carrier, page = 1, limit = 20, startDate, endDate } = req.query;
 
-    const filter = { business: req.user.business };
+    const filter = { business: req.user.business?._id || req.user.business };
     if (status)  filter.status = status.toUpperCase();
     if (carrier) filter.carrierName = new RegExp(carrier, 'i');
     if (startDate || endDate) {
@@ -142,7 +147,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const shipment = await Shipment.findOne({
       _id:      req.params.id,
-      business: req.user.business,
+      business: req.user.business?._id || req.user.business,
     }).populate('bookedBy', 'name email');
 
     if (!shipment) {
@@ -162,7 +167,7 @@ router.put('/:id/cancel', authMiddleware, async (req, res) => {
   try {
     const shipment = await Shipment.findOne({
       _id:      req.params.id,
-      business: req.user.business,
+      business: req.user.business?._id || req.user.business,
     });
 
     if (!shipment) {
@@ -199,3 +204,56 @@ router.put('/:id/cancel', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+// PUT /shipments/:id/status — manually update status (for testing)
+router.put('/:id/status', authMiddleware, async (req, res) => {
+  try {
+    const { status, location, note } = req.body;
+
+    const validStatuses = [
+      'BOOKED', 'LABEL_GENERATED', 'PICKED_UP',
+      'IN_TRANSIT', 'OUT_FOR_DELIVERY', 'DELIVERED',
+      'DELIVERY_FAILED', 'RTO_INITIATED', 'RTO_DELIVERED', 'CANCELLED'
+    ];
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    const shipment = await Shipment.findOne({
+      _id:      req.params.id,
+      business: req.user.business,
+    });
+
+    if (!shipment) {
+      return res.status(404).json({ success: false, message: 'Shipment not found' });
+    }
+
+    shipment.status = status;
+    shipment.timeline.push({
+      status,
+      location:  location || '',
+      timestamp: new Date(),
+      note:      note || `Status updated to ${status}`,
+    });
+
+    if (status === 'DELIVERED') {
+      shipment.actualDelivery = new Date();
+    }
+
+    await shipment.save();
+
+    return res.json({
+      success:  true,
+      message:  `Status updated to ${status}`,
+      shipment,
+    });
+
+  } catch (err) {
+    console.error('Status update error:', err.message);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});

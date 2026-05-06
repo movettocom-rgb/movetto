@@ -1,22 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useStore from '../store/useStore';
 
 export default function LandingPage() {
   const [activePlan, setActivePlan] = useState("Growth");
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const themeMode = useStore((s) => s.themeMode);
+  const toggleThemeMode = useStore((s) => s.toggleThemeMode);
   const navigate = useNavigate();
 
-  const isDark = isDarkMode;
+  const isDark = themeMode === 'dark';
 
   const c = {
     bg:            isDark ? "#0A0B0D" : "#FFFFFF",
-    bg2:           isDark ? "#0D0F13" : "#F8FAFC",
-    bg3:           isDark ? "#111318" : "#F1F5F9",
-    border:        isDark ? "#181C22" : "#E2E8F0",
-    border2:       isDark ? "#22272F" : "#CBD5E1",
-    text:          isDark ? "#EEF2F6" : "#0F172A",
-    muted:         isDark ? "#8494A8" : "#475569",
-    dim:           isDark ? "#5A6478" : "#64748B",
+    bg2:           isDark ? "var(--mv-panel)" : "#F8FAFC",
+    bg3:           isDark ? "var(--mv-card)" : "#F1F5F9",
+    border:        isDark ? "var(--mv-border)" : "#E2E8F0",
+    border2:       isDark ? "var(--mv-border-2)" : "#CBD5E1",
+    text:          isDark ? "var(--mv-text)" : "#0F172A",
+    muted:         isDark ? "var(--mv-muted)" : "#475569",
+    dim:           isDark ? "var(--mv-dim)" : "#64748B",
     yellow:        isDark ? "#E8F400" : "#9CA300",
     yellowBtn:     isDark ? "#E8F400" : "#CADD00",
     green:         isDark ? "#00D68A" : "#059669",
@@ -25,7 +27,7 @@ export default function LandingPage() {
     blue:          isDark ? "#4da6ff" : "#2563EB",
     waBg1:         isDark ? "#1a2e1a" : "#D1FAE5",
     waBg2:         isDark ? "#1a2414" : "#ECFDF5",
-    waText:        isDark ? "#D8E0E8" : "#064E3B",
+    waText:        isDark ? "var(--mv-paper)" : "#064E3B",
     waBorder1:     isDark ? "1px solid rgba(0,214,138,0.27)" : "1px solid rgba(5,150,105,0.3)",
     waBorder2:     isDark ? "1px solid rgba(0,214,138,0.13)" : "1px solid rgba(5,150,105,0.2)",
     avatar1:       isDark ? "#1a1a2e" : "#DBEAFE",
@@ -41,15 +43,84 @@ export default function LandingPage() {
   const globalStyles = `
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { margin: 0; background: ${c.bg}; }
+    body { margin: 0; background: ${c.bg}; overflow-x: hidden; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes pulse  { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
     .ticker-anim      { animation: ticker 22s linear infinite; }
     .pulse-anim       { animation: pulse 2s infinite; display: inline-block; }
     .pulse-anim-slow  { animation: pulse 2.5s infinite; display: inline-block; }
-    .nav-link:hover   { color: ${isDark ? "#EEF2F6" : "#0F172A"} !important; }
+    .nav-link:hover   { color: ${isDark ? "var(--mv-text)" : "#0F172A"} !important; }
     .feat-card:hover  { border-color: ${isDark ? "rgba(232,244,0,0.27)" : "rgba(178,188,0,0.4)"} !important; }
     .btn-ghost:hover  { background: ${isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"} !important; }
+    
+    /* Responsive Classes */
+    .nav-container { padding: 0 32px; height: 80px; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-actions { display: flex; gap: 8px; }
+    
+    .hero-section { padding: 72px 32px 0; }
+    .hero-title { font-size: 64px; }
+    .stat-strip { flex-direction: row; margin: 0 -32px; }
+    .stat-item { border-right: 1px solid ${c.border}; border-bottom: none; }
+    .stat-item:last-child { border-right: none; border-bottom: none; }
+    
+    .section-padding { padding: 72px 32px; }
+    .section-padding-bottom-only { padding: 0 32px 72px; }
+    .section-title { font-size: 48px; }
+    
+    .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    .table-container { overflow-x: auto; }
+    .table-header { min-width: 600px; }
+    .table-row { min-width: 600px; }
+    
+    .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    .feats-grid { grid-template-columns: repeat(2, 1fr); }
+    .wa-grid { grid-template-columns: 1fr 1fr; }
+    .pricing-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .testi-grid { grid-template-columns: repeat(2, 1fr); }
+    
+    .footer-container { flex-direction: row; padding: 64px 32px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .cta-title { font-size: 56px; }
+    .cta-buttons { flex-direction: row; }
+
+    @media (max-width: 1024px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
+      .wa-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container { padding: 0 16px; height: 70px; }
+      .nav-links { display: none; }
+      .nav-actions .btn-ghost { display: none; }
+      
+      .hero-section { padding: 40px 16px 0; }
+      .hero-title { font-size: 40px; }
+      .stat-strip { flex-direction: column; margin: 0 -16px; }
+      .stat-item { border-right: none; border-bottom: 1px solid ${c.border}; padding: 20px 0; }
+      
+      .section-padding { padding: 48px 16px; }
+      .section-padding-bottom-only { padding: 0 16px 48px; }
+      .section-title { font-size: 32px; }
+      
+      .feats-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      
+      .footer-container { flex-direction: column; gap: 24px; text-align: center; padding: 40px 16px; }
+      
+      .cta-title { font-size: 36px; }
+      .cta-buttons { flex-direction: column; }
+    }
+    
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .nav-actions button { padding: 8px 16px; font-size: 14px; }
+      .cta-buttons { flex-direction: column; width: 100%; }
+      .cta-buttons button { width: 100%; }
+      .hero-section .cta-buttons button { width: 100%; }
+    }
   `;
 
   /* ── tiny helpers ── */
@@ -76,7 +147,7 @@ export default function LandingPage() {
   );
 
   const SectionH = ({ children, center }) => (
-    <div style={{ fontSize: 48, fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: 16, color: c.text, textAlign: center ? "center" : "left" }}>{children}</div>
+    <div className="section-title" style={{ fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: 16, color: c.text, textAlign: center ? "center" : "left" }}>{children}</div>
   );
 
   const Tag = ({ variant, children }) => {
@@ -217,16 +288,16 @@ export default function LandingPage() {
       <style>{globalStyles}</style>
 
       {/* ─── NAVBAR ─── */}
-      <nav style={{ background: c.navBg, borderBottom: `1px solid ${c.border}`, padding: "0 32px", height: 80, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <nav className="nav-container" style={{ background: c.navBg, borderBottom: `1px solid ${c.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em" }}>MOVE<Y>TTO</Y></div>
-        <div style={{ display: "flex", gap: 36, fontSize: 16, color: c.dim }}>
+        <div className="nav-links" style={{ fontSize: 16, color: c.dim }}>
           {["Product","Carriers","Pricing","Docs"].map(l => (
             <span key={l} className="nav-link" style={{ cursor: "pointer", transition: "color 0.2s", color: c.dim }}>{l}</span>
           ))}
         </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <div className="nav-actions" style={{ alignItems: "center" }}>
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleThemeMode}
             style={{
               background: "transparent",
               border: `1px solid ${c.border2}`,
@@ -244,7 +315,7 @@ export default function LandingPage() {
             className="btn-ghost"
             title="Toggle theme"
           >
-            {isDarkMode ? (
+            {isDark ? (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             ) : (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -256,7 +327,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ─── HERO ─── */}
-      <div style={{ padding: "72px 32px 0", textAlign: "center", position: "relative" }}>
+      <div className="hero-section" style={{ textAlign: "center", position: "relative" }}>
         {/* grid bg */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", overflow: "hidden" }}>
           <svg width="100%" height="100%" style={{ opacity: isDark ? 0.06 : 0.15 }} xmlns="http://www.w3.org/2000/svg">
@@ -275,7 +346,7 @@ export default function LandingPage() {
           </div>
 
           {/* H1 */}
-          <div style={{ fontSize: 64, fontWeight: 900, lineHeight: 0.92, letterSpacing: "-0.03em", marginBottom: 24 }}>
+          <div className="hero-title" style={{ fontWeight: 900, lineHeight: 0.92, letterSpacing: "-0.03em", marginBottom: 24 }}>
             SHIP SMARTER.<br/><Y>EVERY ROUTE.</Y><br/>EVERY CARRIER.
           </div>
 
@@ -283,21 +354,21 @@ export default function LandingPage() {
             India's only booking intelligence platform. Compare rates from 12+ carriers, book in 60 seconds, track everything from one screen.
           </p>
 
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 56 }}>
+          <div className="cta-buttons" style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 56 }}>
             <BtnY onClick={() => navigate('/auth')} style={{ fontSize: 15, padding: "13px 28px" }}>Start free — 5 minutes</BtnY>
             <BtnG onClick={() => navigate('/auth')} style={{ fontSize: 15, padding: "13px 28px" }}>Watch demo →</BtnG>
           </div>
         </div>
 
         {/* stat strip */}
-        <div style={{ display: "flex", borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}`, margin: "0 -32px" }}>
+        <div className="stat-strip" style={{ display: "flex", borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}` }}>
           {[
             { n: <span>₹15L<span style={{ fontSize: 24, color: c.yellow }}>Cr</span></span>, l: "India logistics TAM" },
             { n: <span>63<span style={{ fontSize: 24, color: c.yellow }}>M</span></span>,   l: "MSMEs underserved" },
             { n: <Y>0</Y>,                                                                   l: "Unified tools exist" },
             { n: <span>85<span style={{ fontSize: 24, color: c.yellow }}>%</span></span>,   l: "Target gross margin" },
           ].map((s, i, arr) => (
-            <div key={i} style={{ flex: 1, padding: "28px 0", textAlign: "center", borderRight: i < arr.length - 1 ? `1px solid ${c.border}` : "none" }}>
+            <div key={i} className="stat-item" style={{ flex: 1, padding: "28px 0", textAlign: "center" }}>
               <div style={{ fontSize: 36, fontWeight: 900, lineHeight: 1 }}>{s.n}</div>
               <div style={{ fontSize: 14, color: c.dim, marginTop: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>{s.l}</div>
             </div>
@@ -317,7 +388,7 @@ export default function LandingPage() {
       </div>
 
       {/* ─── DASHBOARD PREVIEW ─── */}
-      <div style={{ padding: "64px 32px 0", background: c.bg }}>
+      <div className="section-padding" style={{ background: c.bg, paddingBottom: 0 }}>
         <div style={{ maxWidth: "1024px", margin: "0 auto", border: `1px solid ${c.border}`, borderBottom: "none", borderRadius: "12px 12px 0 0", background: c.bg2, overflow: "hidden" }}>
           {/* browser chrome */}
           <div style={{ background: c.bg3, borderBottom: `1px solid ${c.border}`, padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -340,7 +411,7 @@ export default function LandingPage() {
             </div>
 
             {/* KPI row */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 20 }}>
+            <div className="kpi-grid" style={{ display: "grid", gap: 14, marginBottom: 20 }}>
               {kpis.map(k => (
                 <div key={k.l} style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8, padding: "20px 18px" }}>
                   <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1, color: k.col }}>{k.n}</div>
@@ -351,12 +422,12 @@ export default function LandingPage() {
             </div>
 
             {/* table */}
-            <div style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8, overflow: "hidden" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", background: c.border, padding: "14px 16px", fontSize: 14, color: c.dim, textTransform: "uppercase", letterSpacing: "0.07em" }}>
+            <div className="table-container" style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8 }}>
+              <div className="table-header" style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", background: c.border, padding: "14px 16px", fontSize: 14, color: c.dim, textTransform: "uppercase", letterSpacing: "0.07em" }}>
                 {["Tracking ID","Route","Carrier","Rate","Status"].map(h => <span key={h}>{h}</span>)}
               </div>
               {shipments.map(r => (
-                <div key={r.id} style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", padding: "18px 16px", borderTop: `1px solid ${c.border}`, fontSize: 14, alignItems: "center" }}>
+                <div key={r.id} className="table-row" style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", padding: "18px 16px", borderTop: `1px solid ${c.border}`, fontSize: 14, alignItems: "center" }}>
                   <span style={{ fontFamily: "monospace", fontSize: 15, color: c.muted }}>{r.id}</span>
                   <span style={{ fontSize: 15, color: c.muted }}>{r.route}</span>
                   <span style={{ fontSize: 15, color: c.text }}>{r.carrier}</span>
@@ -370,12 +441,12 @@ export default function LandingPage() {
       </div>
 
       {/* ─── HOW IT WORKS ─── */}
-      <div style={{ padding: "96px 32px 72px" }}>
+      <div className="section-padding">
         <div style={{ textAlign: "center" }}>
           <Eyebrow>How it works</Eyebrow>
           <SectionH center>Book a shipment<br/>in <Y>3 steps</Y></SectionH>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 1, background: c.border, border: `1px solid ${c.border}`, borderRadius: 12, overflow: "hidden", marginTop: 16 }}>
+        <div className="steps-grid" style={{ display: "grid", gap: 1, background: c.border, border: `1px solid ${c.border}`, borderRadius: 12, overflow: "hidden", marginTop: 16 }}>
           {steps.map(s => (
             <div key={s.n} style={{ background: c.bg2, padding: "40px 32px", position: "relative" }}>
               <div style={{ position: "absolute", top: 0, left: 0, width: 3, height: "100%", background: c.yellow }}/>
@@ -391,13 +462,13 @@ export default function LandingPage() {
       <div style={{ height: 1, background: c.border, margin: "0 32px" }}/>
 
       {/* ─── FEATURES ─── */}
-      <div style={{ padding: "72px 32px" }}>
+      <div className="section-padding">
         <Eyebrow>Features</Eyebrow>
         <SectionH>Built for Indian<br/>ops teams</SectionH>
         <p style={{ fontSize: 18, color: c.muted, maxWidth: 600, lineHeight: 1.7, marginBottom: 40 }}>
           Every feature was designed around how Indian B2B businesses actually work — not how Silicon Valley thinks they work.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 20 }}>
+        <div className="feats-grid" style={{ display: "grid", gap: 20 }}>
           {feats.map(f => (
             <div key={f.title} className="feat-card" style={{ background: c.bg2, border: `1px solid ${c.border}`, borderRadius: 10, padding: 32, position: "relative", overflow: "hidden", transition: "border-color 0.2s" }}>
               <div style={{ width: 48, height: 48, background: c.featBg, border: `1px solid ${isDark ? 'rgba(232,244,0,0.2)' : 'rgba(178,188,0,0.3)'}`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>{f.icon}</div>
@@ -410,7 +481,7 @@ export default function LandingPage() {
       </div>
 
       {/* ─── CARRIERS ─── */}
-      <div style={{ background: c.bg2, borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}`, padding: "64px 32px" }}>
+      <div className="section-padding" style={{ background: c.bg2, borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}` }}>
         <Eyebrow>Carrier network</Eyebrow>
         <SectionH>We integrate everyone.<br/><Y>We prefer nobody.</Y></SectionH>
         <div style={{ fontSize: 18, color: c.muted }}>Pure data. No kickbacks. No exclusives.</div>
@@ -428,16 +499,16 @@ export default function LandingPage() {
       </div>
 
       {/* ─── WHATSAPP ─── */}
-      <div style={{ padding: "72px 32px" }}>
+      <div className="section-padding">
         <Eyebrow>WhatsApp native</Eyebrow>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "center" }}>
+        <div className="wa-grid" style={{ display: "grid", gap: 32, alignItems: "center" }}>
           <div>
             <SectionH>India lives on<br/><Y>WhatsApp.</Y><br/>So does Movetto.</SectionH>
             <p style={{ fontSize: 18, color: c.muted, lineHeight: 1.7, marginBottom: 28 }}>
               Every business owner in India manages operations on WhatsApp. Movetto integrates directly — book, track, and alert customers without opening a dashboard.
             </p>
             {["Send shipment requests via WhatsApp","Auto-notify customers on delivery","Share invoices directly in chat"].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: isDark ? "#D8E0E8" : c.text, marginBottom: 12 }}>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: isDark ? "var(--mv-paper)" : c.text, marginBottom: 12 }}>
                 <span style={{ color: c.green, fontSize: 20 }}>✓</span> {item}
               </div>
             ))}
@@ -468,13 +539,14 @@ export default function LandingPage() {
       <div style={{ height: 1, background: c.border, margin: "0 32px" }}/>
 
       {/* ─── PRICING ─── */}
-      <div style={{ padding: "72px 32px" }}>
+      <div className="section-padding">
         <div style={{ textAlign: "center" }}>
           <Eyebrow>Pricing</Eyebrow>
           <SectionH center>Three tiers.<br/><Y>Real numbers.</Y></SectionH>
           <p style={{ fontSize: 18, color: c.muted, marginBottom: 0 }}>No sales calls. No 6-month procurement. Live in 10 minutes.</p>
         </div>
         <div 
+          className="pricing-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginTop: 48 }}
           onMouseLeave={() => setActivePlan("Growth")}
         >
@@ -492,7 +564,7 @@ export default function LandingPage() {
               <div style={{ fontSize: 16, color: c.dim }}>{p.cycle}</div>
               <div style={{ fontSize: 15, color: c.dim, marginTop: 10, marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${c.border}` }}>{p.target}</div>
               {p.features.map(f => (
-                <div key={f} style={{ fontSize: 15, color: "#B0BCCC", padding: "8px 0", borderBottom: `1px solid ${c.bg2}`, display: "flex", alignItems: "center", gap: 10 }}>
+                <div key={f} style={{ fontSize: 15, color: "var(--mv-muted)", padding: "8px 0", borderBottom: `1px solid ${c.bg2}`, display: "flex", alignItems: "center", gap: 10 }}>
                   <span style={{ color: c.green, fontSize: 16, flexShrink: 0 }}>✓</span>{f}
                 </div>
               ))}
@@ -506,13 +578,13 @@ export default function LandingPage() {
       </div>
 
       {/* ─── TESTIMONIALS ─── */}
-      <div style={{ padding: "0 32px 72px" }}>
+      <div className="section-padding-bottom-only">
         <Eyebrow>Social proof</Eyebrow>
         <SectionH>What operators say</SectionH>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 20, marginTop: 24 }}>
+        <div className="testi-grid" style={{ display: "grid", gap: 20, marginTop: 24 }}>
           {testimonials.map(t => (
             <div key={t.name} style={{ background: c.bg2, border: `1px solid ${c.border}`, borderRadius: 12, padding: 32 }}>
-              <p style={{ fontSize: 18, color: isDark ? "#D8E0E8" : c.text, lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>"{t.quote}"</p>
+              <p style={{ fontSize: 18, color: isDark ? "var(--mv-paper)" : c.text, lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>"{t.quote}"</p>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                 <div style={{ width: 48, height: 48, borderRadius: "50%", background: t.avatarBg, color: t.avatarCol, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, flexShrink: 0 }}>{t.initials}</div>
                 <div>
@@ -526,22 +598,22 @@ export default function LandingPage() {
       </div>
 
       {/* ─── CTA ─── */}
-      <div style={{ background: c.bg2, borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}`, padding: "80px 32px", textAlign: "center" }}>
-        <div style={{ fontSize: 56, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 24 }}>
+      <div className="section-padding" style={{ background: c.bg2, borderTop: `1px solid ${c.border}`, borderBottom: `1px solid ${c.border}`, textAlign: "center" }}>
+        <div className="cta-title" style={{ fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 24 }}>
           Stop shipping on<br/><Y>WhatsApp and prayers.</Y>
         </div>
         <p style={{ fontSize: 18, color: c.muted, marginBottom: 40 }}>Join 100+ Indian businesses. No credit card needed. Live in 5 minutes.</p>
-        <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+        <div className="cta-buttons" style={{ display: "flex", gap: 16, justifyContent: "center" }}>
           <BtnY onClick={() => navigate('/auth')} style={{ fontSize: 18, padding: "16px 36px" }}>Create free account →</BtnY>
           <BtnG onClick={() => navigate('/auth')} style={{ fontSize: 18, padding: "16px 36px" }}>Talk to us</BtnG>
         </div>
       </div>
 
       {/* ─── FOOTER ─── */}
-      <footer style={{ padding: "64px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${c.border}` }}>
+      <footer className="footer-container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${c.border}` }}>
         <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em" }}>MOVE<Y>.</Y>TTO</div>
-        <div style={{ fontSize: 14, color: "#3D4655" }}>© 2025 Movetto Technologies Pvt Ltd</div>
-        <div style={{ display: "flex", gap: 24, fontSize: 16, color: c.dim }}>
+        <div style={{ fontSize: 14, color: "var(--mv-dimmer)" }}>© 2025 Movetto Technologies Pvt Ltd</div>
+        <div className="footer-links" style={{ display: "flex", gap: 24, fontSize: 16, color: c.dim }}>
           {["Privacy","Terms","Carriers","API Docs","Support"].map(l => <span key={l} style={{ cursor: "pointer" }}>{l}</span>)}
         </div>
       </footer>
