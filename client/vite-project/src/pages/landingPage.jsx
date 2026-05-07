@@ -115,8 +115,19 @@ export default function LandingPage() {
     }
     
     @media (max-width: 480px) {
+      .nav-container { padding: 0 12px; }
+      .nav-logo { font-size: 22px !important; }
+      .nav-actions .btn-yellow, .nav-actions .btn-ghost { padding: 8px 12px !important; font-size: 13px !important; }
+      .nav-actions .theme-toggle { width: 36px !important; height: 36px !important; padding: 0 !important; margin-right: 4px !important; }
+      
+      .hero-title { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .section-subtitle { font-size: 15px !important; }
+      
+      .pricing-grid > div { padding: 20px !important; }
+      .pricing-grid .pricing-price { font-size: 36px !important; }
+      
       .kpi-grid { grid-template-columns: 1fr; }
-      .nav-actions button { padding: 8px 16px; font-size: 14px; }
       .cta-buttons { flex-direction: column; width: 100%; }
       .cta-buttons button { width: 100%; }
       .hero-section .cta-buttons button { width: 100%; }
@@ -126,16 +137,16 @@ export default function LandingPage() {
   /* ── tiny helpers ── */
   const Y = ({ children }) => <span style={{ color: c.yellow }}>{children}</span>;
 
-  const BtnY = ({ children, style = {}, onClick }) => (
-    <button onClick={onClick} style={{
+  const BtnY = ({ children, style = {}, onClick, className = "" }) => (
+    <button onClick={onClick} className={`btn-yellow ${className}`} style={{
       background: c.yellowBtn, color: "#0A0B0D", border: "none",
       padding: "9px 20px", borderRadius: 6, fontSize: 13, fontWeight: 800,
       cursor: "pointer", letterSpacing: "0.02em", ...style,
     }}>{children}</button>
   );
 
-  const BtnG = ({ children, style = {}, onClick }) => (
-    <button onClick={onClick} className="btn-ghost" style={{
+  const BtnG = ({ children, style = {}, onClick, className = "" }) => (
+    <button onClick={onClick} className={`btn-ghost ${className}`} style={{
       background: "transparent", color: c.text, border: `1px solid ${c.border2}`,
       padding: "9px 20px", borderRadius: 6, fontSize: 13, cursor: "pointer",
       transition: "background 0.2s", ...style,
@@ -289,7 +300,7 @@ export default function LandingPage() {
 
       {/* ─── NAVBAR ─── */}
       <nav className="nav-container" style={{ background: c.navBg, borderBottom: `1px solid ${c.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em" }}>MOVE<Y>TTO</Y></div>
+        <div className="nav-logo" style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em" }}>MOVE<Y>TTO</Y></div>
         <div className="nav-links" style={{ fontSize: 16, color: c.dim }}>
           {["Product","Carriers","Pricing","Docs"].map(l => (
             <span key={l} className="nav-link" style={{ cursor: "pointer", transition: "color 0.2s", color: c.dim }}>{l}</span>
@@ -312,7 +323,7 @@ export default function LandingPage() {
               marginRight: "8px",
               transition: "background 0.2s"
             }}
-            className="btn-ghost"
+            className="btn-ghost theme-toggle"
             title="Toggle theme"
           >
             {isDark ? (
@@ -350,7 +361,7 @@ export default function LandingPage() {
             SHIP SMARTER.<br/><Y>EVERY ROUTE.</Y><br/>EVERY CARRIER.
           </div>
 
-          <p style={{ fontSize: 16, color: c.muted, maxWidth: 440, margin: "0 auto 36px", lineHeight: 1.7 }}>
+          <p className="section-subtitle" style={{ fontSize: 16, color: c.muted, maxWidth: 440, margin: "0 auto 36px", lineHeight: 1.7 }}>
             India's only booking intelligence platform. Compare rates from 12+ carriers, book in 60 seconds, track everything from one screen.
           </p>
 
@@ -465,7 +476,7 @@ export default function LandingPage() {
       <div className="section-padding">
         <Eyebrow>Features</Eyebrow>
         <SectionH>Built for Indian<br/>ops teams</SectionH>
-        <p style={{ fontSize: 18, color: c.muted, maxWidth: 600, lineHeight: 1.7, marginBottom: 40 }}>
+        <p className="section-subtitle" style={{ fontSize: 18, color: c.muted, maxWidth: 600, lineHeight: 1.7, marginBottom: 40 }}>
           Every feature was designed around how Indian B2B businesses actually work — not how Silicon Valley thinks they work.
         </p>
         <div className="feats-grid" style={{ display: "grid", gap: 20 }}>
@@ -504,7 +515,7 @@ export default function LandingPage() {
         <div className="wa-grid" style={{ display: "grid", gap: 32, alignItems: "center" }}>
           <div>
             <SectionH>India lives on<br/><Y>WhatsApp.</Y><br/>So does Movetto.</SectionH>
-            <p style={{ fontSize: 18, color: c.muted, lineHeight: 1.7, marginBottom: 28 }}>
+            <p className="section-subtitle" style={{ fontSize: 18, color: c.muted, lineHeight: 1.7, marginBottom: 28 }}>
               Every business owner in India manages operations on WhatsApp. Movetto integrates directly — book, track, and alert customers without opening a dashboard.
             </p>
             {["Send shipment requests via WhatsApp","Auto-notify customers on delivery","Share invoices directly in chat"].map(item => (
@@ -543,11 +554,11 @@ export default function LandingPage() {
         <div style={{ textAlign: "center" }}>
           <Eyebrow>Pricing</Eyebrow>
           <SectionH center>Three tiers.<br/><Y>Real numbers.</Y></SectionH>
-          <p style={{ fontSize: 18, color: c.muted, marginBottom: 0 }}>No sales calls. No 6-month procurement. Live in 10 minutes.</p>
+          <p className="section-subtitle" style={{ fontSize: 18, color: c.muted, marginBottom: 0 }}>No sales calls. No 6-month procurement. Live in 10 minutes.</p>
         </div>
         <div 
           className="pricing-grid"
-          style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginTop: 48 }}
+          style={{ display: "grid", marginTop: 48 }}
           onMouseLeave={() => setActivePlan("Growth")}
         >
           {plans.map(p => {
@@ -560,7 +571,7 @@ export default function LandingPage() {
             >
               {p.badge && <div style={{ background: c.yellow, color: c.bg, fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 4, letterSpacing: "0.06em", display: "inline-block", marginBottom: 16, opacity: isFeatured ? 1 : 0.5, transition: "opacity 0.3s ease" }}>{p.badge}</div>}
               <div style={{ fontSize: 16, fontWeight: 700, color: isFeatured ? c.yellow : c.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12, transition: "color 0.3s ease" }}>{p.name}</div>
-              <div style={{ fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 8, color: isFeatured ? c.yellow : c.text, transition: "color 0.3s ease" }}>{p.price}</div>
+              <div className="pricing-price" style={{ fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 8, color: isFeatured ? c.yellow : c.text, transition: "color 0.3s ease" }}>{p.price}</div>
               <div style={{ fontSize: 16, color: c.dim }}>{p.cycle}</div>
               <div style={{ fontSize: 15, color: c.dim, marginTop: 10, marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${c.border}` }}>{p.target}</div>
               {p.features.map(f => (
@@ -602,7 +613,7 @@ export default function LandingPage() {
         <div className="cta-title" style={{ fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 24 }}>
           Stop shipping on<br/><Y>WhatsApp and prayers.</Y>
         </div>
-        <p style={{ fontSize: 18, color: c.muted, marginBottom: 40 }}>Join 100+ Indian businesses. No credit card needed. Live in 5 minutes.</p>
+        <p className="section-subtitle" style={{ fontSize: 18, color: c.muted, marginBottom: 40 }}>Join 100+ Indian businesses. No credit card needed. Live in 5 minutes.</p>
         <div className="cta-buttons" style={{ display: "flex", gap: 16, justifyContent: "center" }}>
           <BtnY onClick={() => navigate('/auth')} style={{ fontSize: 18, padding: "16px 36px" }}>Create free account →</BtnY>
           <BtnG onClick={() => navigate('/auth')} style={{ fontSize: 18, padding: "16px 36px" }}>Talk to us</BtnG>

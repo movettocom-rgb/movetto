@@ -77,6 +77,21 @@ const GlobalStyles = () => (
       border-top-color: #E8F400; border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
     }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      
+      .main-content-pad { padding: 16px 12px !important; }
+      .usage-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+      .plans-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+      .plan-card { padding: 24px 16px !important; }
+      
+      .tbl-container { overflow-x: auto; }
+      .invoice-header { min-width: 500px; }
+      .invoice-row { min-width: 500px; }
+    }
   `}</style>
 );
 
@@ -361,21 +376,21 @@ export default function Billing() {
             <GlobalStyles />
 
             {/* Header */}
-            <div style={{ background: C.panel, borderBottom: `1px solid ${C.border}`, padding: "0 32px", height: 58, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div className="header-container" style={{ background: C.panel, borderBottom: `1px solid ${C.border}`, padding: "0 32px", height: 58, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     <div
                         onClick={() => navigate("/dashboard")}
                         style={{ display: "flex", alignItems: "center", gap: 8, color: C.dim, cursor: "pointer", fontSize: 13 }}
                     >
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.4" strokeLinecap="round" /></svg>
-                        Dashboard
+                        <span className="header-dash-text">Dashboard</span>
                     </div>
                     <div style={{ width: 1, height: 16, background: C.border }} />
-                    <div style={{ fontSize: 14, fontWeight: 700 }}>Billing & plans</div>
+                    <div className="header-title" style={{ fontSize: 14, fontWeight: 700 }}>Billing & plans</div>
                 </div>
             </div>
 
-            <div style={{ maxWidth: 960, margin: "0 auto", padding: "32px 24px" }}>
+            <div className="main-content-pad" style={{ maxWidth: 960, margin: "0 auto", padding: "32px 24px" }}>
 
                 {/* Trial banner */}
                 {isOnTrial && trialDaysLeft > 0 && (
@@ -401,7 +416,7 @@ export default function Billing() {
                 )}
 
                 {/* Current plan + usage */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
+            <div className="usage-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
                     <div style={{ background: C.card, border: `1px solid ${C.green}33`, borderRadius: 12, padding: 20 }}>
                         <div style={{ fontSize: 11, color: C.dim, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.09em" }}>Current plan</div>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
@@ -454,7 +469,7 @@ export default function Billing() {
                     Upgrade or downgrade anytime. Changes take effect immediately.
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 28 }}>
+            <div className="plans-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 28 }}>
                     {PLANS.map(plan => (
                         <div
                             key={plan.key}
@@ -536,7 +551,8 @@ export default function Billing() {
                             Download all
                         </button>
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", padding: "10px 16px", fontSize: 10, color: C.dim, textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: `1px solid ${C.border}` }}>
+                <div className="tbl-container">
+                    <div className="invoice-header" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", padding: "10px 16px", fontSize: 10, color: C.dim, textTransform: "uppercase", letterSpacing: "0.08em", borderBottom: `1px solid ${C.border}` }}>
                         <span>Invoice ID</span><span>Date</span><span>Plan</span><span>Amount</span>
                     </div>
                     {MOCK_INVOICES.map((inv, i) => (
@@ -560,6 +576,7 @@ export default function Billing() {
                             </div>
                         </div>
                     ))}
+                </div>
                 </div>
 
                 {/* Razorpay note */}

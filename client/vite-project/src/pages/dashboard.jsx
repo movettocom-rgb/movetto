@@ -57,6 +57,8 @@ const GlobalStyles = () => (
       padding:9px 16px; border-radius:6px; font-size:14px; cursor:pointer;
       border:1px solid var(--mv-border); background:transparent; color:var(--mv-dim);
       font-family:'Sora',sans-serif; transition:all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .period-btn:hover { color:var(--mv-text); border-color:var(--mv-border-2); }
     .period-btn.active { background:#E8F40015; border-color:#E8F40050; color:#E8F400; }
@@ -97,7 +99,8 @@ const GlobalStyles = () => (
     .hamburger { display: none; background: transparent; border: none; color: var(--mv-text); font-size: 24px; cursor: pointer; margin-right: 12px; padding: 4px; }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; }
     .hide-mobile { display: flex; }
-    .period-filters { display: flex; flex-wrap: wrap; gap: 10px; }
+    .period-filters { display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .period-filters::-webkit-scrollbar { display: none; }
     .dashboard-content-pad { padding: 32px 36px; overflow-y: auto; flex: 1; }
 
     @media (max-width: 1024px) {
@@ -126,10 +129,14 @@ const GlobalStyles = () => (
     @media (max-width: 480px) {
       .kpi-grid { grid-template-columns: 1fr; }
       .quick-actions-grid { grid-template-columns: 1fr; }
-      .topbar-greeting { font-size: 14px !important; }
-      .topbar-date { font-size: 11px !important; }
+      .topbar { padding: 0 12px; }
+      .hamburger { margin-right: 8px; font-size: 20px; }
+      .topbar-greeting { font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+      .topbar-date { display: none; }
       .period-filters { gap: 6px; }
       .period-btn { padding: 6px 10px; font-size: 12px; }
+      .book-btn { padding: 6px 10px !important; font-size: 12px !important; }
+      .hide-mobile-text { display: none; }
     }
   `}</style>
 );
@@ -415,9 +422,9 @@ const Topbar = ({ showNotifs, setShowNotifs, onBook, user, toggleSidebar }) => {
 
   return (
     <div className="topbar">
-      <div style={{display:"flex", alignItems:"center"}}>
+      <div style={{display:"flex", alignItems:"center", minWidth: 0}}>
         <button className="hamburger" onClick={toggleSidebar}>☰</button>
-        <div>
+        <div style={{minWidth: 0}}>
           <div className="topbar-greeting" style={{fontSize:15, fontWeight:700}}>{greeting}, {firstName} 👋</div>
           <div className="topbar-date" style={{fontSize:12, color:C.dim, marginTop:2}}>{dateStr}</div>
         </div>
@@ -439,7 +446,7 @@ const Topbar = ({ showNotifs, setShowNotifs, onBook, user, toggleSidebar }) => {
           onClick={onBook}
           style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"9px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"'Sora',sans-serif"}}
         >
-          + Book shipment
+          + Book<span className="hide-mobile-text"> shipment</span>
         </button>
       </div>
     </div>
@@ -847,7 +854,7 @@ const DashboardContent = ({ summary, loading, recentShipments, carrierStats, car
 
             {/* Period filter */}
             <div className="period-filters" style={{ marginBottom: 24 }}>
-                <span style={{ fontSize: 14, color: C.dim, marginRight: 6, alignSelf: "center" }}>Period:</span>
+                <span style={{ fontSize: 14, color: C.dim, marginRight: 6, alignSelf: "center", flexShrink: 0 }}>Period:</span>
                 {periods.map(p => (
                     <button
                         key={p.key}

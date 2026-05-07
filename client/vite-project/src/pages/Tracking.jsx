@@ -26,8 +26,8 @@ const GlobalStyles = () => (
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .track-inp {
       flex: 1; background: var(--mv-panel); border: 1px solid var(--mv-border);
-      border-radius: 10px 0 0 10px; padding: 14px 18px;
-      font-size: 15px; color: var(--mv-text); outline: none;
+      border-radius: 10px 0 0 10px; padding: 12px 16px;
+      font-size: 14px; color: var(--mv-text); outline: none;
       font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;
       transition: border-color 0.2s;
     }
@@ -35,7 +35,7 @@ const GlobalStyles = () => (
     .track-inp::placeholder { color: var(--mv-dimmer); font-family: 'Sora', sans-serif; letter-spacing: 0; }
     .track-btn {
       background: #E8F400; color: #0A0B0D; border: none;
-      padding: 14px 28px; border-radius: 0 10px 10px 0;
+      padding: 12px 24px; border-radius: 0 10px 10px 0;
       font-size: 14px; font-weight: 700; cursor: pointer;
       font-family: 'Sora', sans-serif; transition: opacity 0.2s;
       white-space: nowrap;
@@ -66,6 +66,17 @@ const GlobalStyles = () => (
       background: var(--mv-card); margin-bottom: 8px;
     }
     .recent-item:hover { border-color: var(--mv-border-2); background: var(--mv-card-hover); }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      .book-btn { padding: 6px 10px !important; font-size: 12px !important; }
+      .hide-mobile-text { display: none; }
+      .main-content-pad { padding: 24px 16px !important; }
+      .track-inp { padding: 10px 12px !important; font-size: 13px !important; }
+      .track-btn { padding: 10px 16px !important; font-size: 13px !important; }
+    }
   `}</style>
 );
 
@@ -419,27 +430,28 @@ const [query, setQuery] = useState(search.get("id") || "");
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+      <div className="header-container" style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:16}}>
           <div
             onClick={() => navigate("/dashboard")}
             style={{display:"flex", alignItems:"center", gap:8, color:C.dim, cursor:"pointer", fontSize:13}}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.4" strokeLinecap="round"/></svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:16, background:C.border}}/>
-          <div style={{fontSize:14, fontWeight:700}}>Track shipment</div>
+          <div className="header-title" style={{fontSize:14, fontWeight:700}}>Track shipment</div>
         </div>
         <button
+          className="book-btn"
           onClick={() => navigate("/book")}
           style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
         >
-          + Book shipment
+          + Book<span className="hide-mobile-text"> shipment</span>
         </button>
       </div>
 
-      <div style={{maxWidth:760, margin:"0 auto", padding:"32px 24px"}}>
+      <div className="main-content-pad" style={{maxWidth:760, margin:"0 auto", padding:"32px 24px"}}>
 
         {/* Search bar */}
         <div style={{marginBottom:32}}>

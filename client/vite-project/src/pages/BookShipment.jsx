@@ -81,6 +81,20 @@ const GlobalStyles = () => (
       border-top-color: #E8F400; border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
     }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; height: 60px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 16px !important; }
+      .header-status { display: none; }
+      
+      .main-content-pad { padding: 24px 12px !important; }
+
+      .step-dot { width: 22px !important; height: 22px !important; font-size: 10px !important; }
+      .step-label { font-size: 10px !important; white-space: normal !important; line-height: 1.2; text-align: left; }
+      .step-item { gap: 4px !important; }
+      .step-line { margin: 0 4px !important; }
+    }
   `}</style>
 );
 
@@ -91,16 +105,16 @@ const StepBar = ({ step }) => {
     <div style={{display:"flex", alignItems:"center", gap:0, marginBottom:32}}>
       {steps.map((s, i) => (
         <div key={i} style={{display:"flex", alignItems:"center", flex: i < steps.length - 1 ? 1 : "none"}}>
-          <div style={{display:"flex", alignItems:"center", gap:10}}>
+          <div className="step-item" style={{display:"flex", alignItems:"center", gap:10}}>
             <div className={`step-dot ${i + 1 < step ? "done" : i + 1 === step ? "active" : "inactive"}`}>
               {i + 1 < step ? "✓" : i + 1}
             </div>
-            <span style={{fontSize:14, color: i + 1 === step ? C.text : C.dim, fontWeight: i + 1 === step ? 600 : 400, whiteSpace:"nowrap"}}>
+            <span className="step-label" style={{fontSize:14, color: i + 1 === step ? C.text : C.dim, fontWeight: i + 1 === step ? 600 : 400, whiteSpace:"nowrap"}}>
               {s}
             </span>
           </div>
           {i < steps.length - 1 && (
-            <div style={{flex:1, height:1, background: i + 1 < step ? C.green : C.border, margin:"0 16px"}}/>
+            <div className="step-line" style={{flex:1, height:1, background: i + 1 < step ? C.green : C.border, margin:"0 16px"}}/>
           )}
         </div>
       ))}
@@ -554,26 +568,26 @@ export default function BookShipment() {
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:76, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+      <div className="header-container" style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:76, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:16}}>
           <div
             onClick={() => navigate("/dashboard")}
             style={{display:"flex", alignItems:"center", gap:10, color:C.dim, cursor:"pointer", fontSize:15, transition:"color 0.2s"}}
           >
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.5" strokeLinecap="round"/></svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:20, background:C.border}}/>
-          <div style={{fontSize:18, fontWeight:700}}>Book shipment</div>
+          <div className="header-title" style={{fontSize:18, fontWeight:700}}>Book shipment</div>
         </div>
-        <div style={{fontSize:14, color:C.dim}}>
+        <div className="header-status" style={{fontSize:14, color:C.dim}}>
           <span className="pulse-dot" style={{display:"inline-block", width:8, height:8, borderRadius:"50%", background:C.green, marginRight:8, animation:"pulse 2s infinite"}}/>
           Rates updated live
         </div>
       </div>
 
       {/* Content */}
-      <div style={{maxWidth:860, margin:"0 auto", padding:"32px 24px"}}>
+      <div className="main-content-pad" style={{maxWidth:860, margin:"0 auto", padding:"32px 24px"}}>
         {success ? (
           <SuccessScreen
             trackingId={success.trackingId}

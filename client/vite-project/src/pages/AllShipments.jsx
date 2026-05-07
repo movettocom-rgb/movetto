@@ -19,11 +19,19 @@ const GlobalStyles = () => (
     ::-webkit-scrollbar-thumb{background:var(--mv-border-2);border-radius:2px}
     @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .tbl-container { overflow-x: auto; }
+    .tbl-header {
+      display: grid; grid-template-columns: 2fr 1.2fr 0.9fr 0.9fr 0.9fr 1fr;
+      padding: 10px 20px; font-size: 10px; color: var(--mv-dim);
+      text-transform: uppercase; letter-spacing: 0.09em; border-bottom: 1px solid var(--mv-border);
+      min-width: 760px;
+    }
     .tbl-row{
       display:grid; grid-template-columns:2fr 1.2fr 0.9fr 0.9fr 0.9fr 1fr;
       padding:13px 20px; font-size:13px; align-items:center;
       cursor:pointer; transition:background 0.15s;
       border-bottom:1px solid var(--mv-panel);
+      min-width: 760px;
     }
     .tbl-row:hover{background:var(--mv-card-hover)}
     .filter-btn{
@@ -54,6 +62,22 @@ const GlobalStyles = () => (
     .page-btn:hover{color:var(--mv-text);border-color:var(--mv-border-2)}
     .page-btn.active{background:#E8F40015;border-color:#E8F40050;color:#E8F400}
     .page-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      .header-badge { display: none; }
+      .book-btn { padding: 6px 10px !important; font-size: 12px !important; }
+      .export-btn { padding: 6px 10px !important; font-size: 12px !important; }
+      .hide-mobile-text { display: none; }
+      .main-content-pad { padding: 16px 12px !important; }
+      .search-inp { width: 100% !important; }
+      .filters-container { flex-direction: column; align-items: stretch !important; gap: 12px !important; }
+      .status-filters { overflow-x: auto; flex-wrap: nowrap !important; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .status-filters::-webkit-scrollbar { display: none; }
+      .filter-btn { white-space: nowrap; flex-shrink: 0; }
+    }
   `}</style>
 );
 
@@ -170,45 +194,47 @@ export default function AllShipments() {
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 28px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+      <div className="header-container" style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 28px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:16}}>
           <div onClick={() => navigate("/dashboard")} style={{display:"flex", alignItems:"center", gap:8, color:C.dim, cursor:"pointer", fontSize:13}}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.4" strokeLinecap="round"/></svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:16, background:C.border}}/>
-          <div style={{fontSize:14, fontWeight:700}}>All shipments</div>
-          <div style={{fontSize:12, background:C.card, border:`1px solid ${C.border}`, borderRadius:4, padding:"2px 10px", color:C.muted}}>
+          <div className="header-title" style={{fontSize:14, fontWeight:700}}>All shipments</div>
+          <div className="header-badge" style={{fontSize:12, background:C.card, border:`1px solid ${C.border}`, borderRadius:4, padding:"2px 10px", color:C.muted}}>
             {total.toLocaleString()} total
           </div>
         </div>
         <div style={{display:"flex", gap:8}}>
           <button
             onClick={exportCSV}
+            className="export-btn"
             style={{background:"transparent", border:`1px solid ${C.border2}`, borderRadius:6, padding:"7px 14px", fontSize:12, color:C.muted, cursor:"pointer"}}
           >
-            Export CSV
+            Export <span className="hide-mobile-text">CSV</span>
           </button>
           <button
             onClick={() => navigate("/book")}
+            className="book-btn"
             style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
           >
-            + Book shipment
+            + Book<span className="hide-mobile-text"> shipment</span>
           </button>
         </div>
       </div>
 
-      <div style={{padding:"24px 28px"}}>
+      <div className="main-content-pad" style={{padding:"24px 28px"}}>
 
         {/* Filters */}
-        <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:20, flexWrap:"wrap"}}>
+        <div className="filters-container" style={{display:"flex", alignItems:"center", gap:10, marginBottom:20, flexWrap:"wrap"}}>
           <input
             className="search-inp"
             placeholder="Search by carrier, route..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          <div style={{display:"flex", gap:6}}>
+          <div className="status-filters" style={{display:"flex", gap:6}}>
             {STATUS_FILTERS.map(f => (
               <button
                 key={f.key}
@@ -235,7 +261,8 @@ export default function AllShipments() {
 
         {/* Table */}
         <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, overflow:"hidden"}}>
-          <div style={{display:"grid", gridTemplateColumns:"2fr 1.2fr 0.9fr 0.9fr 0.9fr 1fr", padding:"10px 20px", fontSize:10, color:C.dim, textTransform:"uppercase", letterSpacing:"0.09em", borderBottom:`1px solid ${C.border}`}}>
+          <div className="tbl-container">
+            <div className="tbl-header">
             <span>Tracking ID / Route</span>
             <span>Carrier</span>
             <span>Weight</span>
@@ -282,6 +309,7 @@ export default function AllShipments() {
               </div>
             ))
           )}
+          </div>
 
           {/* Pagination */}
           {!loading && shipments.length > 0 && (

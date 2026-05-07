@@ -63,6 +63,30 @@ const GlobalStyles = () => (
       transition: all 0.15s;
     }
     .export-btn:hover { border-color: var(--mv-dim); color: var(--mv-text); }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      .export-btn { padding: 6px 10px !important; font-size: 12px !important; }
+      .hide-mobile-text { display: none; }
+      
+      .main-content-pad { padding: 16px 12px !important; }
+      .page-header { flex-direction: column; align-items: flex-start !important; gap: 12px; }
+      .page-title { font-size: 16px !important; }
+      .page-subtitle { font-size: 12px !important; }
+      
+      .period-filters { width: 100%; overflow-x: auto; justify-content: flex-start !important; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .period-filters::-webkit-scrollbar { display: none; }
+      .period-btn { white-space: nowrap; flex-shrink: 0; padding: 6px 12px !important; font-size: 11px !important; }
+      
+      .kpi-grid { grid-template-columns: 1fr !important; }
+      .delivery-grid { grid-template-columns: 1fr !important; }
+      .charts-grid { grid-template-columns: 1fr !important; }
+      
+      .pie-wrap { flex-direction: column !important; align-items: center !important; }
+      .pie-wrap > div:first-child { width: 160px !important; height: 160px !important; }
+    }
   `}</style>
 );
 
@@ -150,37 +174,37 @@ export default function Analytics() {
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+      <div className="header-container" style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:58, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:16}}>
           <div
             onClick={() => navigate("/dashboard")}
             style={{display:"flex", alignItems:"center", gap:8, color:C.dim, cursor:"pointer", fontSize:13}}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.4" strokeLinecap="round"/></svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:16, background:C.border}}/>
-          <div style={{fontSize:14, fontWeight:700}}>Analytics</div>
+          <div className="header-title" style={{fontSize:14, fontWeight:700}}>Analytics</div>
         </div>
         <div style={{display:"flex", gap:8}}>
-          <button className="export-btn">Export CSV</button>
-          <button className="export-btn">Export PDF</button>
+          <button className="export-btn">Export <span className="hide-mobile-text">CSV</span></button>
+          <button className="export-btn">Export <span className="hide-mobile-text">PDF</span></button>
         </div>
       </div>
 
-      <div style={{maxWidth:1000, margin:"0 auto", padding:"32px 24px"}}>
+      <div className="main-content-pad" style={{maxWidth:1000, margin:"0 auto", padding:"32px 24px"}}>
 
         {/* Period filter */}
-        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:24}}>
+        <div className="page-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:24}}>
           <div>
-            <div style={{fontSize:20, fontWeight:800, marginBottom:4}}>
+            <div className="page-title" style={{fontSize:20, fontWeight:800, marginBottom:4}}>
               Shipping analytics
             </div>
-            <div style={{fontSize:13, color:C.dim}}>
+            <div className="page-subtitle" style={{fontSize:13, color:C.dim}}>
               Your complete logistics performance overview
             </div>
           </div>
-          <div style={{display:"flex", gap:6}}>
+          <div className="period-filters" style={{display:"flex", gap:6}}>
             {periods.map(p => (
               <button
                 key={p.key}
@@ -201,7 +225,7 @@ export default function Analytics() {
         ) : (
           <>
             {/* KPI row */}
-            <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20}}>
+            <div className="kpi-grid" style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20}}>
               {[
                 { label:"Total shipments", val: totalShipments.toLocaleString(),        color:C.blue,   accent:C.blue   },
                 { label:"Total spend",     val: `₹${(totalSpend/100000).toFixed(1)}L`,  color:C.yellow, accent:C.yellow },
@@ -219,7 +243,7 @@ export default function Analytics() {
             </div>
 
             {/* Delivery breakdown */}
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:20}}>
+            <div className="delivery-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:20}}>
               {[
                 { label:"Delivered",  val:delivered,    color:C.green,  bg:"#0d2414" },
                 { label:"RTO",        val:rtoShipments, color:C.red,    bg:"#200808" },
@@ -238,7 +262,7 @@ export default function Analytics() {
             </div>
 
             {/* Charts row */}
-            <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:14}}>
+            <div className="charts-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:14}}>
 
               {/* Carrier shipment count */}
               <div className="ana-card">
@@ -268,7 +292,7 @@ export default function Analytics() {
                 {statusData.length === 0 ? (
                   <EmptyState title="No delivery data yet" sub="Complete shipments to see status breakdown"/>
                 ) : (
-                  <div style={{display:"flex", alignItems:"center", gap:20}}>
+                  <div className="pie-wrap" style={{display:"flex", alignItems:"center", gap:20}}>
                     <div style={{width:150, height:150, flexShrink:0}}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -305,13 +329,14 @@ export default function Analytics() {
               {carrierStats.length === 0 ? (
                 <EmptyState title="No carrier data yet" sub="Book shipments across carriers to see performance comparison"/>
               ) : (
-                <>
-                  <div style={{display:"grid", gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr", padding:"8px 0", fontSize:10, color:C.dim, textTransform:"uppercase", letterSpacing:"0.08em", borderBottom:`1px solid ${C.border}`, marginBottom:4}}>
-                    <span>Carrier</span>
-                    <span>Shipments</span>
-                    <span>Delivered</span>
-                    <span>Total spend</span>
-                    <span>On-time rate</span>
+                <div style={{overflowX: "auto"}}>
+                  <div style={{minWidth: 600}}>
+                  <div style={{display:"flex", padding:"8px 0", fontSize:10, color:C.dim, textTransform:"uppercase", letterSpacing:"0.08em", borderBottom:`1px solid ${C.border}`, marginBottom:4}}>
+                    <span style={{flex:1.5}}>Carrier</span>
+                    <span style={{flex:1}}>Shipments</span>
+                    <span style={{flex:1}}>Delivered</span>
+                    <span style={{flex:1}}>Total spend</span>
+                    <span style={{flex:1}}>On-time rate</span>
                   </div>
                   {carrierStats.map((c, i) => {
                     const rate      = Math.round(c.onTimeRate || 0);
@@ -340,7 +365,8 @@ export default function Analytics() {
                       </div>
                     );
                   })}
-                </>
+                  </div>
+                </div>
               )}
             </div>
 

@@ -70,6 +70,32 @@ const GlobalStyles = () => (
       border-top-color: #E8F400; border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
     }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      .header-status { font-size: 12px !important; }
+      .hide-mobile-text { display: none; }
+      
+      .main-content-pad { padding: 16px 12px !important; }
+      .summary-grid { grid-template-columns: 1fr !important; gap: 12px !important; margin-bottom: 20px !important; }
+      .summary-card { padding: 16px !important; }
+      
+      .filter-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; margin-bottom: 20px !important; }
+      .filter-tabs::-webkit-scrollbar { display: none; }
+      .filter-btn { white-space: nowrap; flex-shrink: 0; padding: 8px 14px !important; font-size: 13px !important; }
+      
+      .carrier-grid { grid-template-columns: 1fr !important; }
+      .carrier-card { padding: 16px !important; }
+      .stat-row { flex-direction: column !important; gap: 8px !important; }
+      .stat-box { padding: 12px 16px !important; }
+      
+      .modal { padding: 20px !important; width: calc(100% - 24px) !important; margin: 12px; }
+      .modal-header { flex-direction: column; align-items: flex-start !important; gap: 12px !important; }
+      .modal-actions { flex-direction: column; gap: 10px; }
+      .modal-actions button { width: 100%; }
+    }
   `}</style>
 );
 
@@ -171,7 +197,7 @@ const ConnectModal = ({ carrier, onClose, onSuccess }) => {
       <div className="modal">
 
         {/* Header */}
-        <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:28}}>
+        <div className="modal-header" style={{display:"flex", alignItems:"center", gap:16, marginBottom:28}}>
           <div style={{
             width:52, height:52, borderRadius:10,
             background:`${carrier.color}18`, border:`1px solid ${carrier.color}33`,
@@ -247,7 +273,7 @@ const ConnectModal = ({ carrier, onClose, onSuccess }) => {
         </div>
 
         {/* Buttons */}
-        <div style={{display:"flex", gap:12}}>
+        <div className="modal-actions" style={{display:"flex", gap:12}}>
           <button
             onClick={onClose}
             style={{background:"transparent", color:C.muted, border:`1px solid ${C.border2}`, padding:"12px 24px", borderRadius:7, fontSize:15, cursor:"pointer", fontFamily:"'Sora',sans-serif"}}
@@ -282,9 +308,9 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
     <div className={`carrier-card${isConnected ? " connected" : ""}`}>
 
       {/* Top row */}
-      <div style={{display:"flex", alignItems:"flex-start", gap:16, marginBottom:20}}>
+      <div style={{display:"flex", alignItems:"flex-start", gap:12, marginBottom:20}}>
         <div style={{
-          width:56, height:56, borderRadius:10, flexShrink:0,
+          width:48, height:48, borderRadius:10, flexShrink:0,
           background:`${carrier.color}18`, border:`1px solid ${carrier.color}33`,
           display:"flex", alignItems:"center", justifyContent:"center",
           fontSize:18, fontWeight:800, color:carrier.color,
@@ -305,7 +331,7 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
       </div>
 
       {/* Stats row */}
-      <div style={{display:"flex", gap:12, marginBottom:20}}>
+      <div className="stat-row" style={{display:"flex", gap:12, marginBottom:20}}>
         <div className="stat-box">
           <div style={{fontSize:13, color:C.dim, marginBottom:4}}>On-time rate</div>
           <div style={{fontSize:20, fontWeight:700, color:rateColor}}>{carrier.onTimeRate}%</div>
@@ -398,26 +424,26 @@ export default function Carriers() {
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:76, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+      <div className="header-container" style={{background:C.panel, borderBottom:`1px solid ${C.border}`, padding:"0 32px", height:76, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
         <div style={{display:"flex", alignItems:"center", gap:16}}>
           <div
             onClick={() => navigate("/dashboard")}
             style={{display:"flex", alignItems:"center", gap:10, color:C.dim, cursor:"pointer", fontSize:15}}
           >
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.5" strokeLinecap="round"/></svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:20, background:C.border}}/>
-          <div style={{fontSize:18, fontWeight:700}}>Carrier integrations</div>
+          <div className="header-title" style={{fontSize:18, fontWeight:700}}>Carrier integrations</div>
         </div>
         <div style={{display:"flex", alignItems:"center", gap:10}}>
-          <div style={{fontSize:15, color:C.dim}}>
-            <span style={{color:C.green, fontWeight:700}}>{connected.length}</span> of {CARRIERS.length} connected
+          <div className="header-status" style={{fontSize:15, color:C.dim}}>
+            <span style={{color:C.green, fontWeight:700}}>{connected.length}</span> of {CARRIERS.length} <span className="hide-mobile-text">connected</span>
           </div>
         </div>
       </div>
 
-      <div style={{maxWidth:960, margin:"0 auto", padding:"32px 24px"}}>
+      <div className="main-content-pad" style={{maxWidth:960, margin:"0 auto", padding:"32px 24px"}}>
 
         {/* Success message */}
         {successMsg && (
@@ -427,13 +453,13 @@ export default function Carriers() {
         )}
 
         {/* Summary cards */}
-        <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:32}}>
+        <div className="summary-grid" style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:32}}>
           {[
             { label:"Connected carriers",  val:connected.length,              color:C.green  },
             { label:"Available carriers",  val:CARRIERS.length - connected.length, color:C.yellow },
             { label:"Total carriers",      val:CARRIERS.length,               color:C.blue   },
           ].map((s, i) => (
-            <div key={i} style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:10, padding:24}}>
+            <div key={i} className="summary-card" style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:10, padding:24}}>
               <div style={{fontSize:14, color:C.dim, marginBottom:8}}>{s.label}</div>
               <div style={{fontSize:36, fontWeight:800, color:s.color}}>{s.val}</div>
             </div>
@@ -441,7 +467,7 @@ export default function Carriers() {
         </div>
 
         {/* Filter tabs */}
-        <div style={{display:"flex", gap:10, marginBottom:28}}>
+        <div className="filter-tabs" style={{display:"flex", gap:10, marginBottom:28}}>
           {[
             {key:"all",       label:`All carriers (${CARRIERS.length})`},
             {key:"connected", label:`Connected (${connected.length})`},
@@ -449,6 +475,7 @@ export default function Carriers() {
           ].map(f => (
             <button
               key={f.key}
+              className="filter-btn"
               onClick={() => setFilter(f.key)}
               style={{
                 padding:"10px 20px", borderRadius:6, fontSize:15, cursor:"pointer",
@@ -476,7 +503,7 @@ export default function Carriers() {
             <div style={{fontSize:15}}>Switch to "All carriers" to connect one</div>
           </div>
         ) : (
-          <div style={{display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:16}}>
+          <div className="carrier-grid" style={{display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:16}}>
             {filtered.map(carrier => (
               <CarrierCard
                 key={carrier.slug}

@@ -112,6 +112,26 @@ const GlobalStyles = () => (
       display: flex; align-items: center; gap: 10px;
       animation: fadeIn 0.3s ease;
     }
+
+    @media (max-width: 480px) {
+      .header-container { padding: 0 12px !important; }
+      .header-dash-text { display: none; }
+      .header-title { font-size: 14px !important; }
+      
+      .main-content-pad { padding: 16px 12px !important; display: flex !important; flex-direction: column !important; gap: 20px !important; }
+      
+      .settings-sidebar { display: flex; flex-direction: row !important; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .settings-sidebar::-webkit-scrollbar { display: none; }
+      .settings-sidebar > button { white-space: nowrap; flex-shrink: 0; padding: 10px 14px !important; width: auto !important; font-size: 13px !important; }
+      .settings-sidebar > button.active { border-left: none !important; border-bottom: 3px solid #E8F400 !important; }
+      
+      .setting-card { padding: 20px 16px !important; }
+      .form-grid { flex-direction: column !important; display: flex !important; }
+      .form-grid > div { flex: 1 1 100% !important; }
+      
+      .danger-row { flex-direction: column; align-items: flex-start !important; gap: 16px !important; padding: 16px 0 !important; }
+      .danger-row button { width: 100%; }
+    }
   `}</style>
 );
 
@@ -305,7 +325,7 @@ export default function Settings() {
       <GlobalStyles/>
 
       {/* Header */}
-      <div style={{
+      <div className="header-container" style={{
         background:C.panel, borderBottom:`1px solid ${C.border}`,
         padding:"0 32px", height:76,
         display:"flex", alignItems:"center", justifyContent:"space-between",
@@ -318,14 +338,14 @@ export default function Settings() {
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
               <path d="M9 2L4 7l5 5" stroke="var(--mv-dim)" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-            Dashboard
+            <span className="header-dash-text">Dashboard</span>
           </div>
           <div style={{width:1, height:20, background:C.border}}/>
-          <div style={{fontSize:18, fontWeight:700}}>Settings</div>
+          <div className="header-title" style={{fontSize:18, fontWeight:700}}>Settings</div>
         </div>
       </div>
 
-      <div style={{maxWidth:1024, margin:"0 auto", padding:"32px 24px", display:"grid", gridTemplateColumns:"240px 1fr", gap:32}}>
+      <div className="main-content-pad" style={{maxWidth:1024, margin:"0 auto", padding:"32px 24px", display:"grid", gridTemplateColumns:"240px 1fr", gap:32}}>
 
         {/* Sidebar nav */}
         <div>
@@ -356,7 +376,7 @@ export default function Settings() {
           </div>
 
           {/* Nav */}
-          <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:8}}>
+          <div className="settings-sidebar" style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:8, display:"flex", flexDirection:"column"}}>
             {tabs.map(t => (
               <button
                 key={t.key}
@@ -388,7 +408,7 @@ export default function Settings() {
           {tab === "profile" && (
             <div className="setting-card">
               <SectionHead title="Profile information" sub="Your personal account details"/>
-              <div style={{display:"flex", flexWrap:"wrap", gap:12, marginBottom:20}}>
+              <div className="form-grid" style={{display:"flex", flexWrap:"wrap", gap:12, marginBottom:20}}>
                 <Field label="Full name"    id="name"  placeholder="Kousik Maity"          value={profile.name}  onChange={updateProfile("name")}  half/>
                 <Field label="Email"        id="email" placeholder="you@business.com"       value={profile.email} onChange={updateProfile("email")} half disabled/>
                 <Field label="Phone number" id="phone" placeholder="+91 98765 43210"        value={profile.phone} onChange={updateProfile("phone")}/>
@@ -406,7 +426,7 @@ export default function Settings() {
           {tab === "business" && (
             <div className="setting-card">
               <SectionHead title="Business details" sub="Your company information used for shipments and invoices"/>
-              <div style={{display:"flex", flexWrap:"wrap", gap:12, marginBottom:20}}>
+              <div className="form-grid" style={{display:"flex", flexWrap:"wrap", gap:12, marginBottom:20}}>
                 <Field label="Business name"    id="bname"   placeholder="Maity Textiles Pvt Ltd"  value={business.name}    onChange={updateBusiness("name")}/>
                 <Field label="City"             id="bcity"   placeholder="Mumbai"                   value={business.city}    onChange={updateBusiness("city")}   half/>
                 <Field label="Pincode"          id="bpin"    placeholder="400001"                   value={business.pincode} onChange={updateBusiness("pincode")} half/>
@@ -516,7 +536,7 @@ export default function Settings() {
             <div className="setting-card">
               <SectionHead title="Security" sub="Manage your password and account security"/>
 
-              <div style={{display:"flex", flexDirection:"column", gap:12, marginBottom:20}}>
+              <div className="form-grid" style={{display:"flex", flexDirection:"column", gap:12, marginBottom:20}}>
                 <div>
                   <label className="inp-label">Current password</label>
                   <input
@@ -618,7 +638,7 @@ export default function Settings() {
                   action: () => showError("To delete your account, please contact support@movetto.com"),
                 },
               ].map((item, i) => (
-                <div key={i} style={{
+                <div key={i} className="danger-row" style={{
                   display:"flex", alignItems:"center",
                   justifyContent:"space-between", gap:20,
                   padding:"24px 0",

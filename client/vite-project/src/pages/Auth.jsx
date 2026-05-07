@@ -163,6 +163,7 @@ const GlobalStyles = () => (
       align-items: center;
       justify-content: space-between;
     }
+    .show-mobile-only { display: none; }
     .auth-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -215,6 +216,7 @@ const GlobalStyles = () => (
       .auth-header { padding: 0 20px; }
       .auth-header-status { display: none; }
       .hide-mobile { display: none !important; }
+      .show-mobile-only { display: block !important; }
       .biz-grid { grid-template-columns: 1fr !important; }
       .plan-card { align-items: flex-start; flex-direction: column; gap: 12px; }
       .plan-card > div:first-child { margin-top: 4px; }
@@ -224,6 +226,9 @@ const GlobalStyles = () => (
     
     @media (max-width: 480px) {
       .auth-right { padding: 24px 16px; }
+      .auth-header { padding: 0 12px; }
+      .auth-header-logo { font-size: 22px !important; }
+      .auth-header-text { display: none; }
       .step-dot-circle { width: 28px !important; height: 28px !important; font-size: 12px !important; }
       .step-dot-label { font-size: 11px !important; }
       .auth-form-title { font-size: 24px !important; }
@@ -790,9 +795,17 @@ export default function Auth() {
 
       {/* Header */}
       <div className="auth-header">
-        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div 
             onClick={() => navigate('/')}
+            className="show-mobile-only"
+            style={{ fontSize: 24, cursor: "pointer", color: "var(--mv-dim)", marginTop: "-2px" }}
+          >
+            ←
+          </div>
+          <div 
+            onClick={() => navigate('/')}
+            className="auth-header-logo"
             style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em", cursor: "pointer" }}
           >
             MOVE<span style={{ color: "#E8F400" }}>.</span>TTO
@@ -811,9 +824,9 @@ export default function Auth() {
         </div>
         <div className="auth-header-actions" style={{ fontSize: 14, color: "var(--mv-dim)" }}>
           {view === "reg" ? (
-            <>Already have an account? <span style={{ color: "#E8F400", cursor: "pointer" }} onClick={() => setView("login")}>Log in →</span></>
+            <><span className="auth-header-text">Already have an account? </span><span style={{ color: "#E8F400", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("login")}>Log in →</span></>
           ) : (
-            <>No account? <span style={{ color: "#E8F400", cursor: "pointer" }} onClick={() => setView("reg")}>Create one →</span></>
+            <><span className="auth-header-text">No account? </span><span style={{ color: "#E8F400", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("reg")}>Create one →</span></>
           )}
         </div>
       </div>
