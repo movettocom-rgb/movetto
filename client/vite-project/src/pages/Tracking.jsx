@@ -9,7 +9,7 @@ const C = {
   bg:"var(--mv-bg)", panel:"var(--mv-panel)", card:"var(--mv-card)",
   border:"var(--mv-border)", border2:"var(--mv-border-2)",
   text:"var(--mv-text)", muted:"var(--mv-muted)", dim:"var(--mv-dim)",
-  yellow:"#E8F400", green:"#00D68A", red:"#FF5C38", amber:"#FFB020", blue:"#4da6ff",
+  yellow:"var(--mv-yellow)", green:"var(--mv-green)", red:"var(--mv-red)", amber:"var(--mv-amber)", blue:"var(--mv-blue)",
 };
 
 /* ─── Global Styles ─── */
@@ -31,10 +31,10 @@ const GlobalStyles = () => (
       font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;
       transition: border-color 0.2s;
     }
-    .track-inp:focus { border-color: #E8F400; }
+    .track-inp:focus { border-color: var(--mv-yellow); }
     .track-inp::placeholder { color: var(--mv-dimmer); font-family: 'Sora', sans-serif; letter-spacing: 0; }
     .track-btn {
-      background: #E8F400; color: #0A0B0D; border: none;
+      background: var(--mv-yellow); color: var(--mv-yellow-contrast); border: none;
       padding: 12px 24px; border-radius: 0 10px 10px 0;
       font-size: 14px; font-weight: 700; cursor: pointer;
       font-family: 'Sora', sans-serif; transition: opacity 0.2s;
@@ -44,7 +44,7 @@ const GlobalStyles = () => (
     .track-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .spinner {
       width: 18px; height: 18px; border: 2px solid var(--mv-border-2);
-      border-top-color: #E8F400; border-radius: 50%;
+      border-top-color: var(--mv-yellow); border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
     }
     .timeline-dot {
@@ -58,7 +58,7 @@ const GlobalStyles = () => (
       color: var(--mv-dim); cursor: pointer; font-family: 'Sora', sans-serif;
       transition: all 0.2s;
     }
-    .copy-btn:hover { border-color: #E8F400; color: #E8F400; }
+    .copy-btn:hover { border-color: var(--mv-yellow); color: var(--mv-yellow-text); }
     .recent-item {
       display: flex; align-items: center; gap: 12px;
       padding: 10px 14px; border-radius: 8px; cursor: pointer;
@@ -117,16 +117,16 @@ const GlobalStyles = () => (
 
 /* ─── Status config ─── */
 const STATUS_CONFIG = {
-  DRAFT:            { color:"var(--mv-dim)", bg:"#1a1a1a", label:"Draft",            icon:"○" },
-  BOOKED:           { color:"#4da6ff", bg:"#080f20", label:"Booked",           icon:"◎" },
-  LABEL_GENERATED:  { color:"#4da6ff", bg:"#080f20", label:"Label Generated",  icon:"◎" },
-  PICKED_UP:        { color:"#FFB020", bg:"#1f1500", label:"Picked Up",        icon:"◉" },
-  IN_TRANSIT:       { color:"#FFB020", bg:"#1f1500", label:"In Transit",       icon:"◉" },
-  OUT_FOR_DELIVERY: { color:"#E8F400", bg:"#1a1800", label:"Out for Delivery", icon:"◈" },
-  DELIVERED:        { color:"#00D68A", bg:"#0d2414", label:"Delivered",        icon:"◉" },
-  DELIVERY_FAILED:  { color:"#FF5C38", bg:"#200808", label:"Delivery Failed",  icon:"✕" },
-  RTO_INITIATED:    { color:"#FF5C38", bg:"#200808", label:"RTO Initiated",    icon:"↩" },
-  RTO_DELIVERED:    { color:"#FF5C38", bg:"#200808", label:"RTO Delivered",    icon:"↩" },
+  DRAFT:            { color:"var(--mv-dim)", bg:"color-mix(in srgb, var(--mv-dim) 10%, transparent)", label:"Draft",            icon:"○" },
+  BOOKED:           { color:"var(--mv-blue)", bg:"color-mix(in srgb, var(--mv-blue) 10%, transparent)", label:"Booked",           icon:"◎" },
+  LABEL_GENERATED:  { color:"var(--mv-blue)", bg:"color-mix(in srgb, var(--mv-blue) 10%, transparent)", label:"Label Generated",  icon:"◎" },
+  PICKED_UP:        { color:"var(--mv-amber)", bg:"color-mix(in srgb, var(--mv-amber) 10%, transparent)", label:"Picked Up",        icon:"◉" },
+  IN_TRANSIT:       { color:"var(--mv-amber)", bg:"color-mix(in srgb, var(--mv-amber) 10%, transparent)", label:"In Transit",       icon:"◉" },
+  OUT_FOR_DELIVERY: { color:"var(--mv-yellow-text)", bg:"color-mix(in srgb, var(--mv-yellow) 10%, transparent)", label:"Out for Delivery", icon:"◈" },
+  DELIVERED:        { color:"var(--mv-green)", bg:"color-mix(in srgb, var(--mv-green) 10%, transparent)", label:"Delivered",        icon:"◉" },
+  DELIVERY_FAILED:  { color:"var(--mv-red)", bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", label:"Delivery Failed",  icon:"✕" },
+  RTO_INITIATED:    { color:"var(--mv-red)", bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", label:"RTO Initiated",    icon:"↩" },
+  RTO_DELIVERED:    { color:"var(--mv-red)", bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", label:"RTO Delivered",    icon:"↩" },
   CANCELLED:        { color:"var(--mv-dim)", bg:"#1a1a1a", label:"Cancelled",        icon:"✕" },
 };
 
@@ -153,9 +153,9 @@ const ProgressBar = ({ status }) => {
                   background: done ? C.green : active ? cfg.color : C.border,
                   border: `2px solid ${done ? C.green : active ? cfg.color : C.border2}`,
                   display:"flex", alignItems:"center", justifyContent:"center",
-                  fontSize:12, color: done || active ? "#0A0B0D" : C.dim,
+                fontSize:12, color: done || active ? "var(--mv-bg)" : C.dim,
                   fontWeight:700, flexShrink:0,
-                  boxShadow: active ? `0 0 12px ${cfg.color}44` : "none",
+                boxShadow: active ? `0 0 12px color-mix(in srgb, ${cfg.color} 40%, transparent)` : "none",
                   transition:"all 0.3s",
                 }}>
                   {done ? "✓" : i + 1}
@@ -172,7 +172,7 @@ const ProgressBar = ({ status }) => {
         })}
       </div>
       {isRTO && (
-        <div style={{marginTop:16, background:"#200808", border:`1px solid #FF5C3833`, borderRadius:8, padding:"10px 14px", fontSize:13, color:C.red, display:"flex", alignItems:"center", gap:10}}>
+        <div style={{marginTop:16, background:"color-mix(in srgb, var(--mv-red) 15%, transparent)", border:`1px solid color-mix(in srgb, var(--mv-red) 30%, transparent)`, borderRadius:8, padding:"10px 14px", fontSize:13, color:C.red, display:"flex", alignItems:"center", gap:10}}>
           <span style={{fontSize:16}}>↩</span>
           This shipment has been returned to origin (RTO)
         </div>
@@ -193,7 +193,7 @@ const Timeline = ({ events }) => (
             <div className="timeline-dot" style={{
               background: isFirst ? cfg.color : C.border,
               border: `2px solid ${isFirst ? cfg.color : C.border2}`,
-              boxShadow: isFirst ? `0 0 8px ${cfg.color}55` : "none",
+          boxShadow: isFirst ? `0 0 8px color-mix(in srgb, ${cfg.color} 55%, transparent)` : "none",
             }}>
               {isFirst && <div style={{width:5, height:5, borderRadius:"50%", background:"var(--mv-bg)"}}/>}
             </div>
@@ -480,7 +480,7 @@ const [query, setQuery] = useState(search.get("id") || "");
         <button
           className="book-btn"
           onClick={() => navigate("/book")}
-          style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
+          style={{background:C.yellow, color:"var(--mv-yellow-contrast)", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
         >
           + Book<span className="hide-mobile-text"> shipment</span>
         </button>

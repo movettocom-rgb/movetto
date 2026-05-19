@@ -17,10 +17,11 @@ export default function LandingPage() {
     border:        isDark ? "var(--mv-border)" : "#E2E8F0",
     border2:       isDark ? "var(--mv-border-2)" : "#CBD5E1",
     text:          isDark ? "var(--mv-text)" : "#0F172A",
-    muted:         isDark ? "var(--mv-muted)" : "#475569",
-    dim:           isDark ? "var(--mv-dim)" : "#64748B",
-    yellow:        isDark ? "#E8F400" : "#9CA300",
-    yellowBtn:     isDark ? "#E8F400" : "#CADD00",
+    muted:         isDark ? "var(--mv-muted)" : "#334155",
+    dim:           isDark ? "var(--mv-dim)" : "#475569",
+    dimmer:        isDark ? "var(--mv-dimmer)" : "#64748B",
+    yellow:        isDark ? "#E8F400" : "#7A8700",
+    yellowBtn:     isDark ? "#E8F400" : "#B0C400",
     green:         isDark ? "#00D68A" : "#059669",
     red:           isDark ? "#FF5C38" : "#DC2626",
     amber:         isDark ? "#FFB020" : "#D97706",
@@ -97,8 +98,8 @@ export default function LandingPage() {
     .kpi-label { font-size: 11px; color: ${c.dim}; margin-top: 7px; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.25; }
     .kpi-change { font-size: 12px; margin-top: 8px; line-height: 1.3; }
     .table-container { overflow-x: auto; }
-    .table-header { min-width: 600px; }
-    .table-row { min-width: 600px; }
+    .table-header { display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr; min-width: 600px; padding: 14px 16px; font-size: 14px; color: ${c.dim}; text-transform: uppercase; letter-spacing: 0.07em; background: ${c.border}; }
+    .table-row { display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr; min-width: 600px; padding: 18px 16px; border-top: 1px solid ${c.border}; font-size: 14px; align-items: center; }
     
     .steps-grid { grid-template-columns: repeat(3, 1fr); }
     .feats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -125,8 +126,15 @@ export default function LandingPage() {
       .kpi-value { font-size: 23px !important; }
       .kpi-label { font-size: 10px !important; letter-spacing: 0.045em !important; }
       .kpi-change { font-size: 11px !important; }
-      .steps-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
+      .steps-grid { grid-template-columns: repeat(3, minmax(280px, 1fr)); overflow-x: auto !important; scrollbar-width: none; -ms-overflow-style: none; scroll-snap-type: x mandatory; }
+      .steps-grid::-webkit-scrollbar { display: none; }
+      .steps-grid > div { scroll-snap-align: start; }
+      .carriers-grid { grid-template-columns: repeat(6, minmax(280px, 1fr)); overflow-x: auto !important; scrollbar-width: none; -ms-overflow-style: none; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+      .carriers-grid::-webkit-scrollbar { display: none; }
+      .carrier-card { scroll-snap-align: start; }
+      .pricing-grid { grid-template-columns: repeat(3, minmax(300px, 1fr)); gap: 16px; overflow-x: auto !important; scrollbar-width: none; -ms-overflow-style: none; scroll-snap-type: x mandatory; padding-bottom: 16px; }
+      .pricing-grid::-webkit-scrollbar { display: none; }
+      .pricing-grid > div { scroll-snap-align: start; }
       .wa-grid { grid-template-columns: 1fr; }
     }
 
@@ -154,11 +162,18 @@ export default function LandingPage() {
       .kpi-value { font-size: 20px !important; }
       .kpi-label { font-size: 9px !important; margin-top: 6px !important; }
       .kpi-change { font-size: 10px !important; margin-top: 6px !important; }
-      .carriers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .carriers-grid { grid-template-columns: repeat(6, minmax(260px, 1fr)); gap: 14px; }
+      .steps-grid { grid-template-columns: repeat(3, minmax(260px, 1fr)); }
+      .pricing-grid { grid-template-columns: repeat(3, minmax(260px, 1fr)); }
       .section-divider { margin: 0 16px; }
       
       .feats-grid { grid-template-columns: 1fr; }
-      .testi-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: repeat(2, minmax(280px, 1fr)); overflow-x: auto !important; scrollbar-width: none; -ms-overflow-style: none; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+      .testi-grid::-webkit-scrollbar { display: none; }
+      .testi-grid > div { scroll-snap-align: start; }
+      .wa-list-item { font-size: 15px !important; }
+      .wa-list-icon { font-size: 18px !important; }
+      .wa-preview { max-width: 400px; margin: 0 auto; }
       
       .footer-container { flex-direction: column; gap: 24px; text-align: center; padding: 40px 16px; }
       
@@ -185,15 +200,23 @@ export default function LandingPage() {
       .section-subtitle { font-size: 15px !important; max-width: 100%; }
       .hero-badge { max-width: 100%; width: 100%; justify-content: center; border-radius: 16px !important; text-align: center; }
       .cta-buttons { gap: 12px; }
-      .pricing-grid > div { padding: 18px !important; }
-      .pricing-grid .pricing-price { font-size: 34px !important; }
-      .pricing-grid .pricing-price + div { font-size: 14px !important; }
+      .pricing-grid { grid-template-columns: repeat(3, minmax(220px, 1fr)) !important; gap: 12px !important; }
+      .pricing-grid > div { padding: 16px !important; }
+      .pricing-badge { font-size: 10px !important; padding: 3px 8px !important; margin-bottom: 12px !important; }
+      .pricing-name { font-size: 13px !important; margin-bottom: 8px !important; }
+      .pricing-price { font-size: 32px !important; margin-bottom: 6px !important; }
+      .pricing-cycle { font-size: 12px !important; }
+      .pricing-target { font-size: 13px !important; margin-top: 8px !important; margin-bottom: 16px !important; padding-bottom: 16px !important; }
+      .pricing-feature { font-size: 12px !important; padding: 6px 0 !important; gap: 8px !important; }
+      .pricing-icon { font-size: 14px !important; }
+      .pricing-btn { font-size: 14px !important; padding: 12px 16px !important; margin-top: 16px !important; }
       .preview-body { padding: 18px 12px; }
-      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px !important; }
-      .kpi-card { padding: 14px 12px !important; }
-      .kpi-value { font-size: 22px !important; }
-      .kpi-label { font-size: 10px !important; }
-      .kpi-change { font-size: 11px !important; }
+      .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 0 !important; background: ${c.bg3} !important; border: 1px solid ${c.border} !important; border-radius: 8px !important; overflow: hidden; }
+      .kpi-card { padding: 10px 4px !important; background: transparent !important; border: none !important; border-right: 1px solid ${c.border} !important; border-radius: 0 !important; }
+      .kpi-card:last-child { border-right: none !important; }
+      .kpi-value { font-size: 14px !important; }
+      .kpi-label { font-size: 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px !important; letter-spacing: 0 !important; }
+      .kpi-change { font-size: 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px !important; }
       .cta-buttons { flex-direction: column; width: 100%; }
       .cta-buttons button { width: 100%; }
       .hero-section .cta-buttons button { width: 100%; }
@@ -201,14 +224,29 @@ export default function LandingPage() {
       .preview-controls { gap: 6px; }
       .preview-controls span { font-size: 12px !important; }
       .browser-url { font-size: 10px !important; padding: 3px 8px !important; }
-      .table-header { display: none; }
-      .table-row { display: grid; grid-template-columns: 1fr; padding: 16px 14px !important; gap: 8px; }
-      .table-row span { display: block; width: 100%; }
-      .table-row span:nth-child(1)::before { content: "Tracking ID"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-      .table-row span:nth-child(2)::before { content: "Route"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-      .table-row span:nth-child(3)::before { content: "Carrier"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-      .table-row span:nth-child(4)::before { content: "Rate"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-      .table-row span:nth-child(5)::before { content: "Status"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .table-container { background: transparent !important; border: none !important; padding: 0 !important; }
+      .table-header { display: none !important; }
+      .table-row { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        padding: 16px !important; 
+        gap: 12px; 
+        border: 1px solid ${c.border} !important; 
+        border-radius: 12px !important; 
+        margin-bottom: 12px; 
+        background: ${c.bg3} !important; 
+        min-width: auto !important;
+      }
+      .table-row:last-child { margin-bottom: 0; border-bottom: none !important; }
+      .table-row span { display: flex !important; flex-direction: column; text-align: left; width: 100%; font-size: 15px !important; gap: 4px; }
+      .table-row span::before { font-size: 11px; color: ${c.dim}; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .table-row span:nth-child(1)::before { content: "Tracking ID"; }
+      .table-row span:nth-child(2)::before { content: "Route"; }
+      .table-row span:nth-child(3)::before { content: "Carrier"; }
+      .table-row span:nth-child(4)::before { content: "Rate"; }
+      .table-row span:nth-child(5)::before { content: "Status"; }
+      .table-row span:nth-child(5) { align-items: flex-start; }
+      .steps-grid { grid-template-columns: repeat(3, minmax(240px, 1fr)) !important; }
       .steps-grid > div { padding: 24px 18px; }
       .steps-grid > div div:nth-child(2) { font-size: 52px !important; }
       .steps-grid > div div:nth-child(3) { font-size: 19px !important; }
@@ -217,17 +255,23 @@ export default function LandingPage() {
       .feat-card > div:nth-child(2) { font-size: 17px !important; }
       .feat-card > div:nth-child(3) { font-size: 13px !important; }
       .wa-grid { gap: 20px; }
-      .wa-grid > div { padding: 20px !important; }
-      .wa-grid > div > div:first-child { font-size: 16px !important; }
-      .wa-grid > div > div:nth-child(2) { font-size: 15px !important; }
-      .wa-grid > div > div:nth-child(3) { font-size: 13px !important; }
-      .carriers-grid { grid-template-columns: 1fr; gap: 12px; }
+      .wa-list-item { font-size: 14px !important; margin-bottom: 8px !important; }
+      .wa-list-icon { font-size: 16px !important; }
+      .wa-preview { padding: 16px !important; max-width: 320px; margin: 0 auto; }
+      .wa-preview-header { gap: 10px !important; padding-bottom: 12px !important; margin-bottom: 12px !important; }
+      .wa-preview-avatar { width: 36px !important; height: 36px !important; font-size: 14px !important; }
+      .wa-preview-title { font-size: 15px !important; }
+      .wa-preview-status { font-size: 11px !important; margin-top: 2px !important; }
+      .wa-bubble { padding: 10px 14px !important; font-size: 13px !important; margin-bottom: 6px !important; line-height: 1.4 !important; }
+      .wa-time { font-size: 10px !important; margin-bottom: 8px !important; }
+      .carriers-grid { grid-template-columns: repeat(6, minmax(240px, 1fr)); gap: 12px; }
       .carrier-card { padding: 16px 18px !important; }
       .carrier-card-title { font-size: 17px !important; }
       .carrier-card-sub { font-size: 13px !important; }
       .pricing-grid > div { min-height: auto; }
       .testi-grid > div { padding: 24px !important; }
       .testi-grid > div p { font-size: 16px !important; }
+      .testi-grid { grid-template-columns: repeat(2, minmax(260px, 1fr)) !important; }
       .cta-title { font-size: 34px; }
       .cta-buttons { gap: 10px; }
       .footer-links { gap: 14px !important; font-size: 14px !important; }
@@ -259,20 +303,30 @@ export default function LandingPage() {
       .feats-grid > div { padding: 18px !important; }
       .feat-card > div:nth-child(2) { font-size: 16px !important; }
       .feat-card > div:nth-child(3) { font-size: 12.5px !important; }
-      .pricing-grid { gap: 14px; }
-      .pricing-grid > div { padding: 16px !important; }
-      .pricing-grid .pricing-price { font-size: 30px !important; }
+      .pricing-grid { grid-template-columns: repeat(3, minmax(200px, 1fr)) !important; gap: 10px !important; }
+      .pricing-grid > div { padding: 14px !important; }
+      .pricing-badge { font-size: 9px !important; padding: 2px 6px !important; margin-bottom: 8px !important; }
+      .pricing-name { font-size: 11px !important; margin-bottom: 6px !important; }
+      .pricing-price { font-size: 26px !important; margin-bottom: 4px !important; }
+      .pricing-cycle { font-size: 11px !important; }
+      .pricing-target { font-size: 11px !important; margin-top: 6px !important; margin-bottom: 12px !important; padding-bottom: 12px !important; }
+      .pricing-feature { font-size: 11px !important; padding: 5px 0 !important; gap: 6px !important; }
+      .pricing-icon { font-size: 12px !important; }
+      .pricing-btn { font-size: 12px !important; padding: 10px 14px !important; margin-top: 14px !important; }
       .preview-body { padding: 16px 10px; }
-      .kpi-grid { grid-template-columns: 1fr; }
-      .kpi-card { padding: 14px !important; }
-      .kpi-value { font-size: 24px !important; }
-      .kpi-label { font-size: 10px !important; }
-      .kpi-change { font-size: 11px !important; }
+      .kpi-card { padding: 8px 4px !important; }
+      .kpi-value { font-size: 12px !important; }
+      .kpi-label, .kpi-change { font-size: 7px !important; }
       .wa-grid { gap: 18px; }
-      .wa-grid > div { padding: 16px !important; }
-      .wa-grid > div > div:first-child { font-size: 15px !important; }
-      .wa-grid > div > div:nth-child(2) { font-size: 14px !important; }
-      .wa-grid > div > div:nth-child(3) { font-size: 12px !important; }
+      .wa-list-item { font-size: 13px !important; margin-bottom: 6px !important; gap: 8px !important; }
+      .wa-list-icon { font-size: 15px !important; }
+      .wa-preview { padding: 14px !important; max-width: 280px; }
+      .wa-preview-header { padding-bottom: 10px !important; margin-bottom: 10px !important; }
+      .wa-preview-avatar { width: 32px !important; height: 32px !important; font-size: 13px !important; }
+      .wa-preview-title { font-size: 14px !important; }
+      .wa-preview-status { font-size: 10px !important; }
+      .wa-bubble { padding: 8px 12px !important; font-size: 12px !important; margin-bottom: 4px !important; }
+      .wa-time { font-size: 9px !important; margin-bottom: 6px !important; }
       .footer-container { padding: 26px 10px; }
       .footer-links { gap: 10px; justify-content: center; }
       .cta-buttons { gap: 10px; }
@@ -283,6 +337,7 @@ export default function LandingPage() {
       .preview-controls span { font-size: 11px !important; padding: 5px 8px !important; }
       .testi-grid > div { padding: 18px !important; }
       .testi-grid > div p { font-size: 15px !important; }
+      .testi-grid { grid-template-columns: repeat(2, minmax(240px, 1fr)) !important; }
       .cta-title { font-size: 30px; }
       .section-divider { margin: 0 10px; }
     }
@@ -583,11 +638,11 @@ export default function LandingPage() {
 
             {/* table */}
             <div className="table-container" style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8 }}>
-              <div className="table-header" style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", background: c.border, padding: "14px 16px", fontSize: 14, color: c.dim, textTransform: "uppercase", letterSpacing: "0.07em" }}>
+              <div className="table-header">
                 {["Tracking ID","Route","Carrier","Rate","Status"].map(h => <span key={h}>{h}</span>)}
               </div>
               {shipments.map(r => (
-                <div key={r.id} className="table-row" style={{ display: "grid", gridTemplateColumns: "2fr 1.2fr 1fr 1fr 1fr", padding: "18px 16px", borderTop: `1px solid ${c.border}`, fontSize: 14, alignItems: "center" }}>
+                <div key={r.id} className="table-row" style={{ padding: "18px 16px", borderTop: `1px solid ${c.border}`, fontSize: 14, alignItems: "center" }}>
                   <span style={{ fontFamily: "monospace", fontSize: 15, color: c.muted }}>{r.id}</span>
                   <span style={{ fontSize: 15, color: c.muted }}>{r.route}</span>
                   <span style={{ fontSize: 15, color: c.text }}>{r.carrier}</span>
@@ -610,7 +665,7 @@ export default function LandingPage() {
           {steps.map(s => (
             <div key={s.n} style={{ background: c.bg2, padding: "40px 32px", position: "relative" }}>
               <div style={{ position: "absolute", top: 0, left: 0, width: 3, height: "100%", background: c.yellow }}/>
-              <div style={{ fontSize: 64, fontWeight: 900, color: c.border, lineHeight: 1, marginBottom: 20, letterSpacing: "-0.04em" }}>{s.n}</div>
+              <div style={{ fontSize: 64, fontWeight: 900, color: isDark ? c.border : c.dimmer, lineHeight: 1, marginBottom: 20, letterSpacing: "-0.04em" }}>{s.n}</div>
               <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>{s.title}</div>
               <div style={{ fontSize: 16, color: c.muted, lineHeight: 1.6 }}>{s.desc}</div>
             </div>
@@ -668,29 +723,29 @@ export default function LandingPage() {
               Every business owner in India manages operations on WhatsApp. Movetto integrates directly — book, track, and alert customers without opening a dashboard.
             </p>
             {["Send shipment requests via WhatsApp","Auto-notify customers on delivery","Share invoices directly in chat"].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: isDark ? "var(--mv-paper)" : c.text, marginBottom: 12 }}>
-                <span style={{ color: c.green, fontSize: 20 }}>✓</span> {item}
+              <div key={item} className="wa-list-item" style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: isDark ? "var(--mv-paper)" : c.text, marginBottom: 12 }}>
+                <span className="wa-list-icon" style={{ color: c.green, fontSize: 20 }}>✓</span> {item}
               </div>
             ))}
           </div>
 
           {/* WA preview */}
-          <div style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 12, padding: 24 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16, paddingBottom: 16, borderBottom: `1px solid ${c.border}` }}>
-              <div style={{ width: 48, height: 48, borderRadius: "50%", background: c.waBg1, border: c.waBorder1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: c.green }}>M</div>
+          <div className="wa-preview" style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 12, padding: 24 }}>
+            <div className="wa-preview-header" style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16, paddingBottom: 16, borderBottom: `1px solid ${c.border}` }}>
+              <div className="wa-preview-avatar" style={{ width: 48, height: 48, borderRadius: "50%", background: c.waBg1, border: c.waBorder1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: c.green }}>M</div>
               <div>
-                <div style={{ fontSize: 18, fontWeight: 600 }}>Movetto</div>
-                <div style={{ fontSize: 13, color: c.green, marginTop: 4 }}>● Online</div>
+                <div className="wa-preview-title" style={{ fontSize: 18, fontWeight: 600 }}>Movetto</div>
+                <div className="wa-preview-status" style={{ fontSize: 13, color: c.green, marginTop: 4 }}>● Online</div>
               </div>
             </div>
-            <div style={{ background: c.waBg2, border: c.waBorder2, borderRadius: "0 12px 12px 12px", padding: "14px 20px", fontSize: 16, color: c.waText, lineHeight: 1.6, marginBottom: 8, maxWidth: "90%" }}>
+            <div className="wa-bubble" style={{ background: c.waBg2, border: c.waBorder2, borderRadius: "0 12px 12px 12px", padding: "14px 20px", fontSize: 16, color: c.waText, lineHeight: 1.6, marginBottom: 8, maxWidth: "90%" }}>
               Book shipment: BOM to DEL, 2.5kg electronics, COD ₹4,500
             </div>
-            <div style={{ fontSize: 12, color: c.dim, marginBottom: 12 }}>10:42 AM</div>
-            <div style={{ background: c.waBg2, border: c.waBorder2, borderRadius: "0 12px 12px 12px", padding: "14px 20px", fontSize: 16, color: c.waText, lineHeight: 1.6, marginBottom: 8, maxWidth: "90%" }}>
+            <div className="wa-time" style={{ fontSize: 12, color: c.dim, marginBottom: 12 }}>10:42 AM</div>
+            <div className="wa-bubble" style={{ background: c.waBg2, border: c.waBorder2, borderRadius: "0 12px 12px 12px", padding: "14px 20px", fontSize: 16, color: c.waText, lineHeight: 1.6, marginBottom: 8, maxWidth: "90%" }}>
               ✓ Shipment booked!<br/>ID: MV-2025-K8XP91<br/>Carrier: Delhivery Surface Express<br/>Rate: ₹847 (saved ₹203 vs avg)<br/>ETA: 16 Jun — 2 days ahead of SLA<br/>Label: [Download PDF]
             </div>
-            <div style={{ fontSize: 12, color: c.dim, textAlign: "right" }}>10:42 AM ✓✓</div>
+            <div className="wa-time" style={{ fontSize: 12, color: c.dim, textAlign: "right" }}>10:42 AM ✓✓</div>
           </div>
         </div>
       </div>
@@ -718,19 +773,19 @@ export default function LandingPage() {
               onMouseEnter={() => setActivePlan(p.name)}
               style={{ background: c.bg2, border: isFeatured ? `2px solid ${c.yellow}` : `1px solid ${c.border}`, borderRadius: 12, padding: 32, transition: "all 0.3s ease", transform: isFeatured ? "scale(1.02)" : "scale(1)" }}
             >
-              {p.badge && <div style={{ background: c.yellow, color: c.bg, fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 4, letterSpacing: "0.06em", display: "inline-block", marginBottom: 16, opacity: isFeatured ? 1 : 0.5, transition: "opacity 0.3s ease" }}>{p.badge}</div>}
-              <div style={{ fontSize: 16, fontWeight: 700, color: isFeatured ? c.yellow : c.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12, transition: "color 0.3s ease" }}>{p.name}</div>
+            {p.badge && <div className="pricing-badge" style={{ background: c.yellow, color: c.bg, fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 4, letterSpacing: "0.06em", display: "inline-block", marginBottom: 16, opacity: isFeatured ? 1 : 0.5, transition: "opacity 0.3s ease" }}>{p.badge}</div>}
+            <div className="pricing-name" style={{ fontSize: 16, fontWeight: 700, color: isFeatured ? c.yellow : c.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12, transition: "color 0.3s ease" }}>{p.name}</div>
               <div className="pricing-price" style={{ fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 8, color: isFeatured ? c.yellow : c.text, transition: "color 0.3s ease" }}>{p.price}</div>
-              <div style={{ fontSize: 16, color: c.dim }}>{p.cycle}</div>
-              <div style={{ fontSize: 15, color: c.dim, marginTop: 10, marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${c.border}` }}>{p.target}</div>
+            <div className="pricing-cycle" style={{ fontSize: 16, color: c.dim }}>{p.cycle}</div>
+            <div className="pricing-target" style={{ fontSize: 15, color: c.dim, marginTop: 10, marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${c.border}` }}>{p.target}</div>
               {p.features.map(f => (
-                <div key={f} style={{ fontSize: 15, color: "var(--mv-muted)", padding: "8px 0", borderBottom: `1px solid ${c.bg2}`, display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={{ color: c.green, fontSize: 16, flexShrink: 0 }}>✓</span>{f}
+              <div key={f} className="pricing-feature" style={{ fontSize: 15, color: "var(--mv-muted)", padding: "8px 0", borderBottom: `1px solid ${c.bg2}`, display: "flex", alignItems: "center", gap: 10 }}>
+                <span className="pricing-icon" style={{ color: c.green, fontSize: 16, flexShrink: 0 }}>✓</span>{f}
                 </div>
               ))}
               {isFeatured
-                ? <BtnY onClick={() => navigate('/auth')} style={{ width: "100%", marginTop: 24, padding: 14, fontSize: 16, fontWeight: 700, borderRadius: 6 }}>{p.btnLabel}</BtnY>
-                : <BtnG onClick={() => navigate('/auth')} style={{ width: "100%", marginTop: 24, padding: 14, fontSize: 16, fontWeight: 700, borderRadius: 6 }}>{p.btnLabel}</BtnG>
+              ? <BtnY onClick={() => navigate('/auth')} className="pricing-btn" style={{ width: "100%", marginTop: 24, padding: 14, fontSize: 16, fontWeight: 700, borderRadius: 6 }}>{p.btnLabel}</BtnY>
+              : <BtnG onClick={() => navigate('/auth')} className="pricing-btn" style={{ width: "100%", marginTop: 24, padding: 14, fontSize: 16, fontWeight: 700, borderRadius: 6 }}>{p.btnLabel}</BtnG>
               }
             </div>
           )})}

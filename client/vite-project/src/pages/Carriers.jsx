@@ -6,7 +6,7 @@ const C = {
   bg:"var(--mv-bg)", panel:"var(--mv-panel)", card:"var(--mv-card)",
   border:"var(--mv-border)", border2:"var(--mv-border-2)",
   text:"var(--mv-text)", muted:"var(--mv-muted)", dim:"var(--mv-dim)",
-  yellow:"#E8F400", green:"#00D68A", red:"#FF5C38", amber:"#FFB020", blue:"#4da6ff",
+  yellow:"var(--mv-yellow)", green:"var(--mv-green)", red:"var(--mv-red)", amber:"var(--mv-amber)", blue:"var(--mv-blue)",
 };
 
 const GlobalStyles = () => (
@@ -24,9 +24,9 @@ const GlobalStyles = () => (
       padding: 28px; transition: border-color 0.2s; animation: fadeIn 0.3s ease;
     }
     .carrier-card:hover { border-color: var(--mv-border-2); }
-    .carrier-card.connected { border-color: #00D68A33; }
+  .carrier-card.connected { border-color: color-mix(in srgb, var(--mv-green) 30%, transparent); }
     .connect-btn {
-      background: #E8F400; color: #0A0B0D; border: none;
+    background: var(--mv-yellow); color: var(--mv-yellow-contrast); border: none;
       padding: 12px 24px; border-radius: 7px; font-size: 15px;
       font-weight: 700; cursor: pointer; font-family: 'Sora', sans-serif;
       transition: opacity 0.2s; white-space: nowrap;
@@ -34,19 +34,19 @@ const GlobalStyles = () => (
     .connect-btn:hover { opacity: 0.88; }
     .connect-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .disconnect-btn {
-      background: transparent; color: #FF5C38; border: 1px solid #FF5C3833;
+    background: transparent; color: var(--mv-red); border: 1px solid color-mix(in srgb, var(--mv-red) 30%, transparent);
       padding: 12px 24px; border-radius: 7px; font-size: 15px;
       font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif;
       transition: all 0.2s;
     }
-    .disconnect-btn:hover { border-color: #FF5C3866; background: #200808; }
+  .disconnect-btn:hover { border-color: color-mix(in srgb, var(--mv-red) 60%, transparent); background: color-mix(in srgb, var(--mv-red) 10%, transparent); }
     .inp {
       width: 100%; background: var(--mv-panel); border: 1px solid var(--mv-border);
       border-radius: 7px; padding: 14px 16px; font-size: 15px;
       color: var(--mv-text); outline: none; font-family: 'Sora', sans-serif;
       transition: border-color 0.2s;
     }
-    .inp:focus { border-color: #E8F400; }
+  .inp:focus { border-color: var(--mv-yellow); }
     .inp::placeholder { color: var(--mv-dimmer); }
     .inp-label {
       font-size: 13px; color: var(--mv-dim); text-transform: uppercase;
@@ -218,7 +218,7 @@ const ConnectModal = ({ carrier, onClose, onSuccess }) => {
         <div className="modal-header" style={{display:"flex", alignItems:"center", gap:16, marginBottom:28}}>
           <div style={{
             width:52, height:52, borderRadius:10,
-            background:`${carrier.color}18`, border:`1px solid ${carrier.color}33`,
+          background:`color-mix(in srgb, ${carrier.color} 10%, transparent)`, border:`1px solid color-mix(in srgb, ${carrier.color} 25%, transparent)`,
             display:"flex", alignItems:"center", justifyContent:"center",
             fontSize:18, fontWeight:800, color:carrier.color, flexShrink:0,
           }}>
@@ -279,7 +279,7 @@ const ConnectModal = ({ carrier, onClose, onSuccess }) => {
         </div>
 
         {error && (
-          <div style={{background:"#200808", border:"1px solid #FF5C3833", borderRadius:7, padding:"12px 16px", fontSize:14, color:C.red, marginBottom:20}}>
+          <div style={{background:"color-mix(in srgb, var(--mv-red) 10%, transparent)", border:"1px solid color-mix(in srgb, var(--mv-red) 30%, transparent)", borderRadius:7, padding:"12px 16px", fontSize:14, color:C.red, marginBottom:20}}>
             {error}
           </div>
         )}
@@ -329,7 +329,7 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
       <div style={{display:"flex", alignItems:"flex-start", gap:12, marginBottom:20}}>
         <div style={{
           width:48, height:48, borderRadius:10, flexShrink:0,
-          background:`${carrier.color}18`, border:`1px solid ${carrier.color}33`,
+        background:`color-mix(in srgb, ${carrier.color} 10%, transparent)`, border:`1px solid color-mix(in srgb, ${carrier.color} 25%, transparent)`,
           display:"flex", alignItems:"center", justifyContent:"center",
           fontSize:18, fontWeight:800, color:carrier.color,
         }}>
@@ -339,7 +339,7 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
           <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:6}}>
             <div style={{fontSize:18, fontWeight:700}}>{carrier.name}</div>
             {isConnected && (
-              <span style={{fontSize:12, background:"#00D68A18", border:"1px solid #00D68A33", color:C.green, padding:"3px 10px", borderRadius:4, fontWeight:700}}>
+            <span style={{fontSize:12, background:"color-mix(in srgb, var(--mv-green) 15%, transparent)", border:"1px solid color-mix(in srgb, var(--mv-green) 30%, transparent)", color:C.green, padding:"3px 10px", borderRadius:4, fontWeight:700}}>
                 CONNECTED
               </span>
             )}
@@ -369,8 +369,8 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
         {carrier.services.map((s, i) => (
           <span key={i} style={{
             fontSize:13, padding:"4px 12px", borderRadius:4,
-            background:`${carrier.color}12`, color:carrier.color,
-            border:`1px solid ${carrier.color}25`,
+          background:`color-mix(in srgb, ${carrier.color} 12%, transparent)`, color:carrier.color,
+          border:`1px solid color-mix(in srgb, ${carrier.color} 25%, transparent)`,
           }}>
             {s}
           </span>
@@ -459,7 +459,7 @@ export default function Carriers() {
 
         {/* Success message */}
         {successMsg && (
-          <div style={{background:"#0d2414", border:"1px solid #00D68A33", borderRadius:8, padding:"16px 20px", fontSize:15, color:C.green, marginBottom:24, display:"flex", alignItems:"center", gap:12, animation:"fadeIn 0.3s ease"}}>
+          <div style={{background:"color-mix(in srgb, var(--mv-green) 15%, transparent)", border:"1px solid color-mix(in srgb, var(--mv-green) 30%, transparent)", borderRadius:8, padding:"16px 20px", fontSize:15, color:C.green, marginBottom:24, display:"flex", alignItems:"center", gap:12, animation:"fadeIn 0.3s ease"}}>
             <span style={{fontSize:20}}>✓</span> {successMsg}
           </div>
         )}
@@ -492,8 +492,8 @@ export default function Carriers() {
               style={{
                 padding:"10px 20px", borderRadius:6, fontSize:15, cursor:"pointer",
                 border:`1px solid ${filter === f.key ? C.yellow : C.border}`,
-                background: filter === f.key ? "#E8F40015" : "transparent",
-                color: filter === f.key ? C.yellow : C.dim,
+                background: filter === f.key ? "color-mix(in srgb, var(--mv-yellow) 15%, transparent)" : "transparent",
+                color: filter === f.key ? "var(--mv-yellow-text)" : C.dim,
                 fontFamily:"'Sora',sans-serif", transition:"all 0.15s",
               }}
             >

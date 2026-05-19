@@ -85,8 +85,27 @@ const GlobalStyles = () => (
       .plans-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
       .plan-card { padding: 24px 20px !important; }
       .tbl-container { overflow-x: auto; }
-      .invoice-header { min-width: 620px; }
-      .invoice-row { min-width: 620px; }
+      .invoice-header { display: none !important; }
+      .tbl-container { padding: 16px; background: transparent; }
+      .invoice-row {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+        min-width: auto !important;
+        padding: 16px;
+        border: 1px solid var(--mv-border);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        background: var(--mv-panel);
+      }
+      .invoice-row:last-child { margin-bottom: 0; border-bottom: 1px solid var(--mv-border); }
+      .invoice-row > span, .invoice-row > div { display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
+      .invoice-row > span::before, .invoice-row > div::before { font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .invoice-row > span:nth-child(1)::before { content: "Invoice ID"; }
+      .invoice-row > span:nth-child(2)::before { content: "Date"; }
+      .invoice-row > span:nth-child(3)::before { content: "Plan"; }
+      .invoice-row > div:nth-child(4)::before { content: "Amount"; }
+      .invoice-row > div:nth-child(4) > div { justify-content: flex-start !important; margin-top: 4px; }
       .confirm-modal { width: calc(100% - 32px) !important; }
       .confirm-actions { flex-direction: column; }
       .confirm-actions button { width: 100%; }
@@ -102,9 +121,27 @@ const GlobalStyles = () => (
       .plans-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
       .plan-card { padding: 24px 16px !important; }
       
-      .tbl-container { overflow-x: auto; }
-      .invoice-header { min-width: 500px; }
-      .invoice-row { min-width: 500px; }
+      .invoice-header { display: none !important; }
+      .tbl-container { padding: 16px; background: transparent; }
+      .invoice-row {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+        min-width: auto !important;
+        padding: 16px;
+        border: 1px solid var(--mv-border);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        background: var(--mv-panel);
+      }
+      .invoice-row:last-child { margin-bottom: 0; border-bottom: 1px solid var(--mv-border); }
+      .invoice-row > span, .invoice-row > div { display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
+      .invoice-row > span::before, .invoice-row > div::before { font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .invoice-row > span:nth-child(1)::before { content: "Invoice ID"; }
+      .invoice-row > span:nth-child(2)::before { content: "Date"; }
+      .invoice-row > span:nth-child(3)::before { content: "Plan"; }
+      .invoice-row > div:nth-child(4)::before { content: "Amount"; }
+      .invoice-row > div:nth-child(4) > div { justify-content: flex-start !important; margin-top: 4px; }
     }
   `}</style>
 );

@@ -73,7 +73,9 @@ const GlobalStyles = () => (
       .period-btn { white-space: nowrap; flex-shrink: 0; }
       .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
       .delivery-grid { grid-template-columns: 1fr !important; }
-      .charts-grid { grid-template-columns: 1fr !important; }
+      .charts-grid { grid-template-columns: repeat(4, minmax(300px, 1fr)) !important; overflow-x: auto !important; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+      .charts-grid::-webkit-scrollbar { display: none; }
+      .charts-grid > .ana-card { scroll-snap-align: start; }
       .header-actions { gap: 6px !important; }
     }
 
@@ -93,9 +95,14 @@ const GlobalStyles = () => (
       .period-filters::-webkit-scrollbar { display: none; }
       .period-btn { white-space: nowrap; flex-shrink: 0; padding: 6px 12px !important; font-size: 11px !important; }
       
-      .kpi-grid { grid-template-columns: 1fr !important; }
+      .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 0 !important; background: var(--mv-card) !important; border: 1px solid var(--mv-border) !important; border-radius: 8px !important; overflow: hidden; margin-bottom: 20px !important; }
+      .kpi-card { padding: 10px 4px !important; background: transparent !important; border: none !important; border-right: 1px solid var(--mv-border) !important; border-radius: 0 !important; box-shadow: none !important; }
+      .kpi-card:last-child { border-right: none !important; }
+      .kpi-card > div:first-child { display: none !important; }
+      .kpi-card > div:nth-child(2) { font-size: 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px !important; letter-spacing: 0 !important; text-align: center; }
+      .kpi-card > div:nth-child(3) { font-size: 14px !important; text-align: center; }
       .delivery-grid { grid-template-columns: 1fr !important; }
-      .charts-grid { grid-template-columns: 1fr !important; }
+      .charts-grid { grid-template-columns: repeat(4, minmax(260px, 1fr)) !important; }
       
       .pie-wrap { flex-direction: column !important; align-items: center !important; }
       .pie-wrap > div:first-child { width: 160px !important; height: 160px !important; }
@@ -275,8 +282,7 @@ export default function Analytics() {
             </div>
 
             {/* Charts row */}
-            <div className="charts-grid" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:14}}>
-
+            <div className="charts-grid" style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:14, marginBottom:14}}>
               {/* Carrier shipment count */}
               <div className="ana-card">
                 <div style={{fontSize:14, fontWeight:700, marginBottom:2}}>Shipments by carrier</div>
@@ -333,10 +339,9 @@ export default function Analytics() {
                   </div>
                 )}
               </div>
-            </div>
 
-            {/* Carrier performance table */}
-            <div className="ana-card" style={{marginBottom:14}}>
+              {/* Carrier performance table */}
+              <div className="ana-card">
               <div style={{fontSize:14, fontWeight:700, marginBottom:2}}>Carrier performance</div>
               <div style={{fontSize:11, color:C.dim, marginBottom:16}}>On-time rate and spend breakdown per carrier</div>
               {carrierStats.length === 0 ? (
@@ -381,10 +386,10 @@ export default function Analytics() {
                   </div>
                 </div>
               )}
-            </div>
+              </div>
 
-            {/* Spend efficiency */}
-            <div className="ana-card">
+              {/* Spend efficiency */}
+              <div className="ana-card">
               <div style={{fontSize:14, fontWeight:700, marginBottom:2}}>Spend efficiency</div>
               <div style={{fontSize:11, color:C.dim, marginBottom:16}}>Average cost per shipment by carrier</div>
               {carrierBarData.length === 0 ? (
@@ -402,6 +407,7 @@ export default function Analytics() {
                   </ResponsiveContainer>
                 </div>
               )}
+            </div>
             </div>
 
           </>

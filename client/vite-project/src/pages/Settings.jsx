@@ -7,7 +7,7 @@ const C = {
   bg:"var(--mv-bg)", panel:"var(--mv-panel)", card:"var(--mv-card)",
   border:"var(--mv-border)", border2:"var(--mv-border-2)",
   text:"var(--mv-text)", muted:"var(--mv-muted)", dim:"var(--mv-dim)",
-  yellow:"#E8F400", green:"#00D68A", red:"#FF5C38", amber:"#FFB020", blue:"#4da6ff",
+  yellow:"var(--mv-yellow)", green:"var(--mv-green)", red:"var(--mv-red)", amber:"var(--mv-amber)", blue:"var(--mv-blue)",
 };
 
 const GlobalStyles = () => (
@@ -27,7 +27,7 @@ const GlobalStyles = () => (
       color: var(--mv-text); outline: none; font-family: 'Sora', sans-serif;
       transition: border-color 0.2s;
     }
-    .inp:focus { border-color: #E8F400; }
+    .inp:focus { border-color: var(--mv-yellow); }
     .inp::placeholder { color: var(--mv-dimmer); }
     .inp:disabled { opacity: 0.5; cursor: not-allowed; }
     .inp-label {
@@ -35,7 +35,7 @@ const GlobalStyles = () => (
       letter-spacing: 0.09em; margin-bottom: 8px; display: block;
     }
     .save-btn {
-      background: #E8F400; color: #0A0B0D; border: none;
+      background: var(--mv-yellow); color: var(--mv-yellow-contrast); border: none;
       padding: 14px 28px; border-radius: 8px; font-size: 15px;
       font-weight: 700; cursor: pointer; font-family: 'Sora', sans-serif;
       transition: opacity 0.2s;
@@ -50,12 +50,12 @@ const GlobalStyles = () => (
     }
     .ghost-btn:hover { border-color: var(--mv-dim); color: var(--mv-text); }
     .danger-btn {
-      background: transparent; color: #FF5C38;
-      border: 1px solid #FF5C3833; padding: 14px 28px;
+      background: transparent; color: var(--mv-red);
+      border: 1px solid color-mix(in srgb, var(--mv-red) 20%, transparent); padding: 14px 28px;
       border-radius: 8px; font-size: 15px; cursor: pointer;
       font-family: 'Sora', sans-serif; transition: all 0.2s;
     }
-    .danger-btn:hover { border-color: #FF5C3866; background: #200808; }
+    .danger-btn:hover { border-color: color-mix(in srgb, var(--mv-red) 40%, transparent); background: color-mix(in srgb, var(--mv-red) 10%, transparent); }
     .tab-btn {
       display: flex; align-items: center; gap: 12px;
       padding: 14px 20px; border-radius: 8px; font-size: 15px;
@@ -64,7 +64,7 @@ const GlobalStyles = () => (
       transition: all 0.15s; text-align: left; width: 100%;
     }
     .tab-btn:hover { color: var(--mv-text); background: var(--mv-card); }
-    .tab-btn.active { color: var(--mv-text); background: var(--mv-card); border-left: 3px solid #E8F400; }
+    .tab-btn.active { color: var(--mv-text); background: var(--mv-card); border-left: 3px solid var(--mv-yellow); }
     .setting-card {
       background: var(--mv-card); border: 1px solid var(--mv-border);
       border-radius: 12px; padding: 32px; margin-bottom: 24px;
@@ -87,7 +87,7 @@ const GlobalStyles = () => (
     }
     .spinner {
       width: 20px; height: 20px; border: 2px solid var(--mv-border-2);
-      border-top-color: #E8F400; border-radius: 50%;
+      border-top-color: var(--mv-yellow); border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
     }
     .select-inp {
@@ -96,19 +96,19 @@ const GlobalStyles = () => (
       color: var(--mv-text); outline: none; font-family: 'Sora', sans-serif;
       cursor: pointer; appearance: none;
     }
-    .select-inp:focus { border-color: #E8F400; }
+    .select-inp:focus { border-color: var(--mv-yellow); }
     .select-inp option { background: var(--mv-panel); }
     .success-toast {
-      background: #0d2414; border: 1px solid #00D68A33;
+      background: color-mix(in srgb, var(--mv-green) 15%, transparent); border: 1px solid color-mix(in srgb, var(--mv-green) 20%, transparent);
       border-radius: 8px; padding: 16px 20px; font-size: 15px;
-      color: #00D68A; margin-bottom: 20px;
+      color: var(--mv-green); margin-bottom: 20px;
       display: flex; align-items: center; gap: 10px;
       animation: fadeIn 0.3s ease;
     }
     .error-toast {
-      background: #200808; border: 1px solid #FF5C3833;
+      background: color-mix(in srgb, var(--mv-red) 15%, transparent); border: 1px solid color-mix(in srgb, var(--mv-red) 20%, transparent);
       border-radius: 8px; padding: 16px 20px; font-size: 15px;
-      color: #FF5C38; margin-bottom: 20px;
+      color: var(--mv-red); margin-bottom: 20px;
       display: flex; align-items: center; gap: 10px;
       animation: fadeIn 0.3s ease;
     }
@@ -138,7 +138,7 @@ const GlobalStyles = () => (
       }
       .settings-sidebar > button.active {
         border-left: none !important;
-        border-bottom: 3px solid #E8F400 !important;
+        border-bottom: 3px solid var(--mv-yellow) !important;
       }
       .setting-card { padding: 24px 20px !important; }
       .form-grid {
@@ -164,7 +164,7 @@ const GlobalStyles = () => (
       .settings-sidebar { display: flex; flex-direction: row !important; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
       .settings-sidebar::-webkit-scrollbar { display: none; }
       .settings-sidebar > button { white-space: nowrap; flex-shrink: 0; padding: 10px 14px !important; width: auto !important; font-size: 13px !important; }
-      .settings-sidebar > button.active { border-left: none !important; border-bottom: 3px solid #E8F400 !important; }
+      .settings-sidebar > button.active { border-left: none !important; border-bottom: 3px solid var(--mv-yellow) !important; }
       
       .setting-card { padding: 20px 16px !important; }
       .form-grid { flex-direction: column !important; display: flex !important; }
@@ -398,9 +398,9 @@ export default function Settings() {
           }}>
             <div style={{
               width:80, height:80, borderRadius:"50%",
-              background:"#0d2414", border:"2px solid #00D68A44",
+              background:"color-mix(in srgb, var(--mv-green) 15%, transparent)", border:"2px solid color-mix(in srgb, var(--mv-green) 25%, transparent)",
               display:"flex", alignItems:"center", justifyContent:"center",
-              fontSize:24, fontWeight:700, color:C.green,
+              fontSize:24, fontWeight:700, color:"var(--mv-green)",
               margin:"0 auto 12px",
             }}>
               {initials}
@@ -409,8 +409,8 @@ export default function Settings() {
             <div style={{fontSize:14, color:C.dim, marginTop:4}}>{user?.email || ""}</div>
             <div style={{
               marginTop:12, fontSize:13,
-              background:"#E8F40015", border:"1px solid #E8F40033",
-              color:C.yellow, padding:"4px 12px", borderRadius:4,
+              background:"color-mix(in srgb, var(--mv-yellow) 10%, transparent)", border:"1px solid color-mix(in srgb, var(--mv-yellow) 20%, transparent)",
+              color:"var(--mv-yellow-text)", padding:"4px 12px", borderRadius:4,
               display:"inline-block", fontWeight:700,
             }}>
               {(user?.business?.subscription?.plan || "starter").toUpperCase()}
@@ -629,7 +629,7 @@ export default function Settings() {
                   <div style={{display:"flex", alignItems:"center", gap:12}}>
                     <div style={{
                       width:48, height:48, borderRadius:10,
-                      background:"#E8F40015", border:"1px solid #E8F40033",
+                  background:"color-mix(in srgb, var(--mv-yellow) 10%, transparent)", border:"1px solid color-mix(in srgb, var(--mv-yellow) 20%, transparent)",
                       display:"flex", alignItems:"center", justifyContent:"center",
                       fontSize:24,
                     }}>💻</div>
@@ -641,8 +641,8 @@ export default function Settings() {
                     </div>
                   </div>
                   <div style={{
-                    fontSize:13, background:"#00D68A18",
-                    border:"1px solid #00D68A33", color:C.green,
+                fontSize:13, background:"color-mix(in srgb, var(--mv-green) 10%, transparent)",
+                border:"1px solid color-mix(in srgb, var(--mv-green) 20%, transparent)", color:C.green,
                     padding:"4px 12px", borderRadius:4, fontWeight:700,
                   }}>
                     CURRENT
@@ -654,7 +654,7 @@ export default function Settings() {
 
           {/* ── DANGER ZONE TAB ── */}
           {tab === "danger" && (
-            <div className="setting-card" style={{border:`1px solid #FF5C3833`}}>
+            <div className="setting-card" style={{border:`1px solid color-mix(in srgb, var(--mv-red) 20%, transparent)`}}>
               <SectionHead title="Danger zone" sub="Irreversible actions — proceed with caution"/>
 
               {[

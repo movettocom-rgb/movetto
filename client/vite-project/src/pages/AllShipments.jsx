@@ -6,7 +6,7 @@ const C = {
   bg:"var(--mv-bg)", panel:"var(--mv-panel)", card:"var(--mv-card)",
   border:"var(--mv-border)", border2:"var(--mv-border-2)",
   text:"var(--mv-text)", muted:"var(--mv-muted)", dim:"var(--mv-dim)",
-  yellow:"#E8F400", green:"#00D68A", red:"#FF5C38", amber:"#FFB020", blue:"#4da6ff",
+  yellow:"var(--mv-yellow)", green:"var(--mv-green)", red:"var(--mv-red)", amber:"var(--mv-amber)", blue:"var(--mv-blue)",
 };
 
 const GlobalStyles = () => (
@@ -40,17 +40,17 @@ const GlobalStyles = () => (
       font-family:'Sora',sans-serif; transition:all 0.15s;
     }
     .filter-btn:hover{color:var(--mv-text);border-color:var(--mv-border-2)}
-    .filter-btn.active{background:#E8F40015;border-color:#E8F40050;color:#E8F400}
+.filter-btn.active{background:color-mix(in srgb, var(--mv-yellow) 15%, transparent);border-color:color-mix(in srgb, var(--mv-yellow) 50%, transparent);color:var(--mv-yellow-text)}
     .search-inp{
       background:var(--mv-panel); border:1px solid var(--mv-border); border-radius:8px;
       padding:9px 14px; font-size:13px; color:var(--mv-text); outline:none;
       font-family:'Sora',sans-serif; transition:border-color 0.2s; width:260px;
     }
-    .search-inp:focus{border-color:#E8F400}
+.search-inp:focus{border-color:var(--mv-yellow)}
     .search-inp::placeholder{color:var(--mv-dimmer)}
     .spinner{
       width:28px;height:28px;border:3px solid var(--mv-border-2);
-      border-top-color:#E8F400;border-radius:50%;
+  border-top-color:var(--mv-yellow);border-radius:50%;
       animation:spin 0.7s linear infinite;
     }
     .page-btn{
@@ -60,7 +60,7 @@ const GlobalStyles = () => (
       display:flex;align-items:center;justify-content:center;
     }
     .page-btn:hover{color:var(--mv-text);border-color:var(--mv-border-2)}
-    .page-btn.active{background:#E8F40015;border-color:#E8F40050;color:#E8F400}
+.page-btn.active{background:color-mix(in srgb, var(--mv-yellow) 15%, transparent);border-color:color-mix(in srgb, var(--mv-yellow) 50%, transparent);color:var(--mv-yellow-text)}
     .page-btn:disabled{opacity:0.3;cursor:not-allowed}
 
     @media (max-width: 768px) {
@@ -72,21 +72,28 @@ const GlobalStyles = () => (
       .status-filters::-webkit-scrollbar { display: none; }
       .filter-btn { white-space: nowrap; flex-shrink: 0; }
       .tbl-header { display: none; }
+      .tbl-container { padding: 16px; }
       .tbl-row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-        min-width: auto;
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--mv-border);
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+        min-width: auto !important;
+        padding: 16px;
+        border: 1px solid var(--mv-border);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        background: var(--mv-panel);
       }
-      .tbl-row > div { display: grid; gap: 4px; }
-      .tbl-row > div:nth-child(1)::before { content: "Tracking ID / Route"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(2)::before { content: "Carrier"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(3)::before { content: "Weight"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(4)::before { content: "Rate"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(5)::before { content: "Date"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(6)::before { content: "Status"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row:last-child { margin-bottom: 0; border-bottom: 1px solid var(--mv-border); }
+      .tbl-row > div { display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
+      .tbl-row > div::before { font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .tbl-row > div:nth-child(1)::before { content: "Tracking ID / Route"; }
+      .tbl-row > div:nth-child(2)::before { content: "Carrier"; }
+      .tbl-row > div:nth-child(3)::before { content: "Weight"; }
+      .tbl-row > div:nth-child(4)::before { content: "Rate"; }
+      .tbl-row > div:nth-child(5)::before { content: "Date"; }
+      .tbl-row > div:nth-child(6)::before { content: "Status"; }
+      .tbl-row > div:nth-child(6) { align-items: flex-start; }
       .pagination-row {
         flex-direction: column;
         align-items: flex-start !important;
@@ -110,15 +117,15 @@ const GlobalStyles = () => (
 );
 
 const TAG_STYLES = {
-  DELIVERED:        {bg:"#0d2414", color:"#00D68A", border:"#00D68A25", label:"Delivered"},
-  IN_TRANSIT:       {bg:"#1f1500", color:"#FFB020", border:"#FFB02025", label:"In transit"},
-  OUT_FOR_DELIVERY: {bg:"#080f20", color:"#4da6ff", border:"#4da6ff25", label:"Out for delivery"},
-  PICKED_UP:        {bg:"#080f20", color:"#4da6ff", border:"#4da6ff25", label:"Picked up"},
-  BOOKED:           {bg:"#1a1800", color:"#E8F400", border:"#E8F40025", label:"Booked"},
-  LABEL_GENERATED:  {bg:"#1a1800", color:"#E8F400", border:"#E8F40025", label:"Label generated"},
-  RTO_INITIATED:    {bg:"#200808", color:"#FF5C38", border:"#FF5C3825", label:"RTO initiated"},
-  RTO_DELIVERED:    {bg:"#200808", color:"#FF5C38", border:"#FF5C3825", label:"RTO delivered"},
-  DELIVERY_FAILED:  {bg:"#200808", color:"#FF5C38", border:"#FF5C3825", label:"Failed"},
+  DELIVERED:        {bg:"color-mix(in srgb, var(--mv-green) 10%, transparent)", color:"var(--mv-green)", border:"color-mix(in srgb, var(--mv-green) 15%, transparent)", label:"Delivered"},
+  IN_TRANSIT:       {bg:"color-mix(in srgb, var(--mv-amber) 10%, transparent)", color:"var(--mv-amber)", border:"color-mix(in srgb, var(--mv-amber) 15%, transparent)", label:"In transit"},
+  OUT_FOR_DELIVERY: {bg:"color-mix(in srgb, var(--mv-blue) 10%, transparent)", color:"var(--mv-blue)", border:"color-mix(in srgb, var(--mv-blue) 15%, transparent)", label:"Out for delivery"},
+  PICKED_UP:        {bg:"color-mix(in srgb, var(--mv-blue) 10%, transparent)", color:"var(--mv-blue)", border:"color-mix(in srgb, var(--mv-blue) 15%, transparent)", label:"Picked up"},
+  BOOKED:           {bg:"color-mix(in srgb, var(--mv-yellow) 10%, transparent)", color:"var(--mv-yellow-text)", border:"color-mix(in srgb, var(--mv-yellow) 15%, transparent)", label:"Booked"},
+  LABEL_GENERATED:  {bg:"color-mix(in srgb, var(--mv-yellow) 10%, transparent)", color:"var(--mv-yellow-text)", border:"color-mix(in srgb, var(--mv-yellow) 15%, transparent)", label:"Label generated"},
+  RTO_INITIATED:    {bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", color:"var(--mv-red)", border:"color-mix(in srgb, var(--mv-red) 15%, transparent)", label:"RTO initiated"},
+  RTO_DELIVERED:    {bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", color:"var(--mv-red)", border:"color-mix(in srgb, var(--mv-red) 15%, transparent)", label:"RTO delivered"},
+  DELIVERY_FAILED:  {bg:"color-mix(in srgb, var(--mv-red) 10%, transparent)", color:"var(--mv-red)", border:"color-mix(in srgb, var(--mv-red) 15%, transparent)", label:"Failed"},
   CANCELLED:        {bg:"#1a1a1a", color:"var(--mv-dim)", border:"#5A647825", label:"Cancelled"},
   DRAFT:            {bg:"#1a1a1a", color:"var(--mv-dim)", border:"#5A647825", label:"Draft"},
 };
@@ -243,7 +250,7 @@ export default function AllShipments() {
           <button
             onClick={() => navigate("/book")}
             className="book-btn"
-            style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
+            style={{background:C.yellow, color:"var(--mv-yellow-contrast)", border:"none", padding:"8px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
           >
             + Book<span className="hide-mobile-text"> shipment</span>
           </button>
@@ -311,7 +318,7 @@ export default function AllShipments() {
               </div>
               <button
                 onClick={() => navigate("/book")}
-                style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"10px 24px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
+                style={{background:C.yellow, color:"var(--mv-yellow-contrast)", border:"none", padding:"10px 24px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer"}}
               >
                 Book first shipment →
               </button>

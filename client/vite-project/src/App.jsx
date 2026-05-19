@@ -51,11 +51,11 @@ const ThemeVars = () => (
       --mv-border-2: #CBD5E1;
       --mv-text: #0F172A;
       --mv-paper: #1E293B;
-      --mv-muted: #475569;
-      --mv-dim: #64748B;
-      --mv-dimmer: #94A3B8;
-      --mv-yellow: #CADD00;
-      --mv-yellow-text: #8A9100;
+      --mv-muted: #334155;
+      --mv-dim: #475569;
+      --mv-dimmer: #64748B;
+      --mv-yellow: #B0C400;
+      --mv-yellow-text: #7A8700;
       --mv-yellow-contrast: #0A0B0D;
       --mv-green: #059669;
       --mv-red: #DC2626;

@@ -29,7 +29,7 @@ const GlobalStyles = () => (
       border-left:3px solid transparent; transition:all 0.15s;
     }
     .sb-item:hover { color:var(--mv-text); background:var(--mv-card); }
-    .sb-item.active { color:var(--mv-text); background:var(--mv-card); border-left-color:#E8F400; }
+  .sb-item.active { color:var(--mv-text); background:var(--mv-card); border-left-color:var(--mv-yellow); }
     .kpi-card {
       background:var(--mv-card); border:1px solid var(--mv-border); border-radius:12px;
       padding:24px; position:relative; overflow:hidden;
@@ -56,7 +56,7 @@ const GlobalStyles = () => (
       padding:16px; cursor:pointer; transition:all 0.15s;
       display:flex; align-items:center; gap:14px;
     }
-    .quick-card:hover { border-color:#E8F40030; background:#101300; }
+  .quick-card:hover { border-color:color-mix(in srgb, var(--mv-yellow) 30%, transparent); background:var(--mv-card-hover); }
     .period-btn {
       padding:9px 16px; border-radius:6px; font-size:14px; cursor:pointer;
       border:1px solid var(--mv-border); background:transparent; color:var(--mv-dim);
@@ -65,13 +65,13 @@ const GlobalStyles = () => (
       flex-shrink: 0;
     }
     .period-btn:hover { color:var(--mv-text); border-color:var(--mv-border-2); }
-    .period-btn.active { background:#E8F40015; border-color:#E8F40050; color:#E8F400; }
+  .period-btn.active { background:color-mix(in srgb, var(--mv-yellow) 15%, transparent); border-color:color-mix(in srgb, var(--mv-yellow) 50%, transparent); color:var(--mv-yellow-text); }
     .logout-btn {
       margin:0 16px 16px; padding:12px 16px; border-radius:8px;
-      border:1px solid #FF5C3830; background:#200808;
+    border:1px solid color-mix(in srgb, var(--mv-red) 30%, transparent); background:color-mix(in srgb, var(--mv-red) 10%, transparent);
       display:flex; align-items:center; gap:10px; cursor:pointer; transition:border-color 0.2s;
     }
-    .logout-btn:hover { border-color:#FF5C3860; }
+  .logout-btn:hover { border-color:color-mix(in srgb, var(--mv-red) 60%, transparent); }
     .filter-select {
       background:var(--mv-panel); border:1px solid var(--mv-border-2); border-radius:6px;
       padding:9px 14px; font-size:14px; color:var(--mv-muted);
@@ -87,11 +87,11 @@ const GlobalStyles = () => (
     .search-inp { background:transparent; border:none; outline:none; color:var(--mv-text); font-size:14px; width:220px; font-family:'Sora',sans-serif; }
     .search-inp::placeholder { color:var(--mv-dim); }
     .dashboard-alert {
-      background:#1a0808; border:1px solid #FF5C3825; border-left:3px solid #FF5C38;
+    background:color-mix(in srgb, var(--mv-red) 10%, transparent); border:1px solid color-mix(in srgb, var(--mv-red) 25%, transparent); border-left:3px solid var(--mv-red);
       border-radius:8px; padding:16px 20px; display:flex; align-items:center; gap:14px;
       margin-bottom:28px; font-size:15px;
     }
-    .dashboard-alert-action { margin-left:auto; color:#FF5C38; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .dashboard-alert-action { margin-left:auto; color:var(--mv-red); font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
     .card-header {
       padding:20px 24px; display:flex; justify-content:space-between; align-items:center;
       gap:16px; border-bottom:1px solid var(--mv-border);
@@ -121,7 +121,7 @@ const GlobalStyles = () => (
     .sidebar { width: 260px; flex-shrink: 0; transition: transform 0.3s ease; background: var(--mv-panel); border-right: 1px solid var(--mv-border); z-index: 50; display: flex; flex-direction: column; height: 100%; }
     .main-content { display: flex; flex-direction: column; flex: 1; min-width: 0; }
     .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 24px; }
-    .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
     .quick-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .tbl-container { overflow-x: auto; }
     .tbl-header { display: grid; grid-template-columns: 2fr 1.2fr 0.9fr 0.9fr 1fr; padding: 14px 24px; font-size: 12px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.09em; border-bottom: 1px solid var(--mv-border); min-width: 600px; }
@@ -145,7 +145,9 @@ const GlobalStyles = () => (
     }
 
     @media (max-width: 768px) {
-      .two-col-grid { grid-template-columns: 1fr; }
+      .dashboard-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; gap: 14px; padding-bottom: 8px; }
+      .dashboard-grid::-webkit-scrollbar { display: none; }
+      .dashboard-grid > .feat-card { min-width: 320px; scroll-snap-align: start; flex-shrink: 0; }
       .topbar { padding: 0 16px; height: 62px; position: sticky; top: 0; z-index: 30; }
       .hide-mobile { display: none !important; }
       .dashboard-content-pad { padding: 22px 16px 34px !important; display: flex; flex-direction: column; align-items: center; }
@@ -165,7 +167,8 @@ const GlobalStyles = () => (
     }
 
     @media (max-width: 480px) {
-      .kpi-grid { grid-template-columns: 1fr; }
+      .dashboard-grid > .feat-card { min-width: 280px; }
+      .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 0 !important; background: var(--mv-card) !important; border: 1px solid var(--mv-border) !important; border-radius: 8px !important; overflow: hidden; margin-bottom: 20px !important; }
       .quick-actions-grid { grid-template-columns: 1fr; }
       .topbar { padding: 0 12px; }
       .hamburger { margin-right: 8px; font-size: 20px; }
@@ -179,10 +182,13 @@ const GlobalStyles = () => (
       .sidebar { width: 240px; }
       .dashboard-content-pad { padding: 20px 12px 32px !important; }
       .dashboard-content-pad > * { width: min(100%, 390px); }
-      .kpi-card { padding: 18px 18px 18px 20px; border-radius: 10px; }
-      .kpi-label { font-size: 11px; margin-bottom: 10px; letter-spacing: 0.07em; }
-      .kpi-value { font-size: 28px !important; margin-bottom: 10px; }
-      .kpi-change { font-size: 12px; }
+      .kpi-card { padding: 10px 4px !important; background: transparent !important; border: none !important; border-right: 1px solid var(--mv-border) !important; border-radius: 0 !important; }
+      .kpi-card:last-child { border-right: none !important; }
+      .kpi-card > div:first-child { display: none !important; }
+      .kpi-label { font-size: 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px !important; letter-spacing: 0 !important; text-align: center; }
+      .kpi-value { font-size: 14px !important; margin-bottom: 4px !important; text-align: center; }
+      .kpi-change { font-size: 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; justify-content: center; }
+      .kpi-change svg { width: 8px; height: 8px; }
       .feat-card { padding: 18px; border-radius: 10px; }
       .card-header { flex-direction: column; padding: 16px 16px; gap: 12px; }
       .card-title { font-size: 16px; }
@@ -197,20 +203,45 @@ const GlobalStyles = () => (
       .pie-wrap > div:first-child { width: 100% !important; height: 180px !important; }
       .tbl-header, .tbl-row { padding: 10px 12px; font-size: 13px; min-width: auto; }
       .tbl-header { display: none; }
-      .tbl-row { display: grid; grid-template-columns: 1fr; gap: 10px; border-bottom: 1px solid var(--mv-border); }
-      .tbl-row > div { display: grid; gap: 4px; }
-      .tbl-row > div:nth-child(1)::before { content: "Route"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(2)::before { content: "Carrier"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(3)::before { content: "Rate"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(4)::before { content: "Date"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .tbl-row > div:nth-child(5)::before { content: "Status"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-container { padding: 16px; }
+      .tbl-row { 
+        display: flex !important; 
+        flex-direction: column !important;
+        padding: 16px; 
+        border: 1px solid var(--mv-border); 
+        border-radius: 10px; 
+        margin-bottom: 12px; 
+        background: var(--mv-panel); 
+        gap: 12px;
+      }
+      .tbl-row:last-child { margin-bottom: 0; border-bottom: 1px solid var(--mv-border); }
+      .tbl-row > div { display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
+      .tbl-row > div::before { font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .tbl-row > div:nth-child(1)::before { content: "Tracking ID / Route"; }
+      .tbl-row > div:nth-child(2)::before { content: "Carrier"; }
+      .tbl-row > div:nth-child(3)::before { content: "Rate"; }
+      .tbl-row > div:nth-child(4)::before { content: "Date"; }
+      .tbl-row > div:nth-child(5)::before { content: "Status"; }
+      .tbl-row > div:nth-child(5) { align-items: flex-start; }
       .invoice-header { display: none; }
-      .invoice-row { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 12px 14px; font-size: 13px; }
-      .invoice-row > span { display: grid; gap: 4px; }
-      .invoice-row > span:nth-child(1)::before { content: "Carrier"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .invoice-row > span:nth-child(2)::before { content: "Invoiced"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .invoice-row > span:nth-child(3)::before { content: "Matched"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
-      .invoice-row > span:nth-child(4)::before { content: "Difference"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .invoice-row { 
+        display: flex !important; 
+        flex-direction: column !important;
+        padding: 16px; 
+        border: 1px solid var(--mv-border); 
+        border-radius: 10px; 
+        margin-bottom: 12px; 
+        background: var(--mv-panel); 
+        gap: 12px;
+      }
+      .invoice-row:last-child { margin-bottom: 0; border-bottom: 1px solid var(--mv-border); }
+      .invoice-row > span { display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
+      .invoice-row > span::before { font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+      .invoice-row > span:nth-child(1)::before { content: "Carrier"; }
+      .invoice-row > span:nth-child(2)::before { content: "Invoiced"; }
+      .invoice-row > span:nth-child(3)::before { content: "Matched"; }
+      .invoice-row > span:nth-child(4)::before { content: "Difference"; }
+      .invoice-row > span:nth-child(4) { align-items: flex-start; }
       .logout-btn { margin: 0 12px 12px; padding: 10px 12px; border-radius: 8px; }
       .logout-btn span { font-size: 12px; }
       .search-inp { width: 140px; font-size: 13px; }
@@ -228,6 +259,7 @@ const GlobalStyles = () => (
     }
 
     @media (max-width: 360px) {
+      .dashboard-grid > .feat-card { min-width: 260px; }
       .sidebar { width: 220px; }
       .topbar { padding: 0 10px; }
       .topbar-greeting { font-size: 12px !important; }
@@ -235,8 +267,8 @@ const GlobalStyles = () => (
       .book-btn { padding: 6px 8px !important; font-size: 11px !important; }
       .dashboard-content-pad { padding: 16px 10px 28px !important; }
       .dashboard-content-pad > * { width: min(100%, 330px); }
-      .kpi-card { padding: 16px; }
-      .kpi-value { font-size: 25px !important; }
+      .kpi-card { padding: 8px 2px !important; }
+      .kpi-value { font-size: 12px !important; }
       .feat-card { padding: 16px; }
       .quick-card { padding: 10px; gap: 8px; }
       .quick-card > div:first-child { width: 36px !important; height: 36px !important; font-size: 18px !important; }
@@ -260,7 +292,7 @@ const C = {
     bg: "var(--mv-bg)", panel: "var(--mv-panel)", card: "var(--mv-card)",
     border: "var(--mv-border)", border2: "var(--mv-border-2)",
     text: "var(--mv-text)", muted: "var(--mv-muted)", dim: "var(--mv-dim)", dimmer: "var(--mv-dimmer)",
-    yellow: "#E8F400", green: "#00D68A", red: "#FF5C38", amber: "#FFB020", blue: "#4da6ff",
+    yellow: "var(--mv-yellow)", green: "var(--mv-green)", red: "var(--mv-red)", amber: "var(--mv-amber)", blue: "var(--mv-blue)",
 };
 
 const CHART_COLORS = [C.yellow, C.blue, C.green, C.amber, C.red, C.muted];
@@ -335,7 +367,7 @@ const buildCarrierInsights = (carrierStats = [], summary = null) => {
             tag: "Best carrier",
             tagColor: C.green,
             borderColor: C.green,
-            borderBg: "#00D68A18",
+            borderBg: "color-mix(in srgb, var(--mv-green) 10%, transparent)",
             text: `${bestCarrier._id || "Unknown"} is leading with ${Math.round(bestCarrier.onTimeRate || 0)}% on-time delivery across ${bestCarrier.totalShipments || 0} shipments.`,
         });
     }
@@ -345,7 +377,7 @@ const buildCarrierInsights = (carrierStats = [], summary = null) => {
             tag: "Needs attention",
             tagColor: C.amber,
             borderColor: C.amber,
-            borderBg: "#FFB02018",
+            borderBg: "color-mix(in srgb, var(--mv-amber) 10%, transparent)",
             text: `${riskiestCarrier._id || "Unknown"} is at ${Math.round(riskiestCarrier.onTimeRate || 0)}% on-time delivery. Review delayed shipments before booking more volume there.`,
         });
     }
@@ -355,7 +387,7 @@ const buildCarrierInsights = (carrierStats = [], summary = null) => {
             tag: rtoRate > 5 ? "RTO watch" : "Healthy flow",
             tagColor: rtoRate > 5 ? C.red : C.yellow,
             borderColor: rtoRate > 5 ? C.red : C.yellow,
-            borderBg: rtoRate > 5 ? "#FF5C3818" : "#E8F40018",
+            borderBg: rtoRate > 5 ? "color-mix(in srgb, var(--mv-red) 10%, transparent)" : "color-mix(in srgb, var(--mv-yellow) 10%, transparent)",
             text: `${rtoShipments} of ${totalShipments} shipments are RTO or failed in this period (${rtoRate}%).`,
         });
     }
@@ -395,11 +427,11 @@ const QUICK_ACTIONS = [
 
 /* ─── Helpers ─── */
 const TAG_STYLES = {
-    green: { bg: "#0d2414", color: C.green, border: "#00D68A25" },
-    amber: { bg: "#1f1500", color: C.amber, border: "#FFB02025" },
-    red: { bg: "#200808", color: C.red, border: "#FF5C3825" },
-    blue: { bg: "#080f20", color: C.blue, border: "#4da6ff25" },
-    yellow: { bg: "#1a1800", color: C.yellow, border: "#E8F40025" },
+    green: { bg: "color-mix(in srgb, var(--mv-green) 10%, transparent)", color: C.green, border: "color-mix(in srgb, var(--mv-green) 15%, transparent)" },
+    amber: { bg: "color-mix(in srgb, var(--mv-amber) 10%, transparent)", color: C.amber, border: "color-mix(in srgb, var(--mv-amber) 15%, transparent)" },
+    red: { bg: "color-mix(in srgb, var(--mv-red) 10%, transparent)", color: C.red, border: "color-mix(in srgb, var(--mv-red) 15%, transparent)" },
+    blue: { bg: "color-mix(in srgb, var(--mv-blue) 10%, transparent)", color: C.blue, border: "color-mix(in srgb, var(--mv-blue) 15%, transparent)" },
+    yellow: { bg: "color-mix(in srgb, var(--mv-yellow) 10%, transparent)", color: "var(--mv-yellow-text)", border: "color-mix(in srgb, var(--mv-yellow) 15%, transparent)" },
 };
 
 const Tag = ({ type, label }) => {
@@ -435,7 +467,7 @@ const Sidebar = ({ active, setActive, onLogout, user, summary, isOpen }) => {
     const mainNav = [
         {
             id: "dashboard", label: "Dashboard", badge: null,
-            icon: <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" fill="#E8F400" /><rect x="8.5" y="1" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.4" /><rect x="1" y="8.5" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.4" /><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.2" /></svg>
+                icon: <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" fill="var(--mv-yellow)" /><rect x="8.5" y="1" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.4" /><rect x="1" y="8.5" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.4" /><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" fill="var(--mv-text)" opacity="0.2" /></svg>
         },
         {
             id: "book", label: "Book shipment", badge: null,
@@ -485,7 +517,7 @@ const Sidebar = ({ active, setActive, onLogout, user, summary, isOpen }) => {
                             {item.icon}
                             {item.label}
                             {item.badge && (
-                                <span style={{ marginLeft: "auto", background: "#FF5C3820", border: "1px solid #FF5C3840", color: C.red, fontSize: 12, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>
+                            <span style={{ marginLeft: "auto", background: "color-mix(in srgb, var(--mv-red) 20%, transparent)", border: "1px solid color-mix(in srgb, var(--mv-red) 40%, transparent)", color: C.red, fontSize: 12, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>
                                     {item.badge}
                                 </span>
                             )}
@@ -508,7 +540,7 @@ const Sidebar = ({ active, setActive, onLogout, user, summary, isOpen }) => {
             {/* User + Logout */}
             <div style={{ marginTop: "auto", borderTop: `1px solid ${C.border}`, flexShrink: 0, background: "var(--mv-panel)" }}>
                 <div style={{ padding: "16px 24px", display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ width: 42, height: 42, borderRadius: "50%", background: "#0d2414", border: "1px solid #00D68A33", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: C.green, flexShrink: 0 }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "color-mix(in srgb, var(--mv-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--mv-green) 25%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: C.green, flexShrink: 0 }}>
                         {user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'KM'}
                     </div>
                     <div>
@@ -518,7 +550,7 @@ const Sidebar = ({ active, setActive, onLogout, user, summary, isOpen }) => {
                 </div>
                 <div className="logout-btn" onClick={onLogout}>
                     <svg width="15" height="15" viewBox="0 0 13 13" fill="none">
-                        <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h3M9 9l3-3-3-3M12 6.5H5" stroke="#FF5C38" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h3M9 9l3-3-3-3M12 6.5H5" stroke="var(--mv-red)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <span style={{ fontSize: 14, color: C.red, fontWeight: 600 }}>Log out</span>
                 </div>
@@ -558,7 +590,7 @@ const Topbar = ({ showNotifs, setShowNotifs, onBook, user, toggleSidebar }) => {
         <button
           className="book-btn"
           onClick={onBook}
-          style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"9px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"'Sora',sans-serif"}}
+        style={{background:C.yellow, color:"var(--mv-yellow-contrast)", border:"none", padding:"9px 18px", borderRadius:8, fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"'Sora',sans-serif"}}
         >
           + Book<span className="hide-mobile-text"> shipment</span>
         </button>
@@ -666,7 +698,7 @@ const ChartsRow = ({ dailyShipments, carrierBreakdown, summary, period }) => {
     const periodLabel = period === "7d" ? "last 7 days" : period === "3m" ? "last 3 months" : period === "yr" ? "this year" : "last 30 days";
 
     return (
-    <div className="two-col-grid">
+    <>
         <div className="feat-card">
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Shipments over time</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>Daily booking volume - {periodLabel}</div>
@@ -711,7 +743,7 @@ const ChartsRow = ({ dailyShipments, carrierBreakdown, summary, period }) => {
                 )}
             </div>
         </div>
-    </div>
+    </>
     );
 };
 
@@ -722,7 +754,7 @@ const CarrierInsightsRow = ({ carrierStats, summary, period }) => {
     const periodLabel = period === "7d" ? "last 7 days" : period === "3m" ? "last 3 months" : period === "yr" ? "this year" : "last 30 days";
 
     return (
-    <div className="two-col-grid">
+    <>
         <div className="feat-card">
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Carrier performance</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>On-time delivery rate - {periodLabel}</div>
@@ -752,7 +784,7 @@ const CarrierInsightsRow = ({ carrierStats, summary, period }) => {
                 </div>
             ))}
         </div>
-    </div>
+    </>
     );
 };
 
@@ -761,7 +793,7 @@ const QuickPieRow = ({ navigate, carrierBreakdown }) => {
     const pieData = formatCarrierShareData(carrierBreakdown);
 
     return (
-    <div className="two-col-grid">
+    <>
         <div className="feat-card">
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Quick actions</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>Shortcuts for common tasks</div>
@@ -808,7 +840,7 @@ const QuickPieRow = ({ navigate, carrierBreakdown }) => {
                 </div>
             </div>
         </div>
-    </div>
+    </>
     );
 };
 
@@ -983,9 +1015,11 @@ const DashboardContent = ({ summary, loading, recentShipments, carrierStats, car
             {/* Pass real data to KpiGrid */}
             <KpiGrid summary={summary} loading={loading} />
 
-            <ChartsRow dailyShipments={dailyShipments} carrierBreakdown={carrierBreakdown} summary={summary} period={period} />
-            <CarrierInsightsRow carrierStats={carrierStats} summary={summary} period={period} />
-            <QuickPieRow navigate={navigate} carrierBreakdown={carrierBreakdown}/>
+            <div className="dashboard-grid">
+                <ChartsRow dailyShipments={dailyShipments} carrierBreakdown={carrierBreakdown} summary={summary} period={period} />
+                <CarrierInsightsRow carrierStats={carrierStats} summary={summary} period={period} />
+                <QuickPieRow navigate={navigate} carrierBreakdown={carrierBreakdown}/>
+            </div>
 
             {/* Pass real data to ShipmentsTable */}
             <ShipmentsTable recentShipments={recentShipments} loading={loading} />

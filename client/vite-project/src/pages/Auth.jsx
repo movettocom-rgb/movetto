@@ -32,6 +32,7 @@ const GlobalStyles = () => (
       min-height: 48px;
     }
     .movetto-input:focus { border-color: #E8F400; }
+  .movetto-input:focus { border-color: var(--mv-yellow); }
     .movetto-input::placeholder { color: var(--mv-dimmer); }
     .movetto-select {
       width: 100%;
@@ -46,12 +47,12 @@ const GlobalStyles = () => (
       appearance: none;
       font-family: inherit;
     }
-    .movetto-select:focus { border-color: #E8F400; }
+  .movetto-select:focus { border-color: var(--mv-yellow); }
     .movetto-select option { background: var(--mv-panel); }
     .btn-yellow {
       width: 100%;
-      background: #E8F400;
-      color: #0A0B0D;
+    background: var(--mv-yellow);
+    color: var(--mv-yellow-contrast);
       border: none;
       padding: 14px 24px;
       border-radius: 7px;
@@ -95,12 +96,12 @@ const GlobalStyles = () => (
       margin-top: 16px;
     }
     .auth-error {
-      background: #200808;
-      border: 1px solid #FF5C3833;
+    background: color-mix(in srgb, var(--mv-red) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mv-red) 25%, transparent);
       border-radius: 6px;
       padding: 14px 18px;
       font-size: 15px;
-      color: #FF5C38;
+    color: var(--mv-red);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -130,7 +131,7 @@ const GlobalStyles = () => (
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      background: #00D68A;
+    background: var(--mv-green);
       display: inline-block;
       animation: pulse 2s infinite;
     }
@@ -138,7 +139,7 @@ const GlobalStyles = () => (
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #00D68A;
+    background: var(--mv-green);
       flex-shrink: 0;
       animation: pulse 2s infinite;
     }
@@ -341,7 +342,7 @@ const GlobalStyles = () => (
       .show-mobile-only { display: block !important; }
       .mobile-value-props {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: 1fr;
         gap: 8px;
         margin-bottom: 20px;
       }
@@ -365,8 +366,8 @@ const GlobalStyles = () => (
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #00D68A;
-        box-shadow: 0 0 9px rgba(0, 214, 138, 0.85);
+      background: var(--mv-green);
+      box-shadow: 0 0 9px color-mix(in srgb, var(--mv-green) 85%, transparent);
         flex-shrink: 0;
       }
       .auth-tabs { margin-bottom: 22px; }
@@ -451,8 +452,8 @@ const GoogleIcon = () => (
 );
 const AlertIcon = () => (
   <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
-    <circle cx="7" cy="7" r="6" stroke="#FF5C38" strokeWidth="1.2" />
-    <path d="M7 4v3M7 9.5v.5" stroke="#FF5C38" strokeWidth="1.2" strokeLinecap="round" />
+    <circle cx="7" cy="7" r="6" stroke="var(--mv-red)" strokeWidth="1.2" />
+    <path d="M7 4v3M7 9.5v.5" stroke="var(--mv-red)" strokeWidth="1.2" strokeLinecap="round" />
   </svg>
 );
 
@@ -497,7 +498,7 @@ function getStrength(v) {
   if (/[A-Z]/.test(v)) score++;
   if (/[0-9]/.test(v)) score++;
   if (/[^A-Za-z0-9]/.test(v)) score++;
-  const colors = ["#FF5C38", "#FFB020", "#FFB020", "#00D68A"];
+  const colors = ["var(--mv-red)", "var(--mv-amber)", "var(--mv-amber)", "var(--mv-green)"];
   const labels = ["Too short", "Weak", "Medium", "Strong"];
   return {
     score,
@@ -516,9 +517,9 @@ const StepDots = ({ current }) => {
         const isDone = n < current;
         const isActive = n === current;
         const dotStyle = isDone
-          ? { background: "#00D68A22", border: "1px solid #00D68A44", color: "#00D68A" }
+          ? { background: "color-mix(in srgb, var(--mv-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--mv-green) 30%, transparent)", color: "var(--mv-green)" }
           : isActive
-          ? { background: "#E8F400", color: "#0A0B0D" }
+          ? { background: "var(--mv-yellow)", color: "var(--mv-yellow-contrast)" }
           : { background: "var(--mv-border)", color: "var(--mv-dim)", border: "1px solid var(--mv-border-2)" };
         return (
           <div key={n} className="step-dot-item" style={{ display: "flex", alignItems: "center", flex: n < steps.length ? 1 : "unset" }}>
@@ -529,12 +530,12 @@ const StepDots = ({ current }) => {
               }}>
                 {isDone ? "✓" : n}
               </div>
-              <div className="step-dot-label" style={{ fontSize: 13, color: isDone ? "#00D68A" : isActive ? "#E8F400" : "var(--mv-dim)", marginTop: 4, whiteSpace: "nowrap" }}>
+              <div className="step-dot-label" style={{ fontSize: 13, color: isDone ? "var(--mv-green)" : isActive ? "var(--mv-yellow-text)" : "var(--mv-dim)", marginTop: 4, whiteSpace: "nowrap" }}>
                 {label}
               </div>
             </div>
             {n < steps.length && (
-              <div style={{ flex: 1, height: 1, background: isDone ? "#00D68A44" : "var(--mv-border-2)", marginBottom: 14, minWidth: 16 }} />
+              <div style={{ flex: 1, height: 1, background: isDone ? "color-mix(in srgb, var(--mv-green) 30%, transparent)" : "var(--mv-border-2)", marginBottom: 14, minWidth: 16 }} />
             )}
           </div>
         );
@@ -546,10 +547,10 @@ const StepDots = ({ current }) => {
 /* ─── Tabs ─── */
 const Tabs = ({ active, onReg, onLogin }) => (
   <div className="auth-tabs">
-    <button className="tab-btn" style={active === "reg" ? { background: "#E8F400", color: "#0A0B0D" } : { background: "transparent", color: "var(--mv-dim)" }} onClick={onReg}>
+    <button className="tab-btn" style={active === "reg" ? { background: "var(--mv-yellow)", color: "var(--mv-yellow-contrast)" } : { background: "transparent", color: "var(--mv-dim)" }} onClick={onReg}>
       Create account
     </button>
-    <button className="tab-btn" style={active === "login" ? { background: "#E8F400", color: "#0A0B0D" } : { background: "transparent", color: "var(--mv-dim)" }} onClick={onLogin}>
+    <button className="tab-btn" style={active === "login" ? { background: "var(--mv-yellow)", color: "var(--mv-yellow-contrast)" } : { background: "transparent", color: "var(--mv-dim)" }} onClick={onLogin}>
       Log in
     </button>
   </div>
@@ -557,20 +558,20 @@ const Tabs = ({ active, onReg, onLogin }) => (
 
 /* ─── Check circle ─── */
 const CheckIcon = () => (
-  <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#00D68A22", border: "1px solid #00D68A44", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 14, color: "#00D68A" }}>✓</div>
+  <div style={{ width: 24, height: 24, borderRadius: "50%", background: "color-mix(in srgb, var(--mv-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--mv-green) 30%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 14, color: "var(--mv-green)" }}>✓</div>
 );
 
 /* ─── Plan card ─── */
 const PlanCard = ({ id, name, price, desc, badge, selected, onSelect }) => (
-  <div className="plan-card" style={{ background: selected ? "#0f1000" : "var(--mv-panel)", border: `1px solid ${selected ? "#E8F400" : "var(--mv-border)"}` }} onClick={() => onSelect(id)}>
-    <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${selected ? "#E8F400" : "var(--mv-border-2)"}`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#E8F400" }} />}
+  <div className="plan-card" style={{ background: selected ? "color-mix(in srgb, var(--mv-yellow) 5%, var(--mv-panel))" : "var(--mv-panel)", border: `1px solid ${selected ? "var(--mv-yellow)" : "var(--mv-border)"}` }} onClick={() => onSelect(id)}>
+    <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${selected ? "var(--mv-yellow)" : "var(--mv-border-2)"}`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--mv-yellow)" }} />}
     </div>
     <div style={{ flex: 1 }}>
       <div className="plan-card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 18, fontWeight: 700 }}>{name}</span>
-          {badge && <span style={{ fontSize: 12, fontWeight: 700, padding: "2px 8px", borderRadius: 4, background: "#E8F40020", color: "#E8F400", border: "1px solid #E8F40044" }}>{badge}</span>}
+          {badge && <span style={{ fontSize: 12, fontWeight: 700, padding: "2px 8px", borderRadius: 4, background: "color-mix(in srgb, var(--mv-yellow) 15%, transparent)", color: "var(--mv-yellow-text)", border: "1px solid color-mix(in srgb, var(--mv-yellow) 30%, transparent)" }}>{badge}</span>}
         </div>
         <span style={{ fontSize: 24, fontWeight: 800 }}>{price}<span style={{ fontSize: 15, fontWeight: 400, color: "var(--mv-dim)" }}>/mo</span></span>
       </div>
@@ -584,14 +585,14 @@ const CarrierCard = ({ name, sub }) => {
   const [connected, setConnected] = useState(false);
   return (
     <div className="carrier-card"
-      style={{ background: connected ? "#0d1f0d" : "var(--mv-panel)", border: `1px solid ${connected ? "#00D68A44" : "var(--mv-border-2)"}` }}
+      style={{ background: connected ? "color-mix(in srgb, var(--mv-green) 5%, var(--mv-panel))" : "var(--mv-panel)", border: `1px solid ${connected ? "color-mix(in srgb, var(--mv-green) 30%, transparent)" : "var(--mv-border-2)"}` }}
       onClick={() => setConnected(v => !v)}>
       <div className="carrier-pulse" />
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: 16, fontWeight: 600 }}>{name}</div>
         <div style={{ fontSize: 14, color: "var(--mv-dim)", marginTop: 2 }}>{sub}</div>
       </div>
-      <div style={{ fontSize: 14, color: connected ? "#00D68A" : "#E8F400" }}>{connected ? "Connected ✓" : "Connect →"}</div>
+      <div style={{ fontSize: 14, color: connected ? "var(--mv-green)" : "var(--mv-yellow-text)" }}>{connected ? "Connected ✓" : "Connect →"}</div>
     </div>
   );
 };
@@ -745,7 +746,7 @@ const Step4 = ({ onNext, onBack, onSkip, submitting }) => (
       </BtnY>
     </div>
     <div style={{ textAlign: "center", marginTop: 16, fontSize: 15, color: "var(--mv-dim)" }}>
-      <span style={{ color: "#E8F400", cursor: "pointer" }} onClick={onSkip}>Skip for now →</span>
+    <span style={{ color: "var(--mv-yellow-text)", cursor: "pointer" }} onClick={onSkip}>Skip for now →</span>
     </div>
   </div>
 );
@@ -755,7 +756,7 @@ const StepSuccess = () => {
   const navigate = useNavigate();
   return (
     <div className="form-anim" style={{ textAlign: "center", padding: "40px 0" }}>
-      <div style={{ width: 80, height: 80, borderRadius: "50%", background: "#00D68A22", border: "2px solid #00D68A55", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 36, color: "#00D68A" }}>✓</div>
+      <div style={{ width: 80, height: 80, borderRadius: "50%", background: "color-mix(in srgb, var(--mv-green) 15%, transparent)", border: "2px solid color-mix(in srgb, var(--mv-green) 35%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 36, color: "var(--mv-green)" }}>✓</div>
       <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 12 }}>You're live!</div>
       <div style={{ fontSize: 18, color: "var(--mv-muted)", marginBottom: 32, lineHeight: 1.6 }}>Account created. First shipment is one click away.</div>
       <BtnY onClick={() => navigate('/dashboard')} extraStyle={{ marginBottom: 16, padding: "16px 24px", fontSize: "18px" }}>Go to dashboard →</BtnY>
@@ -873,7 +874,7 @@ const LoginView = ({ onShowReg, onGoogleLogin }) => {
             </span>
           </div>
           <div style={{ textAlign: "right", marginTop: 8 }}>
-            <span style={{ fontSize: 14, color: "#E8F400", cursor: "pointer" }}>Forgot password?</span>
+          <span style={{ fontSize: 14, color: "var(--mv-yellow-text)", cursor: "pointer" }}>Forgot password?</span>
           </div>
         </div>
         <BtnY onClick={tryLogin} extraStyle={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
@@ -888,7 +889,7 @@ const LoginView = ({ onShowReg, onGoogleLogin }) => {
         <BtnG onClick={onGoogleLogin}><GoogleIcon /> Continue with Google</BtnG>
       </div>
       <div style={{ textAlign: "center", marginTop: 24, fontSize: 15, color: "var(--mv-dim)" }}>
-        No account? <span style={{ color: "#E8F400", cursor: "pointer" }} onClick={onShowReg}>Create one free →</span>
+      No account? <span style={{ color: "var(--mv-yellow-text)", cursor: "pointer" }} onClick={onShowReg}>Create one free →</span>
       </div>
     </div>
   );
@@ -919,15 +920,13 @@ const Ticker = () => (
 const MobileValueProps = () => (
   <div className="mobile-value-props">
     <span>Live in 10 minutes</span>
-    <span>12+ carrier rates</span>
-    <span>WhatsApp alerts</span>
   </div>
 );
 
 /* ─── Left Panel ─── */
 const LeftPanel = () => (
   <div className="auth-left">
-    <div style={{ fontSize: 14, letterSpacing: "0.12em", color: "#E8F400", textTransform: "uppercase", marginBottom: 24 }}>Why Movetto</div>
+    <div style={{ fontSize: 14, letterSpacing: "0.12em", color: "var(--mv-yellow-text)", textTransform: "uppercase", marginBottom: 24 }}>Why Movetto</div>
     <div className="auth-left-title">Your business ships<br />to 40 cities.</div>
     <div className="auth-left-subtitle">You're still managing<br />it on WhatsApp.</div>
     <div style={{ fontSize: 20, color: "var(--mv-muted)", lineHeight: 1.7, marginBottom: 40, maxWidth: 500 }}>
@@ -1010,7 +1009,7 @@ export default function Auth() {
             className="auth-header-logo"
             style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em", cursor: "pointer" }}
           >
-            MOVE<span style={{ color: "#E8F400" }}>.</span>TTO
+          MOVE<span style={{ color: "var(--mv-yellow-text)" }}>.</span>TTO
           </div>
           <div className="hide-mobile auth-header-divider" />
           <div 
@@ -1025,9 +1024,9 @@ export default function Auth() {
         </div>
         <div className="auth-header-actions">
           {view === "reg" ? (
-            <><span className="auth-header-text">Already have an account? </span><span style={{ color: "#E8F400", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("login")}>Log in →</span></>
+          <><span className="auth-header-text">Already have an account? </span><span style={{ color: "var(--mv-yellow-text)", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("login")}>Log in →</span></>
           ) : (
-            <><span className="auth-header-text">No account? </span><span style={{ color: "#E8F400", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("reg")}>Create one →</span></>
+          <><span className="auth-header-text">No account? </span><span style={{ color: "var(--mv-yellow-text)", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("reg")}>Create one →</span></>
           )}
         </div>
       </div>
