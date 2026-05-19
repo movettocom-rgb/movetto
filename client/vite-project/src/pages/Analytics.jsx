@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import {
-  AreaChart, Area, BarChart, Bar, LineChart, Line,
+  BarChart, Bar,
   XAxis, YAxis, Tooltip, ResponsiveContainer,
   CartesianGrid, PieChart, Pie, Cell,
 } from "recharts";
@@ -64,6 +64,19 @@ const GlobalStyles = () => (
     }
     .export-btn:hover { border-color: var(--mv-dim); color: var(--mv-text); }
 
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; }
+      .main-content-pad { padding: 24px 16px !important; }
+      .page-header { flex-direction: column; align-items: flex-start !important; gap: 14px; }
+      .period-filters { width: 100%; overflow-x: auto; justify-content: flex-start !important; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .period-filters::-webkit-scrollbar { display: none; }
+      .period-btn { white-space: nowrap; flex-shrink: 0; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .delivery-grid { grid-template-columns: 1fr !important; }
+      .charts-grid { grid-template-columns: 1fr !important; }
+      .header-actions { gap: 6px !important; }
+    }
+
     @media (max-width: 480px) {
       .header-container { padding: 0 12px !important; }
       .header-dash-text { display: none; }
@@ -121,16 +134,12 @@ export default function Analytics() {
   const [carrierStats, setCarrierStats] = useState([]);
   const [loading,      setLoading]      = useState(true);
 
-  useEffect(() => {
-    fetchData();
-  }, [period]);
-
   const fetchData = async () => {
     try {
       setLoading(true);
       const [sumRes, carRes] = await Promise.all([
         api.get(`/analytics/summary?period=${period}`),
-        api.get("/analytics/carriers"),
+        api.get(`/analytics/carriers?period=${period}`),
       ]);
       setSummary(sumRes.data.summary);
       setCarrierStats(carRes.data.carrierStats || []);
@@ -140,6 +149,10 @@ export default function Analytics() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [period]);
 
   /* ── Build chart data from real stats ── */
   const carrierBarData = carrierStats.map(c => ({
@@ -186,7 +199,7 @@ export default function Analytics() {
           <div style={{width:1, height:16, background:C.border}}/>
           <div className="header-title" style={{fontSize:14, fontWeight:700}}>Analytics</div>
         </div>
-        <div style={{display:"flex", gap:8}}>
+        <div className="header-actions" style={{display:"flex", gap:8}}>
           <button className="export-btn">Export <span className="hide-mobile-text">CSV</span></button>
           <button className="export-btn">Export <span className="hide-mobile-text">PDF</span></button>
         </div>

@@ -8,6 +8,7 @@ const GlobalStyles = () => (
   <style>{`
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--mv-bg); }
+    html, body, #root { min-height: 100%; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
     @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
     @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
@@ -23,6 +24,12 @@ const GlobalStyles = () => (
       outline: none;
       transition: border-color 0.2s;
       font-family: inherit;
+    }
+    .movetto-input,
+    .movetto-select,
+    .btn-yellow,
+    .btn-ghost {
+      min-height: 48px;
     }
     .movetto-input:focus { border-color: #E8F400; }
     .movetto-input::placeholder { color: var(--mv-dimmer); }
@@ -77,6 +84,27 @@ const GlobalStyles = () => (
       flex-shrink: 0;
     }
     .form-anim { animation: fadeIn 0.3s ease; }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .auth-actions-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .auth-error {
+      background: #200808;
+      border: 1px solid #FF5C3833;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: #FF5C38;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .ticker-wrap {
       overflow: hidden;
       padding: 8px 0;
@@ -157,17 +185,79 @@ const GlobalStyles = () => (
     .auth-header {
       background: var(--mv-bg);
       border-bottom: 1px solid var(--mv-border);
-      padding: 0 32px;
+      padding: 0 40px;
       height: 76px;
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) auto minmax(280px, 1fr);
+      align-items: center;
+      gap: 24px;
+    }
+    .auth-header-left {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      justify-self: start;
+    }
+    .auth-header-logo {
+      flex-shrink: 0;
+    }
+    .auth-header-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--mv-border);
+      margin: 0 4px;
+    }
+    .auth-back-link {
+      font-size: 14px;
+      color: var(--mv-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--mv-border);
+      border-radius: 999px;
+      background: var(--mv-panel);
+      white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .auth-back-link:hover {
+      color: var(--mv-text);
+      border-color: var(--mv-border-2);
+      background: var(--mv-card);
+    }
+    .auth-header-status {
+      justify-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--mv-muted);
+      background: var(--mv-panel);
+      border: 1px solid var(--mv-border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .auth-header-actions {
+      justify-self: end;
+      color: var(--mv-dim);
+      background: var(--mv-panel);
+      border: 1px solid var(--mv-border);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
     }
     .show-mobile-only { display: none; }
     .auth-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 76px);
+      min-height: calc(100dvh - 76px);
     }
     .auth-left {
       background: var(--mv-panel);
@@ -188,6 +278,35 @@ const GlobalStyles = () => (
       max-width: 440px;
       width: 100%;
       margin: 0 auto;
+    }
+    .auth-tabs {
+      display: flex;
+      background: var(--mv-card);
+      border: 1px solid var(--mv-border);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--mv-dim);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+    .password-toggle:active {
+      background: var(--mv-card);
+    }
+    .mobile-value-props {
+      display: none;
     }
     .auth-left-title {
       font-size: 42px;
@@ -212,29 +331,104 @@ const GlobalStyles = () => (
     @media (max-width: 768px) {
       .auth-layout { grid-template-columns: 1fr; }
       .auth-left { display: none; }
-      .auth-right { padding: 32px 20px; justify-content: flex-start; }
-      .auth-header { padding: 0 20px; }
+      .auth-right { padding: 28px 20px 36px; justify-content: flex-start; min-height: calc(100dvh - 68px); }
+      .auth-header { display: flex; justify-content: space-between; padding: 0 20px; height: 68px; position: sticky; top: 0; z-index: 20; }
+      .auth-header-left { gap: 10px; }
       .auth-header-status { display: none; }
+      .auth-header-actions { background: transparent; border: none; padding: 0; }
+      .auth-back-link { height: auto; padding: 0; border: none; background: transparent; }
       .hide-mobile { display: none !important; }
       .show-mobile-only { display: block !important; }
+      .mobile-value-props {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .mobile-value-props span {
+        min-width: 0;
+        background: var(--mv-panel);
+        border: 1px solid var(--mv-border);
+        border-radius: 7px;
+        padding: 10px 8px;
+        font-size: 12px;
+        line-height: 1.3;
+        color: var(--mv-muted);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        text-align: center;
+      }
+      .mobile-value-props span::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #00D68A;
+        box-shadow: 0 0 9px rgba(0, 214, 138, 0.85);
+        flex-shrink: 0;
+      }
+      .auth-tabs { margin-bottom: 22px; }
+      .auth-form { gap: 14px; }
       .biz-grid { grid-template-columns: 1fr !important; }
       .plan-card { align-items: flex-start; flex-direction: column; gap: 12px; }
       .plan-card > div:first-child { margin-top: 4px; }
       .plan-card > div:last-child { width: 100%; }
       .plan-card-header { flex-direction: column; align-items: flex-start !important; gap: 4px; }
+      .auth-actions-row { margin-top: 14px; }
     }
     
     @media (max-width: 480px) {
-      .auth-right { padding: 24px 16px; }
-      .auth-header { padding: 0 12px; }
+      .auth-right { padding: 22px 14px 32px; }
+      .auth-header { padding: 0 12px; height: 64px; }
+      .auth-header-left { gap: 8px; }
       .auth-header-logo { font-size: 22px !important; }
       .auth-header-text { display: none; }
+      .mobile-value-props { grid-template-columns: 1fr; gap: 7px; margin-bottom: 18px; }
       .step-dot-circle { width: 28px !important; height: 28px !important; font-size: 12px !important; }
       .step-dot-label { font-size: 11px !important; }
+      .step-dot-item { min-width: 0; }
       .auth-form-title { font-size: 24px !important; }
-      .auth-form-subtitle { font-size: 14px !important; }
+      .auth-form-subtitle { font-size: 14px !important; line-height: 1.5 !important; margin-bottom: 20px !important; }
+      .auth-error { padding: 12px 14px; font-size: 13px; align-items: flex-start; }
+      .auth-tabs { margin-bottom: 20px; }
       .btn-ghost { padding: 14px 16px; font-size: 14px; }
       .btn-yellow { padding: 14px 16px; font-size: 15px; }
+      .auth-right-inner { max-width: 100%; }
+      .auth-actions-row { flex-direction: column-reverse; gap: 10px; }
+      .auth-actions-row .btn-ghost,
+      .auth-actions-row .btn-yellow { width: 100% !important; }
+      .plan-card { padding: 16px; }
+      .carrier-card { padding: 16px; }
+      .tick-item { padding: 0 24px; font-size: 13px; }
+    }
+
+    @media (max-width: 360px) {
+      .auth-header { padding: 0 10px; height: auto; min-height: 64px; }
+      .auth-header-logo { font-size: 20px !important; }
+      .auth-header-actions, .auth-header-status { font-size: 13px; }
+      .auth-header-status { display: none; }
+      .auth-right { padding: 20px 10px; }
+      .auth-right-inner { width: 100%; max-width: 100%; padding: 0; }
+      .auth-form-title { font-size: 22px !important; }
+      .auth-form-subtitle { font-size: 13px !important; }
+      .auth-header { gap: 8px; }
+      .tab-btn { padding: 12px; font-size: 14px; }
+      .movetto-input, .movetto-select { padding: 12px 14px; font-size: 15px; }
+      .btn-ghost, .btn-yellow { padding: 12px 14px; font-size: 14px; }
+      .step-dot-circle { width: 26px !important; height: 26px !important; font-size: 11px !important; }
+      .step-dot-label { font-size: 10px !important; }
+      .plan-card { padding: 14px; gap: 12px; }
+      .plan-card-header { flex-direction: column; align-items: flex-start !important; gap: 6px; }
+      .carrier-card { padding: 14px; gap: 12px; }
+      .carrier-card > div:last-child { font-size: 13px; }
+      .auth-right-inner > div > div { gap: 14px; }
+      .ticker-wrap { padding: 6px 0; }
+      .tick-item { padding: 0 18px; font-size: 12px; }
+      .auth-header-logo, .auth-header-actions { white-space: nowrap; }
+      .auth-header-actions { text-align: right; }
+      .btn-ghost-auto { width: 100%; }
     }
   `}</style>
 );
@@ -351,7 +545,7 @@ const StepDots = ({ current }) => {
 
 /* ─── Tabs ─── */
 const Tabs = ({ active, onReg, onLogin }) => (
-  <div style={{ display: "flex", background: "var(--mv-card)", border: "1px solid var(--mv-border)", borderRadius: 8, padding: 4, gap: 4, marginBottom: 28 }}>
+  <div className="auth-tabs">
     <button className="tab-btn" style={active === "reg" ? { background: "#E8F400", color: "#0A0B0D" } : { background: "transparent", color: "var(--mv-dim)" }} onClick={onReg}>
       Create account
     </button>
@@ -408,13 +602,13 @@ const Step1 = ({ onNext, onGoogleLogin, error }) => {
   const [showPass, setShowPass] = useState(false);
   const { score, color, label } = getStrength(pass);
   return (
-    <div className="form-anim" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="form-anim auth-form">
       <div>
         <div className="auth-form-title" style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Create your account</div>
         <div className="auth-form-subtitle" style={{ fontSize: 16, color: "var(--mv-dim)", marginBottom: 28 }}>Takes under 2 minutes. No credit card.</div>
       </div>
       {error && (
-        <div style={{ background: "#200808", border: "1px solid #FF5C3833", borderRadius: 6, padding: "12px 16px", fontSize: 14, color: "#FF5C38", display: "flex", alignItems: "center", gap: 10 }}>
+        <div className="auth-error" style={{ padding: "12px 16px", fontSize: 14 }}>
           <AlertIcon /> {error}
         </div>
       )}
@@ -437,7 +631,7 @@ const Step1 = ({ onNext, onGoogleLogin, error }) => {
         <Label>Password</Label>
         <div style={{ position: "relative" }}>
           <Inp type={showPass ? "text" : "password"} placeholder="Min 8 characters" id="reg-pass" extraStyle={{ paddingRight: 44 }} onInput={e => setPass(e.target.value)} />
-          <span style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", cursor: "pointer", color: "var(--mv-dim)" }} onClick={() => setShowPass(v => !v)}>
+          <span className="password-toggle" onClick={() => setShowPass(v => !v)}>
             <EyeIcon />
           </span>
         </div>
@@ -457,7 +651,7 @@ const Step1 = ({ onNext, onGoogleLogin, error }) => {
 
 /* ─── Step 2 ─── */
 const Step2 = ({ onNext, onBack }) => (
-  <div className="form-anim" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+  <div className="form-anim auth-form">
     <div>
       <div className="auth-form-title" style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Tell us about your business</div>
       <div className="auth-form-subtitle" style={{ fontSize: 16, color: "var(--mv-dim)", marginBottom: 28 }}>Helps us configure the right carriers for your routes.</div>
@@ -503,7 +697,7 @@ const Step2 = ({ onNext, onBack }) => (
       <Label>GSTIN (optional)</Label>
       <Inp placeholder="22AAAAA0000A1Z5" id="biz-gst" />
     </div>
-    <div style={{ display: "flex", gap: 10 }}>
+    <div className="auth-actions-row" style={{ marginTop: 0 }}>
       <BtnG extraStyle={{ width: "auto", flexShrink: 0, padding: "14px 28px" }} onClick={onBack}>← Back</BtnG>
       <BtnY onClick={onNext}>Continue →</BtnY>
     </div>
@@ -523,7 +717,7 @@ const Step3 = ({ onNext, onBack }) => {
       <div className="auth-form-title" style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Choose your plan</div>
       <div className="auth-form-subtitle" style={{ fontSize: 16, color: "var(--mv-dim)", marginBottom: 24 }}>14-day free trial on all plans. Cancel anytime.</div>
       {plans.map(p => <PlanCard key={p.id} {...p} selected={selected === p.id} onSelect={setSelected} />)}
-      <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+      <div className="auth-actions-row">
         <BtnG extraStyle={{ width: "auto", flexShrink: 0, padding: "14px 28px" }} onClick={onBack}>← Back</BtnG>
         <BtnY onClick={onNext}>Continue →</BtnY>
       </div>
@@ -539,7 +733,7 @@ const Step4 = ({ onNext, onBack, onSkip, submitting }) => (
     <CarrierCard name="Delhivery" sub="Surface + Air · 94.2% on-time" />
     <CarrierCard name="Shiprocket" sub="Multi-carrier aggregator" />
     <CarrierCard name="Bluedart" sub="Premium express · D+1 in metros" />
-    <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+    <div className="auth-actions-row">
       <BtnG extraStyle={{ width: "auto", flexShrink: 0, padding: "14px 28px" }} onClick={onBack}>← Back</BtnG>
       <BtnY onClick={onNext} extraStyle={{ opacity: submitting ? 0.7 : 1, cursor: submitting ? 'not-allowed' : 'pointer' }}>
         {submitting ? (
@@ -661,11 +855,11 @@ const LoginView = ({ onShowReg, onGoogleLogin }) => {
       <div className="auth-form-title" style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Welcome back</div>
       <div className="auth-form-subtitle" style={{ fontSize: 16, color: "var(--mv-dim)", marginBottom: 28 }}>Log in to your Movetto dashboard</div>
       {showError && (
-        <div style={{ background: "#200808", border: "1px solid #FF5C3833", borderRadius: 6, padding: "14px 18px", fontSize: 15, color: "#FF5C38", display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+        <div className="auth-error" style={{ marginBottom: 20 }}>
           <AlertIcon /> Invalid email or password. Please try again.
         </div>
       )}
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="auth-form">
         <div>
           <Label>Email</Label>
           <Inp placeholder="you@yourbusiness.com" id="log-email" />
@@ -674,7 +868,7 @@ const LoginView = ({ onShowReg, onGoogleLogin }) => {
           <Label>Password</Label>
           <div style={{ position: "relative" }}>
             <Inp type={showPass ? "text" : "password"} placeholder="Your password" id="log-pass" extraStyle={{ paddingRight: 44 }} />
-            <span style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", cursor: "pointer", color: "var(--mv-dim)" }} onClick={() => setShowPass(v => !v)}>
+            <span className="password-toggle" onClick={() => setShowPass(v => !v)}>
               <EyeIcon />
             </span>
           </div>
@@ -719,6 +913,14 @@ const Ticker = () => (
         </div>
       ))}
     </div>
+  </div>
+);
+
+const MobileValueProps = () => (
+  <div className="mobile-value-props">
+    <span>Live in 10 minutes</span>
+    <span>12+ carrier rates</span>
+    <span>WhatsApp alerts</span>
   </div>
 );
 
@@ -795,7 +997,7 @@ export default function Auth() {
 
       {/* Header */}
       <div className="auth-header">
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div className="auth-header-left">
           <div 
             onClick={() => navigate('/')}
             className="show-mobile-only"
@@ -810,11 +1012,10 @@ export default function Auth() {
           >
             MOVE<span style={{ color: "#E8F400" }}>.</span>TTO
           </div>
-          <div className="hide-mobile" style={{ width: 1, height: 24, background: "var(--mv-border)" }} />
+          <div className="hide-mobile auth-header-divider" />
           <div 
             onClick={() => navigate('/')}
-            className="hide-mobile"
-            style={{ fontSize: 14, color: "var(--mv-muted)", cursor: "pointer", display: "flex", alignItems: "center" }}
+            className="hide-mobile auth-back-link"
           >
             ← Back to website
           </div>
@@ -822,7 +1023,7 @@ export default function Auth() {
         <div className="auth-header-status">
           <span className="dot-live" style={{ width: 10, height: 10 }} /> 100+ businesses live
         </div>
-        <div className="auth-header-actions" style={{ fontSize: 14, color: "var(--mv-dim)" }}>
+        <div className="auth-header-actions">
           {view === "reg" ? (
             <><span className="auth-header-text">Already have an account? </span><span style={{ color: "#E8F400", cursor: "pointer", fontWeight: 600 }} onClick={() => setView("login")}>Log in →</span></>
           ) : (
@@ -838,8 +1039,9 @@ export default function Auth() {
         {/* Right auth panel */}
         <div className="auth-right">
           <div className="auth-right-inner">
+            <MobileValueProps />
             {oauthError && (
-              <div style={{ background: "#200808", border: "1px solid #FF5C3833", borderRadius: 6, padding: "14px 18px", fontSize: 15, color: "#FF5C38", display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div className="auth-error" style={{ marginBottom: 20 }}>
                 <AlertIcon /> {oauthError}
               </div>
             )}

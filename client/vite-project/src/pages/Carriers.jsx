@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
@@ -95,6 +95,24 @@ const GlobalStyles = () => (
       .modal-header { flex-direction: column; align-items: flex-start !important; gap: 12px !important; }
       .modal-actions { flex-direction: column; gap: 10px; }
       .modal-actions button { width: 100%; }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .header-container { padding: 0 16px !important; height: 68px !important; }
+      .main-content-pad { padding: 24px 16px !important; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 14px !important; margin-bottom: 24px !important; }
+      .filter-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .filter-tabs::-webkit-scrollbar { display: none; }
+      .filter-btn { white-space: nowrap; flex-shrink: 0; }
+      .carrier-grid { grid-template-columns: 1fr !important; }
+      .carrier-card { padding: 20px !important; }
+      .stat-row { flex-direction: column !important; gap: 10px !important; }
+      .stat-box { width: 100%; }
+      .modal { width: calc(100% - 32px) !important; }
+    }
+
+    @media (min-width: 481px) and (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr !important; }
     }
   `}</style>
 );
@@ -384,16 +402,10 @@ const CarrierCard = ({ carrier, isConnected, onConnect, onDisconnect }) => {
 /* ─── MAIN COMPONENT ─── */
 export default function Carriers() {
   const navigate = useNavigate();
-  const [connected,     setConnected]     = useState([]);
+  const [connected,     setConnected]     = useState(() => JSON.parse(localStorage.getItem("connectedCarriers") || "[]"));
   const [modalCarrier,  setModalCarrier]  = useState(null);
   const [successMsg,    setSuccessMsg]    = useState("");
   const [filter,        setFilter]        = useState("all");
-
-  /* Load connected carriers from localStorage */
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("connectedCarriers") || "[]");
-    setConnected(saved);
-  }, []);
 
   const handleConnect = (carrier) => {
     setModalCarrier(carrier);

@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useStore from "../store/useStore";
-import api from "../services/api";
 import { jsPDF } from "jspdf";
 
 const C = {
@@ -76,6 +75,21 @@ const GlobalStyles = () => (
       width: 16px; height: 16px; border: 2px solid var(--mv-border-2);
       border-top-color: #E8F400; border-radius: 50%;
       animation: spin 0.7s linear infinite; display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; }
+      .main-content-pad { padding: 24px 16px !important; }
+      .trial-banner { flex-direction: column; align-items: flex-start !important; gap: 14px; }
+      .usage-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+      .plans-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+      .plan-card { padding: 24px 20px !important; }
+      .tbl-container { overflow-x: auto; }
+      .invoice-header { min-width: 620px; }
+      .invoice-row { min-width: 620px; }
+      .confirm-modal { width: calc(100% - 32px) !important; }
+      .confirm-actions { flex-direction: column; }
+      .confirm-actions button { width: 100%; }
     }
 
     @media (max-width: 480px) {
@@ -394,7 +408,7 @@ export default function Billing() {
 
                 {/* Trial banner */}
                 {isOnTrial && trialDaysLeft > 0 && (
-                    <div style={{ background: "#1a1800", border: "1px solid #E8F40033", borderRadius: 10, padding: "16px 20px", marginBottom: 24, display: "flex", alignItems: "center", gap: 14, animation: "fadeIn 0.3s ease" }}>
+                    <div className="trial-banner" style={{ background: "#1a1800", border: "1px solid #E8F40033", borderRadius: 10, padding: "16px 20px", marginBottom: 24, display: "flex", alignItems: "center", gap: 14, animation: "fadeIn 0.3s ease" }}>
                         <div style={{ width: 40, height: 40, borderRadius: 10, background: "#E8F40018", border: "1px solid #E8F40033", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>
                             ⏳
                         </div>
@@ -589,14 +603,14 @@ export default function Billing() {
             {/* Confirm upgrade modal */}
             {showConfirm && (
                 <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, animation: "fadeIn 0.2s ease" }}>
-                    <div style={{ background: C.card, border: `1px solid ${C.border2}`, borderRadius: 14, padding: 28, width: "100%", maxWidth: 420 }}>
+                    <div className="confirm-modal" style={{ background: C.card, border: `1px solid ${C.border2}`, borderRadius: 14, padding: 28, width: "100%", maxWidth: 420 }}>
                         <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>
                             Confirm plan change
                         </div>
                         <div style={{ fontSize: 14, color: C.muted, marginBottom: 24, lineHeight: 1.6 }}>
                             You are switching to the <strong style={{ color: C.text, textTransform: "capitalize" }}>{showConfirm}</strong> plan at <strong style={{ color: C.yellow }}>₹{PLANS.find(p => p.key === showConfirm)?.price?.toLocaleString()}/month</strong>. This will be processed via Razorpay in Phase 5.
                         </div>
-                        <div style={{ display: "flex", gap: 10 }}>
+                        <div className="confirm-actions" style={{ display: "flex", gap: 10 }}>
                             <button
                                 onClick={() => setShowConfirm(null)}
                                 style={{ flex: 1, padding: "11px", borderRadius: 8, background: "transparent", color: C.muted, border: `1px solid ${C.border2}`, fontSize: 13, cursor: "pointer" }}

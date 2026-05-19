@@ -15,7 +15,8 @@ const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--mv-bg); font-family: 'Sora', sans-serif; }
+    html, body, #root { min-height: 100%; }
+    body { background: var(--mv-bg); font-family: 'Sora', sans-serif; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--mv-bg); }
     ::-webkit-scrollbar-thumb { background: var(--mv-border-2); border-radius: 2px; }
@@ -24,6 +25,7 @@ const GlobalStyles = () => (
       border-radius: 8px; padding: 14px 16px; font-size: 15px;
       color: var(--mv-text); outline: none; font-family: 'Sora', sans-serif;
       transition: border-color 0.2s;
+      min-height: 48px;
     }
     .inp:focus { border-color: #E8F400; }
     .inp::placeholder { color: var(--mv-dimmer); }
@@ -66,6 +68,7 @@ const GlobalStyles = () => (
       border-radius: 8px; padding: 14px 16px; font-size: 15px;
       color: var(--mv-text); outline: none; font-family: 'Sora', sans-serif;
       cursor: pointer; appearance: none;
+      min-height: 48px;
     }
     .select-inp:focus { border-color: #E8F400; }
     .select-inp option { background: var(--mv-panel); }
@@ -82,18 +85,204 @@ const GlobalStyles = () => (
       animation: spin 0.7s linear infinite; display: inline-block;
     }
 
+    .step-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-card {
+      background: var(--mv-card);
+      border: 1px solid var(--mv-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .field-wrap {
+      flex: 1 1 100%;
+      min-width: 0;
+    }
+
+    .field-wrap.half {
+      flex: 0 0 calc(50% - 6px);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--mv-border);
+    }
+
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #131700;
+      border: 1px solid #E8F40022;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .route-summary {
+      background: var(--mv-card);
+      border: 1px solid var(--mv-border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .route-summary-cell { flex: 1; min-width: 0; }
+    .route-arrow { font-size: 24px; color: var(--mv-muted); }
+    .route-divider { width: 1px; height: 40px; background: var(--mv-border); flex-shrink: 0; }
+    .rate-list { display: flex; flex-direction: column; gap: 10px; }
+    .rate-radio { flex-shrink: 0; }
+    .rate-main { flex: 1; min-width: 0; }
+    .rate-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .rate-price { text-align: right; flex-shrink: 0; }
+    .cod-toggle-row {
+      margin-top: 16px;
+      padding: 14px;
+      background: var(--mv-panel);
+      border-radius: 8px;
+      border: 1px solid var(--mv-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .success-card {
+      background: var(--mv-card);
+      border: 1px solid var(--mv-border);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 28px;
+    }
+    .success-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 16px;
+      color: var(--mv-muted);
+    }
+
+    .summary-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .summary-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; }
+      .main-content-pad { padding: 28px 16px 36px !important; max-width: 620px !important; }
+      .stepbar-wrap { overflow-x: auto; padding-bottom: 6px; margin-bottom: 24px !important; }
+      .stepbar-wrap::-webkit-scrollbar { display: none; }
+      .stepbar { min-width: 520px; }
+      .rate-card {
+        align-items: flex-start;
+      }
+      .form-card { padding: 20px; }
+      .summary-grid-2,
+      .summary-grid-3 {
+        grid-template-columns: 1fr !important;
+      }
+      .confirm-price-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 16px;
+      }
+      .confirm-price-right {
+        text-align: left !important;
+      }
+    }
+
     @media (max-width: 480px) {
       .header-container { padding: 0 12px !important; height: 60px !important; }
       .header-dash-text { display: none; }
       .header-title { font-size: 16px !important; }
       .header-status { display: none; }
       
-      .main-content-pad { padding: 24px 12px !important; }
+      .main-content-pad { padding: 20px 12px 32px !important; max-width: 390px !important; }
 
-      .step-dot { width: 22px !important; height: 22px !important; font-size: 10px !important; }
-      .step-label { font-size: 10px !important; white-space: normal !important; line-height: 1.2; text-align: left; }
-      .step-item { gap: 4px !important; }
-      .step-line { margin: 0 4px !important; }
+      .stepbar { min-width: 0; width: 100%; justify-content: space-between; }
+      .stepbar > div { flex: 1 !important; min-width: 0; }
+      .step-dot { width: 24px !important; height: 24px !important; font-size: 11px !important; }
+      .step-label { display: none; }
+      .step-item { gap: 0 !important; }
+      .step-line { margin: 0 8px !important; }
+      .form-card { padding: 16px; border-radius: 10px; margin-bottom: 14px; }
+      .form-grid { gap: 11px; }
+      .field-wrap.half { flex: 1 1 100%; }
+      .section-head { align-items: flex-start; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; }
+      .section-icon { width: 38px; height: 38px; font-size: 18px; }
+      .section-head div:nth-child(2) div:first-child { font-size: 16px !important; }
+      .section-head div:nth-child(2) div:last-child { font-size: 12px !important; line-height: 1.45; }
+      .inp, .select-inp { padding: 12px 13px; font-size: 14px; min-height: 44px; }
+      .inp-label { font-size: 11px; margin-bottom: 7px; letter-spacing: 0.08em; }
+      .cod-toggle-row { align-items: flex-start; padding: 13px; }
+      .route-summary { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: start; padding: 14px; }
+      .route-summary > div:nth-child(2) { color: var(--mv-muted); font-size: 22px !important; }
+      .route-divider { display: none; }
+      .route-summary > div:last-child { grid-column: 1 / -1; padding-top: 12px; border-top: 1px solid var(--mv-border); }
+      .route-summary-cell div:nth-child(2) { font-size: 16px !important; word-break: break-word; }
+      .rate-card { flex-direction: column; gap: 14px; padding: 16px; border-radius: 10px; }
+      .rate-main { width: 100%; }
+      .rate-price { width: 100%; text-align: left; padding-top: 12px; border-top: 1px solid var(--mv-border); }
+      .rate-price div:first-child { font-size: 26px !important; }
+      .submit-btn, .back-btn { padding: 13px 16px; font-size: 14px; min-height: 46px; }
+      .step-actions,
+      .success-actions { flex-direction: column; }
+      .step-actions .back-btn,
+      .success-actions button { width: 100% !important; }
+      .summary-grid-2,
+      .summary-grid-3 { gap: 14px; }
+      .confirm-price-row { padding: 14px !important; }
+      .confirm-price-right div:last-child { font-size: 30px !important; }
+      .success-wrap { padding: 34px 8px; }
+      .success-wrap > div:nth-child(2) { font-size: 26px !important; }
+      .success-wrap > div:nth-child(3) { font-size: 15px !important; margin-bottom: 26px !important; }
+      .success-card { padding: 18px; max-width: 100%; }
+      .success-card > div:nth-child(2) { font-size: 20px !important; overflow-wrap: anywhere; }
+      .success-meta { flex-direction: column; font-size: 14px; }
+    }
+
+    @media (max-width: 360px) {
+      .main-content-pad { padding: 18px 10px 28px !important; max-width: 330px !important; }
+      .form-card { padding: 14px; }
+      .route-summary { grid-template-columns: 1fr; }
+      .route-summary > div:nth-child(2) { transform: rotate(90deg); justify-self: start; font-size: 20px !important; }
+      .route-summary > div:last-child { grid-column: auto; }
+      .rate-card { padding: 14px; }
+      .submit-btn, .back-btn { padding: 12px 14px; font-size: 13px; }
     }
   `}</style>
 );
@@ -102,7 +291,8 @@ const GlobalStyles = () => (
 const StepBar = ({ step }) => {
   const steps = ["Shipment details", "Compare rates", "Confirm & book"];
   return (
-    <div style={{display:"flex", alignItems:"center", gap:0, marginBottom:32}}>
+    <div className="stepbar-wrap" style={{marginBottom:32}}>
+      <div className="stepbar" style={{display:"flex", alignItems:"center", gap:0}}>
       {steps.map((s, i) => (
         <div key={i} style={{display:"flex", alignItems:"center", flex: i < steps.length - 1 ? 1 : "none"}}>
           <div className="step-item" style={{display:"flex", alignItems:"center", gap:10}}>
@@ -118,13 +308,14 @@ const StepBar = ({ step }) => {
           )}
         </div>
       ))}
+      </div>
     </div>
   );
 };
 
 /* ─── Input Field ─── */
 const Field = ({ label, id, placeholder, type="text", value, onChange, required, half }) => (
-  <div style={{flex: half ? "0 0 calc(50% - 6px)" : "1 1 100%"}}>
+  <div className={`field-wrap${half ? " half" : ""}`}>
     <label className="inp-label" htmlFor={id}>
       {label}{required && <span style={{color:C.red}}> *</span>}
     </label>
@@ -138,8 +329,8 @@ const Field = ({ label, id, placeholder, type="text", value, onChange, required,
 
 /* ─── Section Header ─── */
 const SectionHead = ({ icon, title, sub }) => (
-  <div style={{display:"flex", alignItems:"center", gap:14, marginBottom:24, paddingBottom:16, borderBottom:`1px solid ${C.border}`}}>
-    <div style={{width:44, height:44, borderRadius:8, background:"#131700", border:`1px solid ${C.yellow}22`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20}}>
+  <div className="section-head">
+    <div className="section-icon">
       {icon}
     </div>
     <div>
@@ -159,9 +350,9 @@ const Step1 = ({ form, setForm, onNext }) => {
   return (
     <div style={{animation:"fadeIn 0.3s ease"}}>
       {/* Origin */}
-      <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, marginBottom:16}}>
+      <div className="form-card">
         <SectionHead icon="📍" title="Pickup details" sub="Where are you shipping from?"/>
-        <div style={{display:"flex", flexWrap:"wrap", gap:12}}>
+        <div className="form-grid">
           <Field label="Origin pincode" id="originPincode" placeholder="400001" value={form.originPincode} onChange={update("originPincode")} required half/>
           <Field label="City" id="originCity" placeholder="Mumbai" value={form.originCity} onChange={update("originCity")} half/>
           <Field label="State" id="originState" placeholder="Maharashtra" value={form.originState} onChange={update("originState")} half/>
@@ -172,9 +363,9 @@ const Step1 = ({ form, setForm, onNext }) => {
       </div>
 
       {/* Destination */}
-      <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, marginBottom:16}}>
+      <div className="form-card">
         <SectionHead icon="🎯" title="Delivery details" sub="Where is this going?"/>
-        <div style={{display:"flex", flexWrap:"wrap", gap:12}}>
+        <div className="form-grid">
           <Field label="Destination pincode" id="destPincode" placeholder="110001" value={form.destPincode} onChange={update("destPincode")} required half/>
           <Field label="City" id="destCity" placeholder="Delhi" value={form.destCity} onChange={update("destCity")} half/>
           <Field label="State" id="destState" placeholder="Delhi" value={form.destState} onChange={update("destState")} half/>
@@ -185,11 +376,11 @@ const Step1 = ({ form, setForm, onNext }) => {
       </div>
 
       {/* Package */}
-      <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, marginBottom:24}}>
+      <div className="form-card" style={{marginBottom:24}}>
         <SectionHead icon="📦" title="Package details" sub="Weight and dimensions for accurate rates"/>
-        <div style={{display:"flex", flexWrap:"wrap", gap:12}}>
+        <div className="form-grid">
           <Field label="Weight (kg)" id="weight" placeholder="2.5" type="number" value={form.weight} onChange={update("weight")} required half/>
-          <div style={{flex:"0 0 calc(50% - 6px)"}}>
+          <div className="field-wrap half">
             <label className="inp-label">Category</label>
             <select className="select-inp" value={form.category} onChange={e => update("category")(e.target.value)}>
               <option value="general">General</option>
@@ -206,7 +397,7 @@ const Step1 = ({ form, setForm, onNext }) => {
         </div>
 
         {/* COD Toggle */}
-        <div style={{marginTop:16, padding:14, background:C.panel, borderRadius:8, border:`1px solid ${C.border}`, display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+        <div className="cod-toggle-row">
           <div>
             <div style={{fontSize:15, fontWeight:600}}>Cash on delivery (COD)</div>
             <div style={{fontSize:13, color:C.dim, marginTop:4}}>Customer pays on delivery</div>
@@ -248,19 +439,19 @@ const Step1 = ({ form, setForm, onNext }) => {
 const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNext, onBack }) => (
   <div style={{animation:"fadeIn 0.3s ease"}}>
     {/* Route summary */}
-    <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:16, marginBottom:20, display:"flex", alignItems:"center", gap:16}}>
-      <div style={{flex:1}}>
+    <div className="route-summary">
+      <div className="route-summary-cell">
         <div style={{fontSize:13, color:C.dim, marginBottom:6}}>From</div>
         <div style={{fontSize:18, fontWeight:700}}>{form.originCity || form.originPincode}</div>
         <div style={{fontSize:13, color:C.dim, marginTop:2}}>{form.originPincode}</div>
       </div>
       <div style={{fontSize:24}}>→</div>
-      <div style={{flex:1}}>
+      <div className="route-summary-cell">
         <div style={{fontSize:13, color:C.dim, marginBottom:6}}>To</div>
         <div style={{fontSize:18, fontWeight:700}}>{form.destCity || form.destPincode}</div>
         <div style={{fontSize:13, color:C.dim, marginTop:2}}>{form.destPincode}</div>
       </div>
-      <div style={{width:1, height:40, background:C.border}}/>
+      <div className="route-divider"/>
       <div>
         <div style={{fontSize:13, color:C.dim, marginBottom:6}}>Weight</div>
         <div style={{fontSize:18, fontWeight:700}}>{form.weight} kg</div>
@@ -281,7 +472,7 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
           ))}
         </div>
       ) : (
-        <div style={{display:"flex", flexDirection:"column", gap:10}}>
+        <div className="rate-list">
           {rates.map((r, i) => (
             <div
               key={i}
@@ -289,7 +480,7 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
               onClick={() => setSelectedRate(r)}
             >
               {/* Radio */}
-              <div style={{
+              <div className="rate-radio" style={{
                 width:22, height:22, borderRadius:"50%", flexShrink:0,
                 border:`2px solid ${selectedRate?.carrier === r.carrier ? C.yellow : C.border2}`,
                 display:"flex", alignItems:"center", justifyContent:"center",
@@ -300,8 +491,8 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
               </div>
 
               {/* Carrier name */}
-              <div style={{flex:1}}>
-                <div style={{display:"flex", alignItems:"center", gap:10}}>
+              <div className="rate-main">
+                <div className="rate-title-row">
                   <div style={{fontSize:16, fontWeight:700}}>{r.carrier}</div>
                   {i === 0 && (
                     <span style={{fontSize:11, background:"#E8F40015", border:"1px solid #E8F40040", color:C.yellow, padding:"3px 8px", borderRadius:4, fontWeight:700}}>
@@ -320,7 +511,7 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
               </div>
 
               {/* Rate */}
-              <div style={{textAlign:"right"}}>
+              <div className="rate-price">
                 <div style={{fontSize:28, fontWeight:800, color: selectedRate?.carrier === r.carrier ? C.yellow : C.text}}>
                   ₹{r.rate.toLocaleString()}
                 </div>
@@ -332,7 +523,7 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
       )}
     </div>
 
-    <div style={{display:"flex", gap:12}}>
+    <div className="step-actions">
       <button className="back-btn" onClick={onBack} style={{width:"auto", padding:"16px 28px"}}>← Back</button>
       <button className="submit-btn" onClick={onNext} disabled={!selectedRate}>
         Book with {selectedRate?.carrier || "selected carrier"} — ₹{selectedRate?.rate?.toLocaleString() || "—"} →
@@ -344,13 +535,13 @@ const Step2 = ({ form, rates, loadingRates, selectedRate, setSelectedRate, onNex
 /* ─── Step 3 — Confirm ─── */
 const Step3 = ({ form, selectedRate, onBack, onBook, booking }) => (
   <div style={{animation:"fadeIn 0.3s ease"}}>
-    <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, marginBottom:16}}>
+    <div className="form-card">
       <div style={{fontSize:18, fontWeight:700, marginBottom:24, paddingBottom:16, borderBottom:`1px solid ${C.border}`}}>
         Order summary
       </div>
 
       {/* Route */}
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:20, marginBottom:20}}>
+      <div className="summary-grid-2">
         <div>
           <div style={{fontSize:13, color:C.dim, marginBottom:8}}>FROM</div>
           <div style={{fontSize:18, fontWeight:700}}>{form.originCity || form.originPincode}</div>
@@ -368,7 +559,7 @@ const Step3 = ({ form, selectedRate, onBack, onBook, booking }) => (
       <div style={{height:1, background:C.border, marginBottom:20}}/>
 
       {/* Package + Carrier */}
-      <div style={{display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:20}}>
+      <div className="summary-grid-3">
         <div>
           <div style={{fontSize:13, color:C.dim, marginBottom:6}}>Weight</div>
           <div style={{fontSize:16, fontWeight:700}}>{form.weight} kg</div>
@@ -386,20 +577,20 @@ const Step3 = ({ form, selectedRate, onBack, onBook, booking }) => (
       <div style={{height:1, background:C.border, marginBottom:20}}/>
 
       {/* Carrier + Price */}
-      <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", background:C.panel, borderRadius:10, padding:16}}>
+      <div className="confirm-price-row" style={{display:"flex", justifyContent:"space-between", alignItems:"center", background:C.panel, borderRadius:10, padding:16}}>
         <div>
           <div style={{fontSize:13, color:C.dim, marginBottom:6}}>Selected carrier</div>
           <div style={{fontSize:20, fontWeight:800}}>{selectedRate?.carrier}</div>
           <div style={{fontSize:14, color:C.dim, marginTop:4}}>ETA: {selectedRate?.eta}</div>
         </div>
-        <div style={{textAlign:"right"}}>
+        <div className="confirm-price-right" style={{textAlign:"right"}}>
           <div style={{fontSize:13, color:C.dim, marginBottom:6}}>You pay</div>
           <div style={{fontSize:36, fontWeight:800, color:C.yellow}}>₹{selectedRate?.rate?.toLocaleString()}</div>
         </div>
       </div>
     </div>
 
-    <div style={{display:"flex", gap:12}}>
+    <div className="step-actions">
       <button className="back-btn" onClick={onBack} style={{width:"auto", padding:"16px 28px"}} disabled={booking}>← Back</button>
       <button className="submit-btn" onClick={onBook} disabled={booking}>
         {booking ? (
@@ -426,17 +617,17 @@ const SuccessScreen = ({ trackingId, carrierName, rate, onNew }) => {
       <div style={{fontSize:18, color:C.muted, marginBottom:40, lineHeight:1.6}}>
         Your shipment has been confirmed with {carrierName}
       </div>
-      <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, width:"100%", maxWidth:400, marginBottom:28}}>
+      <div className="success-card">
         <div style={{fontSize:14, color:C.dim, marginBottom:10}}>Tracking ID</div>
         <div style={{fontSize:28, fontWeight:800, fontFamily:"'JetBrains Mono',monospace", color:C.yellow, marginBottom:20}}>
           {trackingId}
         </div>
-        <div style={{display:"flex", justifyContent:"space-between", fontSize:16, color:C.muted}}>
+        <div className="success-meta">
           <span>Carrier: <strong style={{color:C.text}}>{carrierName}</strong></span>
           <span>Rate: <strong style={{color:C.text}}>₹{rate?.toLocaleString()}</strong></span>
         </div>
       </div>
-      <div style={{display:"flex", gap:12}}>
+      <div className="success-actions">
         <button
           onClick={onNew}
           style={{background:C.yellow, color:"#0A0B0D", border:"none", padding:"16px 32px", borderRadius:8, fontSize:16, fontWeight:700, cursor:"pointer"}}
@@ -494,7 +685,7 @@ export default function BookShipment() {
       if (res.data.rates?.length > 0) {
         setSelectedRate(res.data.rates[0]);
       }
-    } catch (err) {
+    } catch {
       setError("Failed to fetch rates. Please try again.");
       setStep(1);
     } finally {

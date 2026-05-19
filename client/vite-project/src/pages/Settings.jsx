@@ -113,6 +113,47 @@ const GlobalStyles = () => (
       animation: fadeIn 0.3s ease;
     }
 
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; height: 68px !important; }
+      .main-content-pad {
+        padding: 24px 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+      }
+      .settings-sidebar {
+        display: flex;
+        flex-direction: row !important;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .settings-sidebar::-webkit-scrollbar { display: none; }
+      .settings-sidebar > button {
+        white-space: nowrap;
+        flex-shrink: 0;
+        width: auto !important;
+      }
+      .settings-sidebar > button.active {
+        border-left: none !important;
+        border-bottom: 3px solid #E8F400 !important;
+      }
+      .setting-card { padding: 24px 20px !important; }
+      .form-grid {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      .form-grid > div { flex: 1 1 100% !important; }
+      .danger-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 16px !important;
+      }
+      .danger-row button { width: 100%; }
+    }
+
     @media (max-width: 480px) {
       .header-container { padding: 0 12px !important; }
       .header-dash-text { display: none; }
@@ -174,7 +215,6 @@ const Field = ({ label, id, placeholder, value, onChange, disabled, type="text",
 export default function Settings() {
   const navigate       = useNavigate();
   const user           = useStore((s) => s.user);
-  const { setUser }    = useStore();
 
   const [tab,          setTab]          = useState("profile");
   const [saving,       setSaving]       = useState(false);
@@ -267,7 +307,7 @@ export default function Settings() {
     try {
       await new Promise(r => setTimeout(r, 800));
       showSuccess("Business details updated!");
-    } catch (err) {
+    } catch {
       showError("Failed to save business details.");
     } finally {
       setSaving(false);
@@ -300,7 +340,9 @@ export default function Settings() {
     try {
       await new Promise(r => setTimeout(r, 600));
       showSuccess("Notification preferences saved!");
-    } catch {}
+    } catch {
+      showError("Failed to save notification preferences.");
+    }
     finally { setSaving(false); }
   };
 

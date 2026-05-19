@@ -67,6 +67,37 @@ const GlobalStyles = () => (
     }
     .recent-item:hover { border-color: var(--mv-border-2); background: var(--mv-card-hover); }
 
+    .track-form {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; }
+      .main-content-pad { padding: 28px 16px !important; }
+      .shipment-head {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 16px;
+      }
+      .shipment-head-right {
+        width: 100%;
+        text-align: left !important;
+      }
+      .shipment-route-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .shipment-route-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+      }
+      .shipment-route-dest {
+        text-align: left !important;
+      }
+      .shipment-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
     @media (max-width: 480px) {
       .header-container { padding: 0 12px !important; }
       .header-dash-text { display: none; }
@@ -74,8 +105,12 @@ const GlobalStyles = () => (
       .book-btn { padding: 6px 10px !important; font-size: 12px !important; }
       .hide-mobile-text { display: none; }
       .main-content-pad { padding: 24px 16px !important; }
+      .track-form { flex-direction: column; gap: 10px; }
       .track-inp { padding: 10px 12px !important; font-size: 13px !important; }
+      .track-inp { border-radius: 10px !important; }
       .track-btn { padding: 10px 16px !important; font-size: 13px !important; }
+      .track-btn { border-radius: 10px !important; width: 100%; }
+      .shipment-meta-grid { grid-template-columns: 1fr !important; }
     }
   `}</style>
 );
@@ -270,7 +305,7 @@ const ShipmentCard = ({ shipment }) => {
 
       {/* Header card */}
       <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:12, padding:24, marginBottom:16}}>
-        <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:20}}>
+        <div className="shipment-head" style={{display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:20}}>
           <div>
             <div style={{fontSize:11, color:C.dim, marginBottom:6}}>Tracking ID</div>
             <div style={{display:"flex", alignItems:"center", gap:10}}>
@@ -282,7 +317,7 @@ const ShipmentCard = ({ shipment }) => {
               </button>
             </div>
           </div>
-          <div style={{textAlign:"right"}}>
+          <div className="shipment-head-right" style={{textAlign:"right"}}>
             <span style={{
               display:"inline-block", padding:"6px 14px", borderRadius:6,
               fontSize:12, fontWeight:700, letterSpacing:"0.04em",
@@ -297,7 +332,7 @@ const ShipmentCard = ({ shipment }) => {
         <ProgressBar status={shipment.status}/>
 
         {/* Route details */}
-        <div style={{display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:16, alignItems:"center", marginBottom:20}}>
+        <div className="shipment-route-grid" style={{display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:16, alignItems:"center", marginBottom:20}}>
           <div style={{background:C.panel, borderRadius:10, padding:14}}>
             <div style={{fontSize:10, color:C.dim, marginBottom:4, textTransform:"uppercase", letterSpacing:"0.08em"}}>From</div>
             <div style={{fontSize:15, fontWeight:700}}>{shipment.origin?.city || "—"}</div>
@@ -305,8 +340,8 @@ const ShipmentCard = ({ shipment }) => {
               {shipment.origin?.pincode}
             </div>
           </div>
-          <div style={{fontSize:24, color:C.dim, textAlign:"center"}}>→</div>
-          <div style={{background:C.panel, borderRadius:10, padding:14, textAlign:"right"}}>
+          <div className="shipment-route-arrow" style={{fontSize:24, color:C.dim, textAlign:"center"}}>→</div>
+          <div className="shipment-route-dest" style={{background:C.panel, borderRadius:10, padding:14, textAlign:"right"}}>
             <div style={{fontSize:10, color:C.dim, marginBottom:4, textTransform:"uppercase", letterSpacing:"0.08em"}}>To</div>
             <div style={{fontSize:15, fontWeight:700}}>{shipment.destination?.city || "—"}</div>
             <div style={{fontSize:12, color:C.dim, fontFamily:"'JetBrains Mono',monospace", marginTop:2}}>
@@ -316,7 +351,7 @@ const ShipmentCard = ({ shipment }) => {
         </div>
 
         {/* Meta info */}
-        <div style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12}}>
+        <div className="shipment-meta-grid" style={{display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12}}>
           {[
             { label:"Carrier",   value:shipment.carrierName || "—" },
             { label:"Weight",    value:shipment.package?.weight ? `${shipment.package.weight} kg` : "—" },
@@ -461,7 +496,7 @@ const [query, setQuery] = useState(search.get("id") || "");
           <div style={{fontSize:14, color:C.dim, marginBottom:20}}>
             Enter your Movetto tracking ID to get real-time updates
           </div>
-          <div style={{display:"flex"}}>
+          <div className="track-form">
             <input
               className="track-inp"
               placeholder="Enter tracking ID — e.g. MV-2025-K8XP91"

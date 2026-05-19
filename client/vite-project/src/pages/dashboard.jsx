@@ -13,7 +13,8 @@ const GlobalStyles = () => (
     <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--mv-bg); font-family: 'Sora', sans-serif; }
+    html, body, #root { min-height: 100%; }
+    body { background: var(--mv-bg); font-family: 'Sora', sans-serif; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: var(--mv-bg); }
     ::-webkit-scrollbar-thumb { background: var(--mv-border-2); border-radius: 2px; }
@@ -35,6 +36,9 @@ const GlobalStyles = () => (
       cursor:pointer; transition:border-color 0.2s, transform 0.15s;
     }
     .kpi-card:hover { border-color:var(--mv-border-2); transform:translateY(-2px); }
+    .kpi-label { font-size: 13px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 12px; }
+    .kpi-value { font-size: 34px; font-weight: 800; line-height: 1; margin-bottom: 12px; }
+    .kpi-change { font-size: 13px; display: flex; align-items: center; gap: 6px; }
     .feat-card {
       background:var(--mv-card); border:1px solid var(--mv-border);
       border-radius:12px; padding:24px; transition:border-color 0.2s;
@@ -82,6 +86,35 @@ const GlobalStyles = () => (
     .export-btn:hover { border-color:var(--mv-dim); color:var(--mv-text); }
     .search-inp { background:transparent; border:none; outline:none; color:var(--mv-text); font-size:14px; width:220px; font-family:'Sora',sans-serif; }
     .search-inp::placeholder { color:var(--mv-dim); }
+    .dashboard-alert {
+      background:#1a0808; border:1px solid #FF5C3825; border-left:3px solid #FF5C38;
+      border-radius:8px; padding:16px 20px; display:flex; align-items:center; gap:14px;
+      margin-bottom:28px; font-size:15px;
+    }
+    .dashboard-alert-action { margin-left:auto; color:#FF5C38; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .card-header {
+      padding:20px 24px; display:flex; justify-content:space-between; align-items:center;
+      gap:16px; border-bottom:1px solid var(--mv-border);
+    }
+    .card-title { font-size:18px; font-weight:700; }
+    .card-subtitle { font-size:13px; color:var(--mv-dim); margin-top:4px; line-height:1.45; }
+    .table-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+    .table-footer {
+      padding:16px 24px; display:flex; justify-content:space-between; align-items:center;
+      gap:14px; border-top:1px solid var(--mv-border);
+    }
+    .chart-body { height:180px; min-width:0; }
+    .carrier-perf-row { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .carrier-perf-name { font-size:14px; color:var(--mv-paper); width:90px; flex-shrink:0; }
+    .carrier-perf-rate { font-size:13px; width:40px; text-align:right; flex-shrink:0; font-family:'JetBrains Mono',monospace; }
+    .insight-card {
+      background:var(--mv-panel); border-radius:0 8px 8px 0; padding:14px 18px;
+      margin-bottom:12px; font-size:14px; color:var(--mv-paper); line-height:1.6;
+    }
+    .placeholder-state {
+      flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column;
+      gap:16px; color:var(--mv-dim); text-align:center; padding:32px;
+    }
     
     /* Responsive Layout Classes */
     .layout-wrapper { display: flex; flex: 1; min-height: 0; position: relative; }
@@ -101,7 +134,7 @@ const GlobalStyles = () => (
     .hide-mobile { display: flex; }
     .period-filters { display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
     .period-filters::-webkit-scrollbar { display: none; }
-    .dashboard-content-pad { padding: 32px 36px; overflow-y: auto; flex: 1; }
+    .dashboard-content-pad { padding: 32px 36px; overflow-y: auto; flex: 1; width: 100%; min-width: 0; }
 
     @media (max-width: 1024px) {
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
@@ -113,9 +146,10 @@ const GlobalStyles = () => (
 
     @media (max-width: 768px) {
       .two-col-grid { grid-template-columns: 1fr; }
-      .topbar { padding: 0 16px; }
+      .topbar { padding: 0 16px; height: 62px; position: sticky; top: 0; z-index: 30; }
       .hide-mobile { display: none !important; }
-      .dashboard-content-pad { padding: 20px 16px !important; }
+      .dashboard-content-pad { padding: 22px 16px 34px !important; display: flex; flex-direction: column; align-items: center; }
+      .dashboard-content-pad > * { width: min(100%, 620px); margin-left: auto; margin-right: auto; }
       .pie-wrap { flex-direction: column; align-items: center !important; gap: 24px !important; }
       .pie-wrap > div:first-child { width: 180px !important; height: 180px !important; }
       .tbl-header, .tbl-row { padding: 12px 16px; }
@@ -124,6 +158,10 @@ const GlobalStyles = () => (
       .book-btn { padding: 8px 12px !important; font-size: 12px !important; }
       .filter-select { font-size: 12px; padding: 7px 10px; }
       .export-btn { font-size: 12px; padding: 7px 10px; }
+      .card-header { padding: 18px 18px; align-items: flex-start; }
+      .dashboard-alert { align-items: flex-start; padding: 14px 16px; margin-bottom: 20px; line-height: 1.45; }
+      .dashboard-alert svg { flex-shrink: 0; margin-top: 2px; }
+      .chart-body { height: 210px; }
     }
 
     @media (max-width: 480px) {
@@ -131,12 +169,88 @@ const GlobalStyles = () => (
       .quick-actions-grid { grid-template-columns: 1fr; }
       .topbar { padding: 0 12px; }
       .hamburger { margin-right: 8px; font-size: 20px; }
-      .topbar-greeting { font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+      .topbar-greeting { font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 112px; }
       .topbar-date { display: none; }
-      .period-filters { gap: 6px; }
+      .period-filters { gap: 8px; margin: 0 auto 18px !important; padding: 0 4px 2px; }
+      .period-filters > span { display: none; }
       .period-btn { padding: 6px 10px; font-size: 12px; }
       .book-btn { padding: 6px 10px !important; font-size: 12px !important; }
       .hide-mobile-text { display: none; }
+      .sidebar { width: 240px; }
+      .dashboard-content-pad { padding: 20px 12px 32px !important; }
+      .dashboard-content-pad > * { width: min(100%, 390px); }
+      .kpi-card { padding: 18px 18px 18px 20px; border-radius: 10px; }
+      .kpi-label { font-size: 11px; margin-bottom: 10px; letter-spacing: 0.07em; }
+      .kpi-value { font-size: 28px !important; margin-bottom: 10px; }
+      .kpi-change { font-size: 12px; }
+      .feat-card { padding: 18px; border-radius: 10px; }
+      .card-header { flex-direction: column; padding: 16px 16px; gap: 12px; }
+      .card-title { font-size: 16px; }
+      .card-subtitle { font-size: 12px; }
+      .table-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .filter-select, .export-btn { width: 100%; min-height: 36px; }
+      .table-footer { flex-direction: column; align-items: flex-start; padding: 14px 16px; }
+      .quick-card { padding: 12px; gap: 10px; }
+      .quick-card > div:first-child { width: 40px !important; height: 40px !important; font-size: 20px !important; }
+      .chart-body { height: 220px; }
+      .pie-wrap { flex-direction: column; align-items: stretch !important; gap: 18px !important; }
+      .pie-wrap > div:first-child { width: 100% !important; height: 180px !important; }
+      .tbl-header, .tbl-row { padding: 10px 12px; font-size: 13px; min-width: auto; }
+      .tbl-header { display: none; }
+      .tbl-row { display: grid; grid-template-columns: 1fr; gap: 10px; border-bottom: 1px solid var(--mv-border); }
+      .tbl-row > div { display: grid; gap: 4px; }
+      .tbl-row > div:nth-child(1)::before { content: "Route"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(2)::before { content: "Carrier"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(3)::before { content: "Rate"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(4)::before { content: "Date"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(5)::before { content: "Status"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .invoice-header { display: none; }
+      .invoice-row { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 12px 14px; font-size: 13px; }
+      .invoice-row > span { display: grid; gap: 4px; }
+      .invoice-row > span:nth-child(1)::before { content: "Carrier"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .invoice-row > span:nth-child(2)::before { content: "Invoiced"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .invoice-row > span:nth-child(3)::before { content: "Matched"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .invoice-row > span:nth-child(4)::before { content: "Difference"; display:block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .logout-btn { margin: 0 12px 12px; padding: 10px 12px; border-radius: 8px; }
+      .logout-btn span { font-size: 12px; }
+      .search-inp { width: 140px; font-size: 13px; }
+      .topbar-right { gap: 8px !important; }
+      .notif-dropdown { width: min(100vw, 340px); right: 12px !important; }
+      .ticker-anim div { padding: 0 18px; font-size: 13px; }
+      .dashboard-alert { display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; font-size: 13px; }
+      .dashboard-alert-action { grid-column: 2; margin-left: 0; font-size: 13px; }
+      .carrier-perf-row { display: grid; grid-template-columns: 1fr auto; gap: 8px 10px; margin-bottom: 18px; }
+      .carrier-perf-name { width: auto; }
+      .carrier-perf-row > div:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+      .carrier-perf-rate { width: auto; grid-column: 2; grid-row: 1; }
+      .insight-card { padding: 12px 14px; font-size: 13px; }
+      .placeholder-state { padding: 24px 16px; min-height: 360px; }
+    }
+
+    @media (max-width: 360px) {
+      .sidebar { width: 220px; }
+      .topbar { padding: 0 10px; }
+      .topbar-greeting { font-size: 12px !important; }
+      .period-btn { padding: 6px 8px; font-size: 11px; }
+      .book-btn { padding: 6px 8px !important; font-size: 11px !important; }
+      .dashboard-content-pad { padding: 16px 10px 28px !important; }
+      .dashboard-content-pad > * { width: min(100%, 330px); }
+      .kpi-card { padding: 16px; }
+      .kpi-value { font-size: 25px !important; }
+      .feat-card { padding: 16px; }
+      .quick-card { padding: 10px; gap: 8px; }
+      .quick-card > div:first-child { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+      .pie-wrap { gap: 14px; }
+      .pie-wrap > div:first-child { height: 150px !important; }
+      .tbl-row { padding: 10px 12px; font-size: 12px; }
+      .invoice-row { padding: 10px 12px; font-size: 12px; }
+      .notif-dropdown { width: min(100vw, 300px); right: 10px !important; }
+      .ticker-anim div { padding: 0 14px; font-size: 12px; }
+      .period-filters { gap: 4px; }
+      .export-btn, .filter-select { padding: 6px 10px; font-size: 12px; }
+      .hide-mobile-text { display: none; }
+      .card-header { padding: 14px; }
+      .table-footer { padding: 12px 14px; font-size: 12px; }
     }
   `}</style>
 );
@@ -455,7 +569,7 @@ const Topbar = ({ showNotifs, setShowNotifs, onBook, user, toggleSidebar }) => {
 
 /* ─── Notification Dropdown ─── */
 const NotifDropdown = ({ onClose }) => (
-    <div style={{ position: "absolute", right: 0, top: 48, width: 340, background: C.card, border: `1px solid ${C.border2}`, borderRadius: 10, zIndex: 100, overflow: "hidden", animation: "fadeIn 0.2s ease" }}>
+    <div className="notif-dropdown" style={{ position: "absolute", right: 0, top: 48, width: 340, background: C.card, border: `1px solid ${C.border2}`, borderRadius: 10, zIndex: 100, overflow: "hidden", animation: "fadeIn 0.2s ease" }}>
         <div style={{ padding: "14px 20px", borderBottom: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span style={{ fontSize: 15, fontWeight: 700 }}>Notifications</span>
             <span style={{ fontSize: 13, color: C.yellow, cursor: "pointer" }} onClick={onClose}>Mark all read</span>
@@ -531,9 +645,9 @@ const KpiGrid = ({ summary, loading }) => {
             {kpis.map((k, i) => (
                 <div key={i} className="kpi-card">
                     <div style={{ position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: k.accent, borderRadius: "12px 0 0 12px" }} />
-                    <div style={{ fontSize: 13, color: C.dim, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 12 }}>{k.label}</div>
-                    <div style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, marginBottom: 12, color: k.color }}>{k.val}</div>
-                    <div style={{ fontSize: 13, display: "flex", alignItems: "center", gap: 6, color: i === 3 ? C.red : C.green }}>
+                    <div className="kpi-label">{k.label}</div>
+                    <div className="kpi-value" style={{ color: k.color }}>{k.val}</div>
+                    <div className="kpi-change" style={{ color: i === 3 ? C.red : C.green }}>
                         <svg width="12" height="12" viewBox="0 0 10 10" fill="none">
                             <path d={i === 3 ? "M5 2v6M2 5l3 3 3-3" : "M5 8V2M2 5l3-3 3 3"} stroke={i === 3 ? C.red : C.green} strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
@@ -556,7 +670,7 @@ const ChartsRow = ({ dailyShipments, carrierBreakdown, summary, period }) => {
         <div className="feat-card">
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Shipments over time</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>Daily booking volume - {periodLabel}</div>
-            <div style={{ height: 180 }}>
+            <div className="chart-body">
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={dailyData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                         <defs>
@@ -577,7 +691,7 @@ const ChartsRow = ({ dailyShipments, carrierBreakdown, summary, period }) => {
         <div className="feat-card">
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Spend by carrier</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>Total {formatCurrencyCompact(summary?.totalSpend || 0)} - {periodLabel}</div>
-            <div style={{ height: 180 }}>
+            <div className="chart-body">
                 {spendData.length ? (
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={spendData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -614,12 +728,12 @@ const CarrierInsightsRow = ({ carrierStats, summary, period }) => {
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>On-time delivery rate - {periodLabel}</div>
             {performanceData.length ? (
                 performanceData.map((c, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                        <div style={{ fontSize: 14, color: "var(--mv-paper)", width: 90, flexShrink: 0 }}>{c.name}</div>
+                    <div key={i} className="carrier-perf-row">
+                        <div className="carrier-perf-name">{c.name}</div>
                         <div style={{ flex: 1, background: C.border, borderRadius: 4, height: 10, overflow: "hidden" }}>
                             <div style={{ width: `${c.rate}%`, height: "100%", background: c.color, borderRadius: 4, transition: "width 0.8s ease" }} />
                         </div>
-                        <div style={{ fontSize: 13, color: c.color, width: 40, textAlign: "right", flexShrink: 0, fontFamily: "'JetBrains Mono',monospace" }}>{c.rate}%</div>
+                        <div className="carrier-perf-rate" style={{ color: c.color }}>{c.rate}%</div>
                     </div>
                 ))
             ) : (
@@ -632,7 +746,7 @@ const CarrierInsightsRow = ({ carrierStats, summary, period }) => {
             <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>AI route insights</div>
             <div style={{ fontSize: 13, color: C.dim, marginBottom: 20 }}>Smart recommendations for your routes</div>
             {insights.map((ins, i) => (
-                <div key={i} style={{ background: "var(--mv-panel)", border: `1px solid ${ins.borderBg}`, borderLeft: `3px solid ${ins.borderColor}`, borderRadius: "0 8px 8px 0", padding: "14px 18px", marginBottom: 12, fontSize: 14, color: "var(--mv-paper)", lineHeight: 1.6 }}>
+                <div key={i} className="insight-card" style={{ border: `1px solid ${ins.borderBg}`, borderLeft: `3px solid ${ins.borderColor}` }}>
                     <div style={{ fontSize: 12, color: ins.tagColor, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>{ins.tag}</div>
                     {ins.text}
                 </div>
@@ -726,12 +840,12 @@ const ShipmentsTable = ({ recentShipments, loading }) => {
 
     return (
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, marginBottom: 14, overflow: "hidden" }}>
-            <div style={{ padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${C.border}` }}>
+            <div className="card-header">
                 <div>
-                    <div style={{ fontSize: 18, fontWeight: 700 }}>Recent shipments</div>
-                    <div style={{ fontSize: 13, color: C.dim, marginTop: 4 }}>Click any row to view full tracking timeline</div>
+                    <div className="card-title">Recent shipments</div>
+                    <div className="card-subtitle">Click any row to view full tracking timeline</div>
                 </div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <div className="table-actions">
                     <select className="filter-select" value={filter} onChange={e => setFilter(e.target.value)}>
                         <option value="all">All status</option>
                         <option value="delivered">Delivered</option>
@@ -785,7 +899,7 @@ const ShipmentsTable = ({ recentShipments, loading }) => {
                 )}
             </div>
 
-            <div style={{ padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: `1px solid ${C.border}` }}>
+            <div className="table-footer">
                 <span style={{ fontSize: 14, color: C.dim }}>Showing {filtered.length} shipments</span>
                 <span style={{ fontSize: 14, color: C.yellow, cursor: "pointer" }}>View all shipments →</span>
             </div>
@@ -802,10 +916,10 @@ const InvoiceRecon = () => {
     ];
     return (
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", marginBottom: 14 }}>
-            <div style={{ padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${C.border}` }}>
+            <div className="card-header">
                 <div>
-                    <div style={{ fontSize: 18, fontWeight: 700 }}>Invoice reconciliation</div>
-                    <div style={{ fontSize: 13, color: C.dim, marginTop: 4 }}>Auto-matched this month · ₹12,400 saved</div>
+                    <div className="card-title">Invoice reconciliation</div>
+                    <div className="card-subtitle">Auto-matched this month · ₹12,400 saved</div>
                 </div>
                 <span style={{ fontSize: 14, color: C.yellow, cursor: "pointer" }}>View full report →</span>
             </div>
@@ -842,13 +956,13 @@ const DashboardContent = ({ summary, loading, recentShipments, carrierStats, car
 
             {/* Alert — only show if there are RTOs */}
             {rtoCount > 0 && (
-                <div style={{ background: "#1a0808", border: "1px solid #FF5C3825", borderLeft: "3px solid #FF5C38", borderRadius: 8, padding: "16px 20px", display: "flex", alignItems: "center", gap: 14, marginBottom: 28, fontSize: 15 }}>
+                <div className="dashboard-alert">
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#FF5C38" strokeWidth="1.3" /><path d="M8 5v3.5M8 11v.5" stroke="#FF5C38" strokeWidth="1.3" strokeLinecap="round" /></svg>
                     <div>
                         <strong style={{ color: C.red }}>{rtoCount} shipment{rtoCount > 1 ? "s" : ""} need attention</strong>
                         <span style={{ color: "var(--mv-paper)" }}> — RTO initiated. Please review.</span>
                     </div>
-                    <span style={{ marginLeft: "auto", color: C.red, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>View all →</span>
+                    <span className="dashboard-alert-action">View all →</span>
                 </div>
             )}
 
@@ -883,7 +997,7 @@ const DashboardContent = ({ summary, loading, recentShipments, carrierStats, car
 
 /* ─── Placeholder ─── */
 const Placeholder = ({ title, sub }) => (
-    <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, color: C.dim }}>
+    <div className="placeholder-state">
         <div style={{ fontSize: 64 }}>🚧</div>
         <div style={{ fontSize: 28, fontWeight: 800, color: C.text }}>{title}</div>
         <div style={{ fontSize: 16, color: C.dim }}>{sub}</div>
@@ -1003,7 +1117,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div style={{ background: C.bg, fontFamily: "'Sora',sans-serif", color: C.text, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <div style={{ background: C.bg, fontFamily: "'Sora',sans-serif", color: C.text, display: "flex", flexDirection: "column", minHeight: "100dvh" }}>
             <GlobalStyles />
             <LiveTicker />
             <div className="layout-wrapper" onMouseDown={(e) => {

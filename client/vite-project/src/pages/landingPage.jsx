@@ -54,12 +54,33 @@ export default function LandingPage() {
     .btn-ghost:hover  { background: ${isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"} !important; }
     
     /* Responsive Classes */
-    .nav-container { padding: 0 32px; height: 80px; }
+    .nav-container { padding: 0 40px; height: 78px; gap: 24px; }
+    .nav-logo { flex-shrink: 0; display: flex; align-items: center; line-height: 1; }
     .nav-links { display: flex; gap: 36px; }
-    .nav-actions { display: flex; gap: 8px; }
+    .nav-actions {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      flex-shrink: 0;
+      background: ${isDark ? "rgba(255,255,255,0.025)" : "rgba(15,23,42,0.025)"};
+      border: 1px solid ${c.border};
+      border-radius: 12px;
+      padding: 10px 18px;
+      box-shadow: ${isDark ? "0 14px 30px rgba(0,0,0,0.18)" : "0 12px 28px rgba(15,23,42,0.06)"};
+    }
+    .nav-actions .btn-yellow,
+    .nav-actions .btn-ghost {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+    .nav-actions .theme-toggle { margin-right: 0 !important; }
     
     .hero-section { padding: 72px 32px 0; }
     .hero-title { font-size: 64px; }
+    .hero-badge { max-width: calc(100vw - 64px); }
     .stat-strip { flex-direction: row; margin: 0 -32px; }
     .stat-item { border-right: 1px solid ${c.border}; border-bottom: none; }
     .stat-item:last-child { border-right: none; border-bottom: none; }
@@ -68,7 +89,13 @@ export default function LandingPage() {
     .section-padding-bottom-only { padding: 0 32px 72px; }
     .section-title { font-size: 48px; }
     
-    .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    .preview-body { padding: 24px 20px; }
+    .preview-title { font-size: 18px; font-weight: 700; line-height: 1.25; }
+    .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .kpi-card { min-width: 0; padding: 16px 14px; }
+    .kpi-value { font-size: 26px; font-weight: 800; line-height: 1; }
+    .kpi-label { font-size: 11px; color: ${c.dim}; margin-top: 7px; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.25; }
+    .kpi-change { font-size: 12px; margin-top: 8px; line-height: 1.3; }
     .table-container { overflow-x: auto; }
     .table-header { min-width: 600px; }
     .table-row { min-width: 600px; }
@@ -76,8 +103,15 @@ export default function LandingPage() {
     .steps-grid { grid-template-columns: repeat(3, 1fr); }
     .feats-grid { grid-template-columns: repeat(2, 1fr); }
     .wa-grid { grid-template-columns: 1fr 1fr; }
+    .carriers-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+    .carrier-card { min-width: 0; width: 100%; }
+    .carrier-card-title { font-size: 18px; font-weight: 600; line-height: 1.2; }
+    .carrier-card-sub { font-size: 14px; color: ${c.dim}; margin-top: 4px; line-height: 1.35; word-break: break-word; }
     .pricing-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .testi-grid { grid-template-columns: repeat(2, 1fr); }
+    .preview-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px; }
+    .preview-controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .section-divider { height: 1px; background: ${c.border}; margin: 0 32px; }
     
     .footer-container { flex-direction: row; padding: 64px 32px; }
     .footer-links { flex-wrap: wrap; justify-content: center; }
@@ -85,25 +119,43 @@ export default function LandingPage() {
     .cta-buttons { flex-direction: row; }
 
     @media (max-width: 1024px) {
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .preview-body { padding: 22px 18px; }
+      .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px !important; }
+      .kpi-card { padding: 14px 12px !important; }
+      .kpi-value { font-size: 23px !important; }
+      .kpi-label { font-size: 10px !important; letter-spacing: 0.045em !important; }
+      .kpi-change { font-size: 11px !important; }
       .steps-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
       .wa-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .nav-container { padding: 0 16px; height: 70px; }
+      .nav-container { padding: 0 16px; height: 70px; gap: 14px; }
       .nav-links { display: none; }
-      .nav-actions .btn-ghost { display: none; }
+      .nav-actions { gap: 20px; padding: 8px 12px; border-radius: 11px; }
+      .nav-actions .btn-yellow, .nav-actions .btn-ghost { padding: 9px 14px !important; font-size: 13px !important; }
       
       .hero-section { padding: 40px 16px 0; }
-      .hero-title { font-size: 40px; }
+      .hero-title { font-size: 42px; }
+      .hero-badge { max-width: min(100%, 420px); font-size: 13px !important; padding: 8px 14px !important; }
       .stat-strip { flex-direction: column; margin: 0 -16px; }
       .stat-item { border-right: none; border-bottom: 1px solid ${c.border}; padding: 20px 0; }
       
       .section-padding { padding: 48px 16px; }
       .section-padding-bottom-only { padding: 0 16px 48px; }
       .section-title { font-size: 32px; }
+      .preview-body { padding: 20px 14px; }
+      .preview-toolbar { flex-direction: column; align-items: flex-start; }
+      .preview-controls { width: 100%; justify-content: flex-start; }
+      .preview-title { font-size: 16px !important; }
+      .kpi-grid { gap: 8px !important; }
+      .kpi-card { padding: 12px 10px !important; border-radius: 7px !important; }
+      .kpi-value { font-size: 20px !important; }
+      .kpi-label { font-size: 9px !important; margin-top: 6px !important; }
+      .kpi-change { font-size: 10px !important; margin-top: 6px !important; }
+      .carriers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .section-divider { margin: 0 16px; }
       
       .feats-grid { grid-template-columns: 1fr; }
       .testi-grid { grid-template-columns: 1fr; }
@@ -117,20 +169,122 @@ export default function LandingPage() {
     @media (max-width: 480px) {
       .nav-container { padding: 0 12px; }
       .nav-logo { font-size: 22px !important; }
+      .nav-actions { gap: 14px; padding: 6px 10px; border-radius: 10px; }
       .nav-actions .btn-yellow, .nav-actions .btn-ghost { padding: 8px 12px !important; font-size: 13px !important; }
-      .nav-actions .theme-toggle { width: 36px !important; height: 36px !important; padding: 0 !important; margin-right: 4px !important; }
+      .nav-actions .theme-toggle { width: 36px !important; height: 36px !important; padding: 0 !important; margin-right: 0 !important; }
       
+      .hero-section { padding: 32px 12px 0; }
       .hero-title { font-size: 32px; }
+      .stat-strip { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 -12px; }
+      .stat-item { padding: 16px 6px !important; border-right: 1px solid ${c.border}; border-bottom: none !important; min-width: 0; }
+      .stat-item:last-child { border-right: none; }
+      .stat-item > div:first-child { font-size: 22px !important; }
+      .stat-item > div:first-child span { font-size: 16px !important; }
+      .stat-item > div:last-child { font-size: 10px !important; line-height: 1.3; letter-spacing: 0.04em !important; margin-top: 6px !important; }
       .section-title { font-size: 28px; }
-      .section-subtitle { font-size: 15px !important; }
-      
-      .pricing-grid > div { padding: 20px !important; }
-      .pricing-grid .pricing-price { font-size: 36px !important; }
-      
-      .kpi-grid { grid-template-columns: 1fr; }
+      .section-subtitle { font-size: 15px !important; max-width: 100%; }
+      .hero-badge { max-width: 100%; width: 100%; justify-content: center; border-radius: 16px !important; text-align: center; }
+      .cta-buttons { gap: 12px; }
+      .pricing-grid > div { padding: 18px !important; }
+      .pricing-grid .pricing-price { font-size: 34px !important; }
+      .pricing-grid .pricing-price + div { font-size: 14px !important; }
+      .preview-body { padding: 18px 12px; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px !important; }
+      .kpi-card { padding: 14px 12px !important; }
+      .kpi-value { font-size: 22px !important; }
+      .kpi-label { font-size: 10px !important; }
+      .kpi-change { font-size: 11px !important; }
       .cta-buttons { flex-direction: column; width: 100%; }
       .cta-buttons button { width: 100%; }
       .hero-section .cta-buttons button { width: 100%; }
+      .preview-toolbar { gap: 12px; }
+      .preview-controls { gap: 6px; }
+      .preview-controls span { font-size: 12px !important; }
+      .browser-url { font-size: 10px !important; padding: 3px 8px !important; }
+      .table-header { display: none; }
+      .table-row { display: grid; grid-template-columns: 1fr; padding: 16px 14px !important; gap: 8px; }
+      .table-row span { display: block; width: 100%; }
+      .table-row span:nth-child(1)::before { content: "Tracking ID"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .table-row span:nth-child(2)::before { content: "Route"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .table-row span:nth-child(3)::before { content: "Carrier"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .table-row span:nth-child(4)::before { content: "Rate"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .table-row span:nth-child(5)::before { content: "Status"; display: block; font-size: 12px; color: ${c.dim}; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+      .steps-grid > div { padding: 24px 18px; }
+      .steps-grid > div div:nth-child(2) { font-size: 52px !important; }
+      .steps-grid > div div:nth-child(3) { font-size: 19px !important; }
+      .steps-grid > div div:nth-child(4) { font-size: 14px !important; }
+      .feats-grid > div { padding: 24px !important; }
+      .feat-card > div:nth-child(2) { font-size: 17px !important; }
+      .feat-card > div:nth-child(3) { font-size: 13px !important; }
+      .wa-grid { gap: 20px; }
+      .wa-grid > div { padding: 20px !important; }
+      .wa-grid > div > div:first-child { font-size: 16px !important; }
+      .wa-grid > div > div:nth-child(2) { font-size: 15px !important; }
+      .wa-grid > div > div:nth-child(3) { font-size: 13px !important; }
+      .carriers-grid { grid-template-columns: 1fr; gap: 12px; }
+      .carrier-card { padding: 16px 18px !important; }
+      .carrier-card-title { font-size: 17px !important; }
+      .carrier-card-sub { font-size: 13px !important; }
+      .pricing-grid > div { min-height: auto; }
+      .testi-grid > div { padding: 24px !important; }
+      .testi-grid > div p { font-size: 16px !important; }
+      .cta-title { font-size: 34px; }
+      .cta-buttons { gap: 10px; }
+      .footer-links { gap: 14px !important; font-size: 14px !important; }
+      .section-divider { margin: 0 12px; }
+    }
+
+    @media (max-width: 360px) {
+      .nav-container { padding: 0 10px; }
+      .nav-logo { font-size: 20px !important; }
+      .nav-actions { gap: 12px; padding: 5px 8px; border-radius: 9px; }
+      .nav-actions .btn-yellow, .nav-actions .btn-ghost { padding: 7px 10px !important; font-size: 12px !important; }
+      .nav-actions .btn-ghost:not(.theme-toggle) { display: none !important; }
+      .nav-actions .theme-toggle { width: 32px !important; height: 32px !important; margin-right: 0 !important; }
+      .hero-section { padding: 28px 10px 0; }
+      .hero-title { font-size: 28px; }
+      .section-title { font-size: 26px; }
+      .section-subtitle { font-size: 14px !important; }
+      .stat-strip { margin: 0 -10px; }
+      .stat-item { padding: 14px 4px !important; }
+      .stat-item > div:first-child { font-size: 20px !important; }
+      .stat-item > div:first-child span { font-size: 14px !important; }
+      .stat-item > div:last-child { font-size: 9px !important; }
+      .section-padding { padding: 36px 10px; }
+      .section-padding-bottom-only { padding: 0 10px 36px; }
+      .steps-grid > div { padding: 20px 14px; }
+      .steps-grid > div div:nth-child(2) { font-size: 44px !important; }
+      .steps-grid > div div:nth-child(3) { font-size: 17px !important; }
+      .steps-grid > div div:nth-child(4) { font-size: 13px !important; }
+      .feats-grid > div { padding: 18px !important; }
+      .feat-card > div:nth-child(2) { font-size: 16px !important; }
+      .feat-card > div:nth-child(3) { font-size: 12.5px !important; }
+      .pricing-grid { gap: 14px; }
+      .pricing-grid > div { padding: 16px !important; }
+      .pricing-grid .pricing-price { font-size: 30px !important; }
+      .preview-body { padding: 16px 10px; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .kpi-card { padding: 14px !important; }
+      .kpi-value { font-size: 24px !important; }
+      .kpi-label { font-size: 10px !important; }
+      .kpi-change { font-size: 11px !important; }
+      .wa-grid { gap: 18px; }
+      .wa-grid > div { padding: 16px !important; }
+      .wa-grid > div > div:first-child { font-size: 15px !important; }
+      .wa-grid > div > div:nth-child(2) { font-size: 14px !important; }
+      .wa-grid > div > div:nth-child(3) { font-size: 12px !important; }
+      .footer-container { padding: 26px 10px; }
+      .footer-links { gap: 10px; justify-content: center; }
+      .cta-buttons { gap: 10px; }
+      .cta-buttons button { font-size: 14px !important; padding: 10px 14px !important; }
+      .ticker-anim div { padding: 0 14px !important; font-size: 13px !important; }
+      .table-row span { font-size: 13px !important; }
+      .pricing-grid .pricing-price { font-size: 28px !important; }
+      .preview-controls span { font-size: 11px !important; padding: 5px 8px !important; }
+      .testi-grid > div { padding: 18px !important; }
+      .testi-grid > div p { font-size: 15px !important; }
+      .cta-title { font-size: 30px; }
+      .section-divider { margin: 0 10px; }
     }
   `;
 
@@ -301,11 +455,6 @@ export default function LandingPage() {
       {/* ─── NAVBAR ─── */}
       <nav className="nav-container" style={{ background: c.navBg, borderBottom: `1px solid ${c.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div className="nav-logo" style={{ fontSize: 28, fontWeight: 900, letterSpacing: "0.06em" }}>MOVE<Y>TTO</Y></div>
-        <div className="nav-links" style={{ fontSize: 16, color: c.dim }}>
-          {["Product","Carriers","Pricing","Docs"].map(l => (
-            <span key={l} className="nav-link" style={{ cursor: "pointer", transition: "color 0.2s", color: c.dim }}>{l}</span>
-          ))}
-        </div>
         <div className="nav-actions" style={{ alignItems: "center" }}>
           <button
             onClick={toggleThemeMode}
@@ -351,7 +500,7 @@ export default function LandingPage() {
 
         <div style={{ position: "relative", zIndex: 1 }}>
           {/* live badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: c.greenLightBg, border: c.greenBorder, padding: "8px 20px", borderRadius: 30, fontSize: 14, fontWeight: 600, color: c.text, marginBottom: 32, letterSpacing: "0.02em" }}>
+          <div className="hero-badge" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: c.greenLightBg, border: c.greenBorder, padding: "8px 20px", borderRadius: 30, fontSize: 14, fontWeight: 600, color: c.text, marginBottom: 32, letterSpacing: "0.02em" }}>
             <span className="pulse-anim" style={{ width: 8, height: 8, borderRadius: "50%", background: c.green, boxShadow: `0 0 10px ${c.green}` }}/>
             <span><span style={{ color: c.green }}> Live on </span> 100+ businesses across India</span>
           </div>
@@ -404,18 +553,18 @@ export default function LandingPage() {
           {/* browser chrome */}
           <div style={{ background: c.bg3, borderBottom: `1px solid ${c.border}`, padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
             {[c.red, c.amber, c.green].map(col => <div key={col} style={{ width: 10, height: 10, borderRadius: "50%", background: col }}/>)}
-            <div style={{ background: c.bg, border: `1px solid ${c.border2}`, borderRadius: 4, padding: "3px 12px", fontSize: 11, color: c.dim, fontFamily: "monospace", flex: 1, textAlign: "center" }}>
+            <div className="browser-url" style={{ background: c.bg, border: `1px solid ${c.border2}`, borderRadius: 4, padding: "3px 12px", fontSize: 11, color: c.dim, fontFamily: "monospace", flex: 1, textAlign: "center" }}>
               app.movetto.com/dashboard
             </div>
             <span style={{ fontSize: 11, color: c.dim }}>Live</span>
             <span className="pulse-anim" style={{ width: 6, height: 6, borderRadius: "50%", background: c.green }}/>
           </div>
 
-          <div style={{ padding: "28px 24px" }}>
+          <div className="preview-body">
             {/* header row */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <div style={{ fontSize: 20, fontWeight: 700 }}>Shipment overview — May 2025</div>
-              <div style={{ display: "flex", gap: 8 }}>
+            <div className="preview-toolbar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div className="preview-title">Shipment overview — May 2025</div>
+              <div className="preview-controls" style={{ display: "flex", gap: 8 }}>
                 <span style={{ fontSize: 14, background: c.border, border: `1px solid ${c.border2}`, padding: "6px 12px", borderRadius: 4, color: c.muted, cursor: "pointer" }}>This month</span>
                 <span style={{ fontSize: 14, background: c.yellowLightBg, border: c.yellowBorder, padding: "6px 12px", borderRadius: 4, color: c.yellow, cursor: "pointer" }}>Export CSV</span>
               </div>
@@ -424,10 +573,10 @@ export default function LandingPage() {
             {/* KPI row */}
             <div className="kpi-grid" style={{ display: "grid", gap: 14, marginBottom: 20 }}>
               {kpis.map(k => (
-                <div key={k.l} style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8, padding: "20px 18px" }}>
-                  <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1, color: k.col }}>{k.n}</div>
-                  <div style={{ fontSize: 14, color: c.dim, marginTop: 8, textTransform: "uppercase", letterSpacing: "0.07em" }}>{k.l}</div>
-                  <div style={{ fontSize: 14, marginTop: 10, color: k.up ? c.green : c.red }}>{k.ch}</div>
+                <div key={k.l} className="kpi-card" style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 8 }}>
+                  <div className="kpi-value" style={{ color: k.col }}>{k.n}</div>
+                  <div className="kpi-label">{k.l}</div>
+                  <div className="kpi-change" style={{ color: k.up ? c.green : c.red }}>{k.ch}</div>
                 </div>
               ))}
             </div>
@@ -470,7 +619,7 @@ export default function LandingPage() {
       </div>
 
       {/* divider */}
-      <div style={{ height: 1, background: c.border, margin: "0 32px" }}/>
+      <div className="section-divider" style={{ height: 1, background: c.border, margin: "0 32px" }}/>
 
       {/* ─── FEATURES ─── */}
       <div className="section-padding">
@@ -496,13 +645,13 @@ export default function LandingPage() {
         <Eyebrow>Carrier network</Eyebrow>
         <SectionH>We integrate everyone.<br/><Y>We prefer nobody.</Y></SectionH>
         <div style={{ fontSize: 18, color: c.muted }}>Pure data. No kickbacks. No exclusives.</div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 32 }}>
+        <div className="carriers-grid" style={{ display: "grid", marginTop: 32 }}>
           {carriers.map(cr => (
-            <div key={cr.name} style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 10, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16, flex: 1, minWidth: 180 }}>
+            <div key={cr.name} className="carrier-card" style={{ background: c.bg3, border: `1px solid ${c.border}`, borderRadius: 10, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
               <span className="pulse-anim-slow" style={{ width: 12, height: 12, borderRadius: "50%", background: cr.dot }}/>
               <div>
-                <div style={{ fontSize: 18, fontWeight: 600 }}>{cr.name}</div>
-                <div style={{ fontSize: 14, color: c.dim, marginTop: 4 }}>{cr.sub}</div>
+                <div className="carrier-card-title">{cr.name}</div>
+                <div className="carrier-card-sub">{cr.sub}</div>
               </div>
             </div>
           ))}
@@ -547,7 +696,7 @@ export default function LandingPage() {
       </div>
 
       {/* divider */}
-      <div style={{ height: 1, background: c.border, margin: "0 32px" }}/>
+      <div className="section-divider" style={{ height: 1, background: c.border, margin: "0 32px" }}/>
 
       {/* ─── PRICING ─── */}
       <div className="section-padding">

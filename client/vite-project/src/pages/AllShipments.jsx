@@ -63,6 +63,38 @@ const GlobalStyles = () => (
     .page-btn.active{background:#E8F40015;border-color:#E8F40050;color:#E8F400}
     .page-btn:disabled{opacity:0.3;cursor:not-allowed}
 
+    @media (max-width: 768px) {
+      .header-container { padding: 0 16px !important; }
+      .main-content-pad { padding: 20px 16px !important; }
+      .filters-container { flex-direction: column; align-items: stretch !important; gap: 12px !important; }
+      .search-inp { width: 100% !important; }
+      .status-filters { overflow-x: auto; flex-wrap: nowrap !important; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+      .status-filters::-webkit-scrollbar { display: none; }
+      .filter-btn { white-space: nowrap; flex-shrink: 0; }
+      .tbl-header { display: none; }
+      .tbl-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        min-width: auto;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--mv-border);
+      }
+      .tbl-row > div { display: grid; gap: 4px; }
+      .tbl-row > div:nth-child(1)::before { content: "Tracking ID / Route"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(2)::before { content: "Carrier"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(3)::before { content: "Weight"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(4)::before { content: "Rate"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(5)::before { content: "Date"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .tbl-row > div:nth-child(6)::before { content: "Status"; display: block; font-size: 11px; color: var(--mv-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+      .pagination-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 12px;
+      }
+      .header-actions { gap: 6px !important; }
+    }
+
     @media (max-width: 480px) {
       .header-container { padding: 0 12px !important; }
       .header-dash-text { display: none; }
@@ -73,10 +105,6 @@ const GlobalStyles = () => (
       .hide-mobile-text { display: none; }
       .main-content-pad { padding: 16px 12px !important; }
       .search-inp { width: 100% !important; }
-      .filters-container { flex-direction: column; align-items: stretch !important; gap: 12px !important; }
-      .status-filters { overflow-x: auto; flex-wrap: nowrap !important; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
-      .status-filters::-webkit-scrollbar { display: none; }
-      .filter-btn { white-space: nowrap; flex-shrink: 0; }
     }
   `}</style>
 );
@@ -119,7 +147,6 @@ export default function AllShipments() {
   const [search,     setSearch]     = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [carrierFilter, setCarrierFilter] = useState("all");
-  const [searchTimeout, setSearchTimeout] = useState(null);
 
   const LIMIT = 15;
 
@@ -132,26 +159,13 @@ export default function AllShipments() {
     {key:"CANCELLED", label:"Cancelled"},
   ];
 
-  useEffect(() => {
-    fetchShipments();
-  }, [page, statusFilter, carrierFilter]);
-
-  useEffect(() => {
-    if (searchTimeout) clearTimeout(searchTimeout);
-    const t = setTimeout(() => {
-      setPage(1);
-      fetchShipments();
-    }, 400);
-    setSearchTimeout(t);
-    return () => clearTimeout(t);
-  }, [search]);
-
   const fetchShipments = async () => {
     try {
       setLoading(true);
       const params = { page, limit: LIMIT };
       if (statusFilter !== "all") params.status = statusFilter;
       if (carrierFilter !== "all") params.carrier = carrierFilter;
+      if (search.trim()) params.search = search.trim();
 
       const res = await api.get("/shipments", { params });
       setShipments(res.data.shipments || []);
@@ -163,6 +177,18 @@ export default function AllShipments() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchShipments();
+  }, [page, statusFilter, carrierFilter, search]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setPage(1);
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, [search]);
 
   const exportCSV = () => {
     const headers = ["Tracking ID","Route","Carrier","Weight","Rate","Status","Date"];
@@ -206,7 +232,7 @@ export default function AllShipments() {
             {total.toLocaleString()} total
           </div>
         </div>
-        <div style={{display:"flex", gap:8}}>
+        <div className="header-actions" style={{display:"flex", gap:8}}>
           <button
             onClick={exportCSV}
             className="export-btn"
@@ -313,7 +339,7 @@ export default function AllShipments() {
 
           {/* Pagination */}
           {!loading && shipments.length > 0 && (
-            <div style={{padding:"14px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderTop:`1px solid ${C.border}`}}>
+            <div className="pagination-row" style={{padding:"14px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderTop:`1px solid ${C.border}`}}>
               <span style={{fontSize:12, color:C.dim}}>
                 Showing {((page-1)*LIMIT)+1}–{Math.min(page*LIMIT, total)} of {total.toLocaleString()} shipments
               </span>
